@@ -104,7 +104,7 @@ const Main = () => {
             const isValidToken = await checkTokenValidity(serialNumber);
 
             if (isValidToken) {
-                navigate("/menu");
+                navigate("/attendence");
             } else {
                 alert ("유효하지 않은 토큰입니다.");
             }
