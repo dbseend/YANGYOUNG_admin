@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import {useRecoilState} from "recoil";
@@ -21,9 +20,7 @@ const Div = styled.div`
   overflow: hidden;
 `;
 
-const Attendence = () => {
-    const navigate = useNavigate();
-    const [serialNumber, setSerialNumber] = useRecoilState(serialNumberState);
+const Attendance = () => {
   
     return (
       <>
@@ -36,5 +33,5 @@ const Attendence = () => {
       </>
     );
   };
-  export default Attendence;
+  export default Attendance;
   

@@ -31,3 +31,4 @@ export const addStudent = async (id, name) => {
     console.error(error);
   }
 };
+

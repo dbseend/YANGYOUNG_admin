@@ -1,14 +1,14 @@
 import React from "react";
-import WebAttendence from "../components/WebAttendence";
+import WebAttendance from "../components/WebAttendance";
 import WebNavbar from "../components/WebNavbar";
 
-const Attendence = () => {
+const Attendance = () => {
   return (
     <div>
       <WebNavbar />
-      <WebAttendence />
+      <WebAttendance />
     </div>
   );
 };
 
-export default Attendence;
+export default Attendance;
