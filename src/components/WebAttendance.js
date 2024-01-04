@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import {useRecoilState} from "recoil";
@@ -21,20 +20,22 @@ const Div = styled.div`
   overflow: hidden;
 `;
 
-const Attendence = () => {
-    const navigate = useNavigate();
-    const [serialNumber, setSerialNumber] = useRecoilState(serialNumberState);
-  
+const Attendance = () => {
+  const [date, setDate] = useState("");
+  const changeDate = (e) =>{
+    setDate(e.target.value);
+    console.log(e.target.value);
+  }
     return (
       <>
         <GlobalStyle />
         <Div>
             <div>날짜를 선택하세요</div>
-            <input type = "date"></input>
-            
+            <input type = "date" onChange={changeDate}></input>
+            <div>{date}</div>
         </Div>
       </>
     );
   };
-  export default Attendence;
+  export default Attendance;
   

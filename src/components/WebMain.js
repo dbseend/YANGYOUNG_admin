@@ -117,6 +117,9 @@ const Main = () => {
             alert("서버 요청 중 에러가 발생했습니다.");
         }
   };
+//   const handleLogin2 = async() => {
+// navigate("/attendance");
+//   };
 
   const handleInputChange = (e) => {
     setSerialNumber(e.target.value);
@@ -125,6 +128,7 @@ const Main = () => {
     if (e.key === "Enter") {
       e.preventDefault();
       console.log(serialNumber);
+      // handleLogin2();
       handleLogin();
     }
   };

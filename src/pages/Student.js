@@ -1,14 +1,14 @@
 import React from "react";
-import WebAttendence from "../components/WebAttendence";
+import WebStudent from "../components/WebStudent";
 import WebNavbar from "../components/WebNavbar";
 
-const Attendence = () => {
+const Student = () => {
   return (
     <div>
       <WebNavbar />
-      <WebAttendence />
+      <WebStudent />
     </div>
   );
 };
 
-export default Attendence;
+export default Student;

@@ -55,21 +55,22 @@ const Navbar = () => {
     alert("로그아웃 되었습니다.");
   };
 
-  const moveToAttendence = () => {
-    navigate("/attendence");
+  const moveToAttendance = () => {
+    navigate("/attendance");
   };
-  const moveToMeet = () => {
-    navigate("/client/meet");
+  const moveToStudent = () => {
+    navigate("/student");
   };
   const moveToMyPage = () => {
-    navigate("/client/mypage");
+    // navigate("/client/mypage");
+    alert ("서비스 준비 중입니다.");
   };
   return (
     <Div>
       <GlobalStyle />
       <Container>
-        <Menu onClick={moveToAttendence}>출결관리</Menu>
-        <Menu onClick={moveToMeet}>학생관리</Menu>
+        <Menu onClick={moveToAttendance}>출결관리</Menu>
+        <Menu onClick={moveToStudent}>학생관리</Menu>
         <Menu onClick={moveToMyPage}>수업관리</Menu>
         <Logout onClick={onLogOutClick}> 로그아웃</Logout>
       </Container>
