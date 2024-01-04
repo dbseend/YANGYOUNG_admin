@@ -21,14 +21,18 @@ const Div = styled.div`
 `;
 
 const Attendance = () => {
-  
+  const [date, setDate] = useState("");
+  const changeDate = (e) =>{
+    setDate(e.target.value);
+    console.log(e.target.value);
+  }
     return (
       <>
         <GlobalStyle />
         <Div>
             <div>날짜를 선택하세요</div>
-            <input type = "date"></input>
-            
+            <input type = "date" onChange={changeDate}></input>
+            <div>{date}</div>
         </Div>
       </>
     );
