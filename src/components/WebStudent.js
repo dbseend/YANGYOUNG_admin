@@ -23,6 +23,7 @@ const Student = () => {
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [grade, setGrade] = useState("");
+
   const [birth, setBirth] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -32,7 +33,8 @@ const Student = () => {
     } catch(error){
       console.log(error);
     }
-    
+ 
+
   };
 
   const handleChangeId = (e) => {
@@ -47,7 +49,9 @@ const Student = () => {
   };
   const handleChangeGrade = (e) => {
     setGrade(e.target.value); // 수정된 부분
+
     setBirth(e.target.value);
+
   };
   const handleChangePhoneNumber = (e) => {
     setPhoneNumber(e.target.value); // 수정된 부분
@@ -57,16 +61,20 @@ const Student = () => {
     <>
       <GlobalStyle />
       <Div>
+
         id:
+
         <input type="text" value={id} onChange={handleChangeId} />
         이름:
         <input type="text" value={name} onChange={handleChangeName} />
         성별:
+
         <input type="text" value={gender} onChange={handleChangeGender} />
         학년:
         <input type="text" value={grade} onChange={handleChangeGrade} />
         연락처:
         <input type="text" value={phoneNumber} onChange={handleChangePhoneNumber} />
+
         <button onClick={postStudent}>학생 정보 등록</button>
       </Div>
     </>

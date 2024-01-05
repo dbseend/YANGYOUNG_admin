@@ -64,11 +64,13 @@ const Navbar = () => {
     navigate("/");
   };
 
+
   const isActive = (path) => location.pathname === path;
 
   const moveToAttendance = () => {
     navigate("/attendance");
   };
+
 
   const moveToStudent = () => {
     navigate("/student");
@@ -76,13 +78,16 @@ const Navbar = () => {
 
   const moveToMyPage = () => {
     // navigate("/client/mypage");
+
     alert("서비스 준비 중입니다.");
+
   };
 
   return (
     <Div>
       <GlobalStyle />
       <Container>
+
         <Menu onClick={moveToAttendance} $active={isActive("/attendance")}>
           출결관리
         </Menu>
@@ -92,6 +97,7 @@ const Navbar = () => {
         <Menu onClick={moveToMyPage} $active={isActive("/client/mypage")}>
           수업관리
         </Menu>
+
         <Logout onClick={onLogOutClick}> 로그아웃</Logout>
       </Container>
     </Div>
