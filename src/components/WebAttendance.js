@@ -16,8 +16,32 @@ const Div = styled.div`
   flex-direction: column;
   margin: 0;
   overflow: hidden;
+  align-items: center;
 `;
 
+const Label = styled.label`
+  margin-top: 20px;
+`;
+const Inputing = styled.input`
+  margin-left: 10px;
+  width: 159px;
+  height: 17px;
+  flex-shrink: 0;
+`;
+const ButtonWrapper = styled.div`
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  gap:10px;
+`;
+const Button = styled.button`
+  cursor: pointer;
+  width: 30px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const Attendance = () => {
   const [date, setDate] = useState("");
   const changeDate = (e) => {
@@ -54,20 +78,21 @@ const Attendance = () => {
     <>
       <GlobalStyle />
       <Div>
-        <div>날짜를 선택하세요</div>
-        <input type="date" onChange={changeDate}></input>
-        <div>{date}</div>
+        <Label>
+          {" "}
+          날짜 선택<Inputing type="date" onChange={changeDate}></Inputing>
+        </Label>
+        <ButtonWrapper>
+          <Button onClick={() => handleButtonClick(1)}>W</Button>
+          <Button onClick={() => handleButtonClick(2)}>I</Button>
+          <Button onClick={() => handleButtonClick(3)}>N</Button>
+          <Button onClick={() => handleButtonClick(4)}>T</Button>
+          <Button onClick={() => handleButtonClick(5)}>E</Button>
+          <Button onClick={() => handleButtonClick(6)}>R</Button>
+        </ButtonWrapper>
         <div>
-          <button onClick={() => handleButtonClick(1)}>W</button>
-          <button onClick={() => handleButtonClick(2)}>I</button>
-          <button onClick={() => handleButtonClick(3)}>N</button>
-          <button onClick={() => handleButtonClick(4)}>T</button>
-          <button onClick={() => handleButtonClick(5)}>E</button>
-          <button onClick={() => handleButtonClick(6)}>R</button>
-          <div>
-            {/* 현재 보여지는 내용을 표시하는 부분 */}
-            {buttonText && <AtTable buttonText={buttonText} />}
-          </div>
+          {/* 현재 보여지는 내용을 표시하는 부분 */}
+          {buttonText && <AtTable buttonText={buttonText} />}
         </div>
       </Div>
     </>
