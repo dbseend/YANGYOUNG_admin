@@ -6,6 +6,7 @@ const AtTable = ({buttonText}) => {
 return (
 <div>
     <div>{`${buttonText}반 출석부`}</div>
+    
 </div>
 );
 };
