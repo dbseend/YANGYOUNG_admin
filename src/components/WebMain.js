@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
-import {useRecoilState} from "recoil";
+import { useRecoilState } from "recoil";
 import { serialNumberState } from "../recoil/atom";
 import { checkTokenValidity } from "../api/AdminApi";
 const GlobalStyle = createGlobalStyle`
@@ -98,28 +98,29 @@ const Button = styled.button`
 const Main = () => {
   const navigate = useNavigate();
   const [serialNumber, setSerialNumber] = useRecoilState(serialNumberState);
-  const handleLogin = async() => {
+  const handleLogin = async () => {
     try {
-        if(serialNumber && serialNumber.trim() !== ""){
-            const isValidToken = await checkTokenValidity(serialNumber);
+      if (serialNumber && serialNumber.trim() !== "") {
+        const isValidToken = await checkTokenValidity(serialNumber);
 
-            if (isValidToken) {
-                navigate("/attendence");
-            } else {
-                alert ("유효하지 않은 토큰입니다.");
-            }
-            }
-        else {
-            alert ("토큰을 입력하세요.");
-            }
-    } catch(error) {
-            console.error("서버 요청 중 에러 발생", error);
-            alert("서버 요청 중 에러가 발생했습니다.");
+        if (isValidToken) {
+          navigate("/attendance");
+        } else {
+          alert("유효하지 않은 토큰입니다.");
         }
+      } else {
+        alert("토큰을 입력하세요.");
+      }
+    } catch (error) {
+      console.error("서버 요청 중 에러 발생", error);
+      alert("서버 요청 중 에러가 발생했습니다.");
+    }
   };
-//   const handleLogin2 = async() => {
-// navigate("/attendance");
-//   };
+
+  //   const handleLogin2 = async() => {
+  // navigate("/attendance");
+  //   };
+
 
   const handleInputChange = (e) => {
     setSerialNumber(e.target.value);
@@ -142,8 +143,12 @@ const Main = () => {
           <Content>환영합니다.</Content>
           <Content>입장 토큰을 입력하세요.</Content>
           <Token>토큰</Token>
-          <Inputing onChange={handleInputChange} onKeyDown={handleInputKeyDown}autoFocus></Inputing>
-          <Button onClick = {handleLogin}>Login</Button>
+          <Inputing
+            onChange={handleInputChange}
+            onKeyDown={handleInputKeyDown}
+            autoFocus
+          ></Inputing>
+          <Button onClick={handleLogin}>Login</Button>
         </Texts>
       </Div>
     </>
