@@ -22,22 +22,19 @@ const Div = styled.div`
 const Label = styled.label`
   margin-top: 20px;
 `;
-
 const Inputing = styled.input`
   margin-left: 10px;
   width: 159px;
   height: 17px;
   flex-shrink: 0;
 `;
-
 const ButtonWrapper = styled.div`
   margin-top: 20px;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap:10px;
 `;
-
-const Button = styled.div`
+const Button = styled.button`
   cursor: pointer;
   width: 30px;
   height: 20px;
@@ -45,7 +42,6 @@ const Button = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
 const Attendance = () => {
   const [date, setDate] = useState("");
   const [buttonText, setButtonText] = useState("");
