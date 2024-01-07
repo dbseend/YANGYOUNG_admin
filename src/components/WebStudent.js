@@ -23,7 +23,6 @@ const Student = () => {
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [grade, setGrade] = useState("");
-
   const [birth, setBirth] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 

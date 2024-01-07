@@ -22,19 +22,22 @@ const Div = styled.div`
 const Label = styled.label`
   margin-top: 20px;
 `;
+
 const Inputing = styled.input`
   margin-left: 10px;
   width: 159px;
   height: 17px;
   flex-shrink: 0;
 `;
+
 const ButtonWrapper = styled.div`
   margin-top: 20px;
   display: flex;
   flex-direction: row;
-  gap:10px;
+  gap: 10px;
 `;
-const Button = styled.button`
+
+const Button = styled.div`
   cursor: pointer;
   width: 30px;
   height: 20px;
@@ -42,14 +45,23 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
 `;
+
 const Attendance = () => {
   const [date, setDate] = useState("");
+  const [buttonText, setButtonText] = useState("");
+
   const changeDate = (e) => {
     setDate(e.target.value);
     console.log(e.target.value);
   };
-  const [buttonText, setButtonText] = useState("");
+
   const handleButtonClick = (buttonNumber) => {
+    if (!date) {
+      // 날짜를 선택하지 않은 경우 알림창 표시
+      alert("날짜를 먼저 선택하세요.");
+      return;
+    }
+
     // 각 버튼을 누를 때마다 다른 내용 설정
     switch (buttonNumber) {
       case 1:
@@ -74,6 +86,7 @@ const Attendance = () => {
         setButtonText("");
     }
   };
+
   return (
     <>
       <GlobalStyle />
@@ -98,4 +111,5 @@ const Attendance = () => {
     </>
   );
 };
+
 export default Attendance;
