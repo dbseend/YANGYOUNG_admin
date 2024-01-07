@@ -44,12 +44,20 @@ const Button = styled.button`
 `;
 const Attendance = () => {
   const [date, setDate] = useState("");
+  const [buttonText, setButtonText] = useState("");
+
   const changeDate = (e) => {
     setDate(e.target.value);
     console.log(e.target.value);
   };
-  const [buttonText, setButtonText] = useState("");
+
   const handleButtonClick = (buttonNumber) => {
+    if (!date) {
+      // 날짜를 선택하지 않은 경우 알림창 표시
+      alert("날짜를 먼저 선택하세요.");
+      return;
+    }
+
     // 각 버튼을 누를 때마다 다른 내용 설정
     switch (buttonNumber) {
       case 1:
@@ -74,6 +82,7 @@ const Attendance = () => {
         setButtonText("");
     }
   };
+
   return (
     <>
       <GlobalStyle />
@@ -98,4 +107,5 @@ const Attendance = () => {
     </>
   );
 };
+
 export default Attendance;
