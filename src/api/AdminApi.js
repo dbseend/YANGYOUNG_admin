@@ -6,8 +6,8 @@ export const checkTokenValidity = async (id) => {
   try {
     let returnValue;
     const response = await axios.post(
-      `http://43.201.217.237:8080/api/v1/students`,
-      { id }
+      process.env.REACT_APP_URL + `students`,
+      {id}
     );
     returnValue = response.data;
     return returnValue;
@@ -37,7 +37,7 @@ export const addStudent = async (
 
   try {
     const response = await axios.post(
-      "http://172.18.157.205:8080/api/v1/students",
+      process.env.REACT_APP_URL + `students`,
       data
     );
     console.log(response.data);
