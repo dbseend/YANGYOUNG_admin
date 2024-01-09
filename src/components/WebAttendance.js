@@ -18,6 +18,7 @@ const Div = styled.div`
   overflow: hidden;
   align-items: center;
 <<<<<<< HEAD
+<<<<<<< HEAD
 `;
 
 const Label = styled.label`
@@ -47,6 +48,8 @@ const Button = styled.div`
   justify-content: center;
 =======
 >>>>>>> main
+=======
+>>>>>>> origin/kye
 `;
 
 const Label = styled.label`
