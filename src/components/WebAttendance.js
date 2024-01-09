@@ -17,6 +17,39 @@ const Div = styled.div`
   margin: 0;
   overflow: hidden;
   align-items: center;
+<<<<<<< HEAD
+<<<<<<< HEAD
+`;
+
+const Label = styled.label`
+  margin-top: 20px;
+`;
+
+const Inputing = styled.input`
+  margin-left: 10px;
+  width: 159px;
+  height: 17px;
+  flex-shrink: 0;
+`;
+
+const ButtonWrapper = styled.div`
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
+const Button = styled.div`
+  cursor: pointer;
+  width: 30px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+=======
+>>>>>>> main
+=======
+>>>>>>> origin/kye
 `;
 
 const Label = styled.label`
