@@ -34,6 +34,51 @@ const AttendanceLabel = styled.label`
     cursor: pointer;
   }
 `;
+const Radio1 = styled.input`
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  border: 2px solid;
+  /* 선택되지 않은 상태의 배경색과 기타 스타일 */
+  &:not(:checked) {
+    background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
+  }
+  /* 선택된 상태에서의 배경색과 기타 스타일 */
+  &:checked {
+    background-color: #50D68F; /* 선택된 상태에서의 배경색 */
+  }
+`;
+const Radio2 = styled.input`
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  border: 2px solid;
+  /* 선택되지 않은 상태의 배경색과 기타 스타일 */
+  &:not(:checked) {
+    background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
+  }
+  /* 선택된 상태에서의 배경색과 기타 스타일 */
+  &:checked {
+    background-color: #F6CC62; /* 선택된 상태에서의 배경색 */
+  }
+`;
+const Radio3 = styled.input`
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  border: 2px solid;
+  /* 선택되지 않은 상태의 배경색과 기타 스타일 */
+  &:not(:checked) {
+    background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
+  }
+  /* 선택된 상태에서의 배경색과 기타 스타일 */
+  &:checked {
+    background-color: #CB3C44; /* 선택된 상태에서의 배경색 */
+  }
+`;
 
 const AtTable = () => {
   const [data, setData] = useState([
@@ -49,6 +94,12 @@ const AtTable = () => {
       contact: "010-9731-8985",
       attendance: "결석",
       note: "병원",
+    },
+    {
+      name: "전재우",
+      contact: "010-9731-8985",
+      attendance: "",
+      note: "",
     },
     // 다른 데이터 항목들 추가
   ]);
@@ -86,27 +137,27 @@ const AtTable = () => {
                   index + 1 // num은 인덱스에 1을 더한 값
                 ) : column.key === "attendance" ? (
                   <AttendanceLabel>
-                    <input
+                    <Radio1
                       type="radio"
                       value="출석"
                       checked={row[column.key] === "출석"}
                       onChange={() => handleRadioChange(index, "출석")}
                     />
                     출석
-                    <input
-                      type="radio"
-                      value="결석"
-                      checked={row[column.key] === "결석"}
-                      onChange={() => handleRadioChange(index, "결석")}
-                    />
-                    결석
-                    <input
+                    <Radio2
                       type="radio"
                       value="지각"
                       checked={row[column.key] === "지각"}
                       onChange={() => handleRadioChange(index, "지각")}
                     />
                     지각
+                    <Radio3
+                      type="radio"
+                      value="결석"
+                      checked={row[column.key] === "결석"}
+                      onChange={() => handleRadioChange(index, "결석")}
+                    />
+                    결석
                   </AttendanceLabel>
                 ) : column.key === "note" ? (
                   <InputNote

@@ -6,7 +6,8 @@ export const checkTokenValidity = async (id) => {
   try {
     let returnValue;
     const response = await axios.post(
-      process.env.REACT_APP_URL + `students`,
+      process.env.REACT_APP_URL + `/student`,
+
       {id}
     );
     returnValue = response.data;
@@ -37,7 +38,7 @@ export const addStudent = async (
 
   try {
     const response = await axios.post(
-      process.env.REACT_APP_URL + `students`,
+      process.env.REACT_APP_URL + `/student`,
       data
     );
     console.log(response.data);
