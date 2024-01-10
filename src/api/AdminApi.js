@@ -7,6 +7,7 @@ export const checkTokenValidity = async (id) => {
     let returnValue;
     const response = await axios.post(
       process.env.REACT_APP_URL + `/student`,
+
       {id}
     );
     returnValue = response.data;
