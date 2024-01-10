@@ -16,7 +16,7 @@ const Div = styled.div`
   display: flex;
   flex-direction: row;
   margin: 0;
-  overflow: hidden;
+  overflow: auto;
 `;
 const Color = styled.div`
   width: 50vw;
@@ -120,7 +120,6 @@ const Main = () => {
   //   const handleLogin2 = async() => {
   // navigate("/attendance");
   //   };
-
 
   const handleInputChange = (e) => {
     setSerialNumber(e.target.value);

@@ -37,7 +37,6 @@ const Menu = styled.div`
   font-weight: ${(props) => (props.$active ? "bold" : "normal")};
 `;
 
-
 const Logout = styled.div`
   cursor: pointer;
   font-family: IBM Plex Sans KR;
@@ -64,13 +63,11 @@ const Navbar = () => {
     navigate("/");
   };
 
-
   const isActive = (path) => location.pathname === path;
 
   const moveToAttendance = () => {
     navigate("/attendance");
   };
-
 
   const moveToStudent = () => {
     navigate("/student");
@@ -80,14 +77,12 @@ const Navbar = () => {
     // navigate("/client/mypage");
 
     alert("서비스 준비 중입니다.");
-
   };
 
   return (
     <Div>
       <GlobalStyle />
       <Container>
-
         <Menu onClick={moveToAttendance} $active={isActive("/attendance")}>
           출결관리
         </Menu>

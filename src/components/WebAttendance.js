@@ -15,57 +15,31 @@ const Div = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0;
-  overflow: hidden;
+  overflow: auto;
   align-items: center;
-<<<<<<< HEAD
-<<<<<<< HEAD
 `;
-
+const Head = styled.div`
+  color: #000;
+  font-family: IBM Plex Sans KR;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+`;
 const Label = styled.label`
   margin-top: 20px;
 `;
-
 const Inputing = styled.input`
   margin-left: 10px;
   width: 159px;
   height: 17px;
   flex-shrink: 0;
 `;
-
 const ButtonWrapper = styled.div`
   margin-top: 20px;
   display: flex;
   flex-direction: row;
   gap: 10px;
-`;
-
-const Button = styled.div`
-  cursor: pointer;
-  width: 30px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-=======
->>>>>>> main
-=======
->>>>>>> origin/kye
-`;
-
-const Label = styled.label`
-  margin-top: 20px;
-`;
-const Inputing = styled.input`
-  margin-left: 10px;
-  width: 159px;
-  height: 17px;
-  flex-shrink: 0;
-`;
-const ButtonWrapper = styled.div`
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row;
-  gap:10px;
 `;
 const Button = styled.button`
   cursor: pointer;
@@ -78,12 +52,15 @@ const Button = styled.button`
 const Attendance = () => {
   const [date, setDate] = useState("");
   const [buttonText, setButtonText] = useState("");
-
+  const ban = ["W", "I", "N", "T", "E", "R"];
   const changeDate = (e) => {
     setDate(e.target.value);
     console.log(e.target.value);
   };
-
+  const [selectedBan, setSelectedBan] = useState("");
+  const handleDropdownChange = (e)=> {
+    // const selectedValue = event.target.value;
+  };
   const handleButtonClick = (buttonNumber) => {
     if (!date) {
       // 날짜를 선택하지 않은 경우 알림창 표시
@@ -120,9 +97,26 @@ const Attendance = () => {
     <>
       <GlobalStyle />
       <Div>
+        <Head>출결관리</Head>
         <Label>
           {" "}
-          날짜 선택<Inputing type="date" onChange={changeDate}></Inputing>
+          날짜<Inputing type="date" onChange={changeDate}></Inputing>
+          <table>
+            <label>
+              <div> 반 </div>
+            </label>
+            <select onChange={handleDropdownChange} value = {selectedBan}>
+              <option value="" disabled>
+                {" "}
+                반 선택{" "}
+              </option>
+              {ban.map((banOption) => (
+                <option key={banOption} value={banOption}>
+                  {banOption}
+                </option>
+              ))}
+            </select>
+          </table>
         </Label>
         <ButtonWrapper>
           <Button onClick={() => handleButtonClick(1)}>W</Button>
