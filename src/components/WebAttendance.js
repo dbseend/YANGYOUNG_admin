@@ -16,9 +16,9 @@ const Div = styled.div`
   flex-direction: column;
   margin: 0;
   overflow: auto;
+  overflow: auto;
   align-items: center;
 `;
-
 const Head = styled.div`
   color: #000;
   font-family: IBM Plex Sans KR;
@@ -40,6 +40,7 @@ const ButtonWrapper = styled.div`
   margin-top: 20px;
   display: flex;
   flex-direction: row;
+  gap: 10px;
   gap: 10px;
 `;
 const Button = styled.button`
@@ -99,6 +100,7 @@ const Attendance = () => {
       <GlobalStyle />
       <Div>
         <Head>출결관리</Head>
+        <Head>출결관리</Head>
         <Label>
           {" "}
           날짜<Inputing type="date" onChange={changeDate}></Inputing>
@@ -107,7 +109,7 @@ const Attendance = () => {
               <div> 반 </div>
             </label>
             <select onChange={handleDropdownChange} value = {selectedBan}>
-              <option value="" disabled>
+              <option>
                 {" "}
                 반 선택{" "}
               </option>
