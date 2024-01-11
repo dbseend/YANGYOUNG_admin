@@ -106,7 +106,7 @@ const Attendance = () => {
               <div> 반 </div>
             </label>
             <select onChange={handleDropdownChange} value = {selectedBan}>
-              <option value="" disabled>
+              <option>
                 {" "}
                 반 선택{" "}
               </option>

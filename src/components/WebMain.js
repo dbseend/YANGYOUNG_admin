@@ -99,22 +99,7 @@ const Main = () => {
   const navigate = useNavigate();
   const [serialNumber, setSerialNumber] = useRecoilState(serialNumberState);
   const handleLogin = async () => {
-    try {
-      if (serialNumber && serialNumber.trim() !== "") {
-        const isValidToken = await checkTokenValidity(serialNumber);
-
-        if (isValidToken) {
-          navigate("/attendance");
-        } else {
-          alert("유효하지 않은 토큰입니다.");
-        }
-      } else {
-        alert("토큰을 입력하세요.");
-      }
-    } catch (error) {
-      console.error("서버 요청 중 에러 발생", error);
-      alert("서버 요청 중 에러가 발생했습니다.");
-    }
+    
   };
 
   //   const handleLogin2 = async() => {

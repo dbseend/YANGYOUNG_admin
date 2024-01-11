@@ -35,48 +35,51 @@ const AttendanceLabel = styled.label`
   }
 `;
 const Radio1 = styled.input`
+  margin-bottom: 4px;
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   border-radius: 10px;
-  border: 2px solid;
+  border: 1px solid;
   /* 선택되지 않은 상태의 배경색과 기타 스타일 */
   &:not(:checked) {
     background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
   }
   /* 선택된 상태에서의 배경색과 기타 스타일 */
   &:checked {
-    background-color: #50D68F; /* 선택된 상태에서의 배경색 */
+    background-color: #50d68f; /* 선택된 상태에서의 배경색 */
   }
 `;
 const Radio2 = styled.input`
+  margin-bottom: 4px;
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   border-radius: 10px;
-  border: 2px solid;
+  border: 1px solid;
   /* 선택되지 않은 상태의 배경색과 기타 스타일 */
   &:not(:checked) {
     background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
   }
   /* 선택된 상태에서의 배경색과 기타 스타일 */
   &:checked {
-    background-color: #F6CC62; /* 선택된 상태에서의 배경색 */
+    background-color: #f6cc62; /* 선택된 상태에서의 배경색 */
   }
 `;
 const Radio3 = styled.input`
+  margin-bottom: 4px;
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   border-radius: 10px;
-  border: 2px solid;
+  border: 1px solid;
   /* 선택되지 않은 상태의 배경색과 기타 스타일 */
   &:not(:checked) {
     background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
   }
   /* 선택된 상태에서의 배경색과 기타 스타일 */
   &:checked {
-    background-color: #CB3C44; /* 선택된 상태에서의 배경색 */
+    background-color: #cb3c44; /* 선택된 상태에서의 배경색 */
   }
 `;
 

@@ -1,38 +1,13 @@
 import axios from "axios";
 import { errorSelector } from "recoil";
 
-
-export const checkTokenValidity = async (id) => {
-  try {
-    let returnValue;
-    const response = await axios.post(
-      process.env.REACT_APP_URL + `/student`,
-      {id}
-    );
-    returnValue = response.data;
-    return returnValue;
-  } catch (error) {
-    console.error(error);
-    throw errorSelector;
-  }
-};
-
-export const addStudent = async (
-  id,
-  name,
-  gender,
-  grade,
-  birth,
-  phoneNumber
-) => {
+export const addStudent = async (id, name, school, grade, phoneNumber) => {
   const data = {
-
-  id:id,
-  name:name,
-  gender:gender,
-  grade:grade,
-  birth: birth,
-  phoneNumber:phoneNumber
+    id,
+    name,
+    school,
+    grade,
+    phoneNumber,
   };
 
   try {
