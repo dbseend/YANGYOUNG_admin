@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { useRecoilState } from "recoil";
-import { addStudent, addStudentSection, viewStudent } from "../api/StudentAPI";
+import { addStudent, addStudentSection, viewStudent } from "../api/StudentApi";
 
 const GlobalStyle = createGlobalStyle`
   body {
