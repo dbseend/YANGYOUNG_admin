@@ -14,7 +14,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
 const Head = styled.div`
   color: #000;
   font-family: IBM Plex Sans KR;
@@ -41,6 +40,7 @@ const ButtonWrapper = styled.div`
   margin-top: 20px;
   display: flex;
   flex-direction: row;
+  gap: 10px;
   gap: 10px;
 `;
 
