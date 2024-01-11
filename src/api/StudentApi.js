@@ -1,5 +1,4 @@
 import axios from "axios";
-import { errorSelector } from "recoil";
 
 export const addStudent = async (id, name, school, grade, phoneNumber) => {
   const data = {
