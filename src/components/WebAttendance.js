@@ -16,6 +16,7 @@ const Div = styled.div`
   flex-direction: column;
   margin: 0;
   overflow: auto;
+  overflow: auto;
   align-items: center;
 `;
 const Head = styled.div`
@@ -39,6 +40,7 @@ const ButtonWrapper = styled.div`
   margin-top: 20px;
   display: flex;
   flex-direction: row;
+  gap: 10px;
   gap: 10px;
 `;
 const Button = styled.button`
@@ -97,6 +99,7 @@ const Attendance = () => {
     <>
       <GlobalStyle />
       <Div>
+        <Head>출결관리</Head>
         <Head>출결관리</Head>
         <Label>
           {" "}
