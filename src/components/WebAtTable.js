@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { getSectionStudentInfo } from "../api/AttendanceApi";
 
 const StyledTable = styled.table`
   width: 100%;
@@ -83,105 +84,97 @@ const Radio3 = styled.input`
   }
 `;
 
-const AtTable = () => {
-  const [data, setData] = useState([
-    { name: "홍길동", contact: "010-1234-5678", attendance: "출석", note: "" },
-    {
-      name: "김예은",
-      contact: "010-9731-8985",
-      attendance: "결석",
-      note: "병원",
-    },
-    {
-      name: "김예은",
-      contact: "010-9731-8985",
-      attendance: "결석",
-      note: "병원",
-    },
-    {
-      name: "전재우",
-      contact: "010-9731-8985",
-      attendance: "",
-      note: "",
-    },
-    // 다른 데이터 항목들 추가
-  ]);
-
+const AtTable = (props) => {
+  // const [data, setData] = useState([]);
+  const [sectionInfo, setSectionIfno] = useState(null);
+  const [studentInfo, setStudentIfno] = useState(null);
+  const sectionId = props.sectionId;
   const columns = [
     { key: "num", label: "" },
     { key: "name", label: "이름" },
-    { key: "contact", label: "연락처" },
+    { key: "phoneNumber", label: "연락처" },
     { key: "attendance", label: "출결" },
     { key: "note", label: "비고" },
-    // 다른 열들 추가
   ];
 
-  const handleRadioChange = (index, value) => {
-    const newData = [...data];
-    newData[index].attendance = value;
-    setData(newData);
-  };
+  useEffect(() => {
+    console.log(sectionId);
+    const fetchData = async () => {
+      getSectionStudentInfo(sectionId).then(function (data) {
+        setSectionIfno(data.sectionGetOneResponse);
+        setStudentIfno(data.studentGetAllResponse.studentOneResponseList);
+        console.log(data.sectionGetOneResponse);
+        console.log(data.studentGetAllResponse.studentOneResponseList);
+      });
+    };
+    fetchData();
+  }, [sectionId]);
+
+  // const handleRadioChange = (index, value) => {
+  //   const newData = [...data];
+  //   newData[index].attendance = value;
+  //   setData(newData);
+  // };
 
   return (
-    <StyledTable>
-      <thead>
-        <tr>
-          {columns.map((column) => (
-            <StyledTh key={column.key}>{column.label}</StyledTh>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((row, index) => (
-          <tr key={index}>
+    <>
+    <h1>{sectionId}</h1>
+      <StyledTable>
+        <thead>
+          <tr>
             {columns.map((column) => (
-              <StyledTd key={column.key}>
-                {column.key === "num" ? (
-                  index + 1 // num은 인덱스에 1을 더한 값
-                ) : column.key === "attendance" ? (
-                  <AttendanceLabel>
-                    <Radio1
-                      type="radio"
-                      value="출석"
-                      checked={row[column.key] === "출석"}
-                      onChange={() => handleRadioChange(index, "출석")}
-                    />
-                    출석
-                    <Radio2
-                      type="radio"
-                      value="지각"
-                      checked={row[column.key] === "지각"}
-                      onChange={() => handleRadioChange(index, "지각")}
-                    />
-                    지각
-                    <Radio3
-                      type="radio"
-                      value="결석"
-                      checked={row[column.key] === "결석"}
-                      onChange={() => handleRadioChange(index, "결석")}
-                    />
-                    결석
-                  </AttendanceLabel>
-                ) : column.key === "note" ? (
-                  <InputNote
-                    type="text"
-                    value={row[column.key]}
-                    onChange={(e) => {
-                      const newData = [...data];
-                      newData[index][column.key] = e.target.value;
-                      setData(newData);
-                    }}
-                  />
-                ) : (
-                  row[column.key]
-                )}
-              </StyledTd>
+              <StyledTh key={column.key}>{column.label}</StyledTh>
             ))}
           </tr>
-        ))}
-      </tbody>
+        </thead>
+        <tbody>
+          {studentInfo && studentInfo.map((row, index) => (
+            <tr key={index}>
+              {columns.map((column) => (
+                <StyledTd key={column.key}>
+                  {column.key === "num" ? (
+                    index + 1 // num은 인덱스에 1을 더한 값
+                  ) : column.key === "attendance" ? (
+                    <AttendanceLabel>
+                      <Radio1
+                        type="radio"
+                        value="출석"
+                        checked={row[column.key] === "출석"}
+                        // onChange={() => handleRadioChange(index, "출석")}
+                      />
+                      출석
+                      <Radio2
+                        type="radio"
+                        value="지각"
+                        checked={row[column.key] === "지각"}
+                        // onChange={() => handleRadioChange(index, "지각")}
+                      />
+                      지각
+                      <Radio3
+                        type="radio"
+                        value="결석"
+                        checked={row[column.key] === "결석"}
+                        // onChange={() => handleRadioChange(index, "결석")}
+                      />
+                      결석
+                    </AttendanceLabel>
+                  ) : column.key === "note" ? (
+                    <InputNote
+                      type="text"
+                      value={row[column.key]}
+                      // onChange={(e) => handleRadioChange(index, e.target.value)}
+                    />
+                  ) : (
+                    row[column.key]
+                  )}
+                </StyledTd>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </StyledTable>
       <button>저장</button>
-    </StyledTable>
+    </>
   );
 };
 
