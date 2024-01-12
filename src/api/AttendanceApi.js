@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export const getSectionStudentInfo = async (id) => {
+export const getSectionAttendanceInfo = async (id) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_URL}/section/student/${id}`
+      `${process.env.REACT_APP_URL}/section/attendance/${id}`
     );
     console.log(response.data);
 
