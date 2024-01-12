@@ -2,11 +2,11 @@ import axios from "axios";
 
 export const addStudent = async (id, name, school, grade, phoneNumber) => {
   const data = {
-    id,
-    name,
-    school,
-    grade,
-    phoneNumber,
+    id: id,
+    name: name,
+    school: school,
+    grade: grade,
+    phoneNumber: phoneNumber,
   };
 
   try {
@@ -22,15 +22,15 @@ export const addStudent = async (id, name, school, grade, phoneNumber) => {
 
 export const addStudentSection = async (id, sId) => {
   const data = {
-    studentId: id,
-    sectionId: sId,
+    id: id,
+    sId: sId,
   };
   try {
     const response = await axios.post(
       process.env.REACT_APP_URL + `/student/enrollment`,
       data
     );
-    console.log(response);
+    console.log(response.data);
   } catch (error) {
     console.error(error);
   }
