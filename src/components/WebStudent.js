@@ -62,7 +62,7 @@ const HoverTr = styled.tr`
   }
 `;
 
-const Student = () => {
+const WebStudent = () => {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [school, setSchool] = useState("");
@@ -100,25 +100,27 @@ const Student = () => {
   };
 
   const handleChangeId = (e) => {
-    setId(e.target.value); // 수정된 부분
+    setId(e.target.value); 
   };
 
   const handleChangeName = (e) => {
-    setName(e.target.value); // 수정된 부분
+    setName(e.target.value); 
   };
+
   const handleChangeSchool = (e) => {
-    setSchool(e.target.value); // 수정된 부분
-    const handleChangeSchool = (e) => {
-      setSchool(e.target.value); // 수정된 부분
-    };
-    const handleChangeGrade = (e) => {
-      setGrade(e.target.value); // 수정된 부분
-    };
-    const handleChangePhoneNumber = (e) => {
-      setPhoneNumber(e.target.value); // 수정된 부분
-    };
-    const handleDropdownChange = (e) => {
-      const selectedValue = e.target.value;
+    setSchool(e.target.value); 
+  };
+
+  const handleChangeGrade = (e) => {
+    setGrade(e.target.value); 
+  };
+
+  const handleChangePhoneNumber = (e) => {
+    setPhoneNumber(e.target.value); 
+  };
+
+  const handleDropdownChange = (e) => {
+    const selectedValue = e.target.value;
 
       setSelectedBan(selectedValue);
 
@@ -143,6 +145,7 @@ const Student = () => {
           break;
       }
     };
+    
     return (
       <>
         <GlobalStyle />
@@ -205,5 +208,5 @@ const Student = () => {
       </>
     );
   };
-};
-export default Student;
+  
+export default WebStudent;
