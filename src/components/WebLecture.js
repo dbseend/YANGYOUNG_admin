@@ -56,12 +56,21 @@ const HoverTr = styled.tr`
 const Lecture = () => {
   const [lectureList, setLectureList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const postLecture = async () => {
+  const [lectureName, setLectureName] = useState("");
+  const [lectureDay, setLectureDay] = useState("");
+  const [lectureTime, setLectureTime] = useState("");
+  const [lectureRoom, setLectureRoom] = useState("");
+  const postLecture = async (e) => {
+    e.preventDefault();
     try {
+      await addLecture(lectureName, lectureDay, lectureTime, lectureRoom);
+      // addLecture 함수가 완료된 후에 수행할 작업 추가
+      console.log("Lecture added successfully!");
     } catch (error) {
       console.error("Error fetching lecture data:", error);
     }
   };
+  
   const viewAllLecture = async () => {
     try {
       const { lectureGetOneResponseList, count } = await viewLecture();
@@ -71,16 +80,49 @@ const Lecture = () => {
       console.error("Error fetching lecture data:", error);
     }
   };
+  const handleNameChange = (e) => {
+    setLectureName(e.target.value);
+  };
+  const handleDayChange = (e) => {
+    setLectureDay(e.target.value);
+  };
+  const handleTimeChange = (e) => {
+    setLectureTime(e.target.value);
+  };
+  const handleRoomChange = (e) => {
+    setLectureRoom(e.target.value);
+  };
+
   return (
     <>
       <GlobalStyle />
       <Div>
-        <Form>
-          강의 제목 <input type="text"></input>
-          요일 <input type="text"></input>
-          시간 <input type="text"></input>
-          강의실 <input type="text"></input>
-          <button> 강의 생성하기 </button>
+        <Form onSubmit={postLecture}>
+          강의 제목{" "}
+          <input
+            type="text"
+            value={lectureName}
+            onChange={handleNameChange}
+          ></input>
+          요일{" "}
+          <input
+            type="text"
+            value={lectureDay}
+            onChange={handleDayChange}
+          ></input>
+          시간{" "}
+          <input
+            type="text"
+            value={lectureTime}
+            onChange={handleTimeChange}
+          ></input>
+          강의실{" "}
+          <input
+            type="text"
+            value={lectureRoom}
+            onChange={handleRoomChange}
+          ></input>
+          <button type="submit"> 강의 생성하기 </button>
         </Form>
         <button onClick={viewAllLecture}> 강의 보기 </button>
         <TableContainer>

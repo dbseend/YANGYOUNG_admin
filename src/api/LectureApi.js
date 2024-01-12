@@ -11,10 +11,10 @@ export const viewLecture = async () => {
 
 export const addLecture = async (name, day, time, room) => {
   const data = {
-    name,
-    day,
-    time,
-    room,
+    name: name,
+    day: day,
+    time: time,
+    room: room,
   };
   try {
     const response = await axios.post(
@@ -24,5 +24,6 @@ export const addLecture = async (name, day, time, room) => {
     console.log(response.data);
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
