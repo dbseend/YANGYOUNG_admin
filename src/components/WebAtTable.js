@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getSectionStudentInfo } from "../api/AttendanceApi";
+import { getSectionAttendanceInfo } from "../api/AttendanceApi";
 
 const StyledTable = styled.table`
   width: 100%;
@@ -86,8 +86,8 @@ const Radio3 = styled.input`
 
 const AtTable = (props) => {
   // const [data, setData] = useState([]);
-  const [sectionInfo, setSectionIfno] = useState(null);
-  const [studentInfo, setStudentIfno] = useState(null);
+  const [sectionInfo, setSectionIfno] = useState([]);
+  const [studentInfo, setStudentIfno] = useState([]);
   const sectionId = props.sectionId;
   const columns = [
     { key: "num", label: "" },
@@ -100,25 +100,28 @@ const AtTable = (props) => {
   useEffect(() => {
     console.log(sectionId);
     const fetchData = async () => {
-      getSectionStudentInfo(sectionId).then(function (data) {
+      getSectionAttendanceInfo(sectionId).then(function (data) {
         setSectionIfno(data.sectionGetOneResponse);
-        setStudentIfno(data.studentGetAllResponse.studentOneResponseList);
+        setStudentIfno(data.ssAttendanceGetOneResponseList);
         console.log(data.sectionGetOneResponse);
-        console.log(data.studentGetAllResponse.studentOneResponseList);
+        console.log(data.ssAttendanceGetOneResponseList);
       });
     };
     fetchData();
+    // alert();
   }, [sectionId]);
 
-  // const handleRadioChange = (index, value) => {
-  //   const newData = [...data];
-  //   newData[index].attendance = value;
-  //   setData(newData);
-  // };
+  const handleRadioChange = (index, value) => {
+    setStudentIfno((prevStudentInfo) => {
+      const updatedStudentInfo = [...prevStudentInfo];
+      updatedStudentInfo[index].attendanceType = value;
+      return updatedStudentInfo;
+    });
+  };
 
   return (
     <>
-    <h1>{sectionId}</h1>
+      <h1>{sectionId}</h1>
       <StyledTable>
         <thead>
           <tr>
@@ -128,49 +131,65 @@ const AtTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          {studentInfo && studentInfo.map((row, index) => (
-            <tr key={index}>
-              {columns.map((column) => (
-                <StyledTd key={column.key}>
-                  {column.key === "num" ? (
-                    index + 1 // num은 인덱스에 1을 더한 값
-                  ) : column.key === "attendance" ? (
-                    <AttendanceLabel>
-                      <Radio1
-                        type="radio"
-                        value="출석"
-                        checked={row[column.key] === "출석"}
-                        // onChange={() => handleRadioChange(index, "출석")}
+          {studentInfo &&
+            studentInfo.map((data, index) => (
+              <tr key={index}>
+                {columns.map((column) => (
+                  <StyledTd key={column.key}>
+                    {column.key === "num" ? (
+                      index + 1 // num은 인덱스에 1을 더한 값
+                    ) : column.key === "attendance" ? (
+                      <AttendanceLabel>
+                        <Radio1
+                          type="radio"
+                          value="ATTENDANCE"
+                          checked={
+                            studentInfo[index].attendanceType === "ATTENDANCE"
+                          }
+                          onChange={() =>
+                            handleRadioChange(index, "ATTENDANCE")
+                          }
+                        />
+                        출석
+                        <Radio2
+                          type="radio"
+                          value="LATENESS"
+                          checked={
+                            studentInfo[index].attendanceType === "LATENESS"
+                          }
+                          onChange={() => handleRadioChange(index, "LATENESS")}
+                        />
+                        지각
+                        <Radio3
+                          type="radio"
+                          value="ABSENCE"
+                          // checked={data.attendanceType === "ABSENCE"}
+                          checked={
+                            studentInfo[index].attendanceType === "ABSENCE"
+                          }
+                          onChange={() => handleRadioChange(index, "ABSENCE")}
+                        />
+                        결석
+                      </AttendanceLabel>
+                    ) : column.key === "note" ? (
+                      <InputNote
+                        type="text"
+                        value={data.note}
+                        onChange={(e) =>
+                          handleRadioChange(index, e.target.value)
+                        }
                       />
-                      출석
-                      <Radio2
-                        type="radio"
-                        value="지각"
-                        checked={row[column.key] === "지각"}
-                        // onChange={() => handleRadioChange(index, "지각")}
-                      />
-                      지각
-                      <Radio3
-                        type="radio"
-                        value="결석"
-                        checked={row[column.key] === "결석"}
-                        // onChange={() => handleRadioChange(index, "결석")}
-                      />
-                      결석
-                    </AttendanceLabel>
-                  ) : column.key === "note" ? (
-                    <InputNote
-                      type="text"
-                      value={row[column.key]}
-                      // onChange={(e) => handleRadioChange(index, e.target.value)}
-                    />
-                  ) : (
-                    row[column.key]
-                  )}
-                </StyledTd>
-              ))}
-            </tr>
-          ))}
+                    ) : column.key === "name" ? (
+                      data.studentOneResponse.name
+                    ) : column.key === "phoneNumber" ? (
+                      data.studentOneResponse.phoneNumber
+                    ) : (
+                      ""
+                    )}
+                  </StyledTd>
+                ))}
+              </tr>
+            ))}
         </tbody>
       </StyledTable>
       <button>저장</button>
