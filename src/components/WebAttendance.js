@@ -62,7 +62,7 @@ const Attendance = () => {
 
   const changeDate = (e) => {
     setDate(e.target.value);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   const handleDropdownChange = (event) => {
@@ -121,9 +121,7 @@ const Attendance = () => {
           ))}
         </select>
         <div>
-          {selectedBan && (
-            <AtTable buttonText={buttonText} sectionId={sectionId} />
-          )}
+          {selectedBan && <AtTable date={date} sectionId={sectionId} />}
         </div>
       </Container>
     </>

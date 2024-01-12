@@ -89,6 +89,7 @@ const AtTable = (props) => {
   const [sectionInfo, setSectionIfno] = useState([]);
   const [studentInfo, setStudentIfno] = useState([]);
   const sectionId = props.sectionId;
+  const date = props.date;
   const columns = [
     { key: "num", label: "" },
     { key: "name", label: "이름" },
@@ -98,9 +99,9 @@ const AtTable = (props) => {
   ];
 
   useEffect(() => {
-    console.log(sectionId);
+    // console.log(sectionId);
     const fetchData = async () => {
-      getSectionAttendanceInfo(sectionId).then(function (data) {
+      getSectionAttendanceInfo(sectionId, date).then(function (data) {
         setSectionIfno(data.sectionGetOneResponse);
         setStudentIfno(data.ssAttendanceGetOneResponseList);
         console.log(data.sectionGetOneResponse);
@@ -109,7 +110,7 @@ const AtTable = (props) => {
     };
     fetchData();
     // alert();
-  }, [sectionId]);
+  }, [sectionId, date]);
 
   const handleRadioChange = (index, value) => {
     setStudentIfno((prevStudentInfo) => {
@@ -121,6 +122,7 @@ const AtTable = (props) => {
 
   return (
     <>
+      <h1>{date}</h1>
       <h1>{sectionId}</h1>
       <StyledTable>
         <thead>
