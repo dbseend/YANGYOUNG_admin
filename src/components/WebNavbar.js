@@ -73,10 +73,8 @@ const Navbar = () => {
     navigate("/student");
   };
 
-  const moveToMyPage = () => {
-    // navigate("/client/mypage");
-
-    alert("서비스 준비 중입니다.");
+  const moveToLecture = () => {
+    navigate("/lecture");
   };
 
   return (
@@ -89,7 +87,7 @@ const Navbar = () => {
         <Menu onClick={moveToStudent} $active={isActive("/student")}>
           학생관리
         </Menu>
-        <Menu onClick={moveToMyPage} $active={isActive("/client/mypage")}>
+        <Menu onClick={moveToLecture} $active={isActive("/lecture")}>
           수업관리
         </Menu>
 
