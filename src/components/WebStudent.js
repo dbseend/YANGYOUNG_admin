@@ -108,30 +108,19 @@ const WebStudent = () => {
     }
   };
 
-  // const search = () => {
-  //   const filteredData = studentList.filter(
-  //     (item) =>
-  //       item.name &&
-  //       item.name.toLowerCase().includes(searchTerm) &&
-  //       item.sectionName.toLowerCase().includes(selectedSection) &&
-  //       item.school.toLowerCase().includes(selectedSchool) &&
-  //       item.grade === selectedGrade
-  //   );
-
-  //   setFilteredData(filteredData);
-  // };
   const search = () => {
     const filteredData = studentList.filter((item) => {
       const nameMatch = !searchTerm || (item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
       const sectionMatch = !selectedSection || item.sectionName.toLowerCase().includes(selectedSection.toLowerCase());
       const schoolMatch = !selectedSchool || item.school.toLowerCase().includes(selectedSchool.toLowerCase());
-      const gradeMatch = item.grade == selectedGrade;
+      const gradeMatch = !selectedGrade || item.grade == selectedGrade;
   
       return nameMatch && sectionMatch && schoolMatch && gradeMatch;
     });
   
     setFilteredData(filteredData);
   };
+  
   
 
   const getValue = (e) => {
