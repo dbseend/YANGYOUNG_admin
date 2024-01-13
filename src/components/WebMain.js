@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { useRecoilState } from "recoil";
 import { serialNumberState } from "../recoil/atom";
-import { checkTokenValidity } from "../api/StudentApi";
+// import { checkTokenValidity } from "../api/StudentApi";
 const GlobalStyle = createGlobalStyle`
   body {
     margin : 0;

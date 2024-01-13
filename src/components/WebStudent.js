@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
-import { addStudent, addStudentSection, viewStudent } from "../api/StudentApi";
+import { addStudent, viewStudent } from "../api/StudentAPI";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -15,6 +15,7 @@ const Div = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
+  align-items: center;
 `;
 const ButtonWrapper = styled.div`
   margin-top: 20px;
@@ -61,121 +62,172 @@ const HoverTr = styled.tr`
   }
 `;
 
+const PostInput = styled.input`
+  /* margin-top: 30px; */
+  width: 200px;
+`;
+
+const Label = styled.label`
+  /* margin-top: 20px; */
+  display: flex;
+  flex-direction: column;
+`;
+
+const SearhDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 const WebStudent = () => {
-  const [id, setId] = useState(0);
-  const [name, setName] = useState("");
-  const [school, setSchool] = useState("");
-  const [grade, setGrade] = useState(0);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [studentList, setStudentList] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [selectedBan, setSelectedBan] = useState("");
   const [sectionId, setSectionId] = useState(0);
-  const ban = ["W", "I", "N", "T", "E", "R"];
+  const [studentList, setStudentList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSection, setSelectedSection] = useState("");
+  const [selectedGrade, setSelectedGrade] = useState(0);
+  const [selectedSchool, setSelectedSchool] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+  const [sectionList, setSection] = useState([]);
+  const [gradeList, setGrade] = useState([]);
+  const [schoolList, setSchool] = useState([]);
+
+  useEffect(() => {
+    viewAllStudent();
+  }, []);
 
   const viewAllStudent = async () => {
     try {
-      const { studentOneResponseList, count } = await viewStudent();
-      setStudentList(studentOneResponseList);
-      setTotalCount(count);
+      const response = await viewStudent();
+      setStudentList(response.studentOneResponseList);
+      setFilteredData(response.studentOneResponseList);
+      setSection(response.sectionList);
+      setGrade(response.gradeList);
+      setSchool(response.schoolList);
+      console.log(response);
     } catch (error) {
-      console.error("학생 데이터를 가져오는 중 오류 발생:", error);
+      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
     }
   };
 
-  const postStudent = async (e) => {
-    e.preventDefault();
-    try {
-      await addStudent(id, name, school, grade, phoneNumber);
-      console.log("학생이 성공적으로 추가되었습니다!");
-    } catch (error) {
-      console.error("학생 데이터를 추가하는 중 오류 발생:", error);
-    }
+  // const search = () => {
+  //   const filteredData = studentList.filter(
+  //     (item) =>
+  //       item.name &&
+  //       item.name.toLowerCase().includes(searchTerm) &&
+  //       item.sectionName.toLowerCase().includes(selectedSection) &&
+  //       item.school.toLowerCase().includes(selectedSchool) &&
+  //       item.grade === selectedGrade
+  //   );
+
+  //   setFilteredData(filteredData);
+  // };
+  const search = () => {
+    const filteredData = studentList.filter((item) => {
+      const nameMatch = !searchTerm || (item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+      const sectionMatch = !selectedSection || item.sectionName.toLowerCase().includes(selectedSection.toLowerCase());
+      const schoolMatch = !selectedSchool || item.school.toLowerCase().includes(selectedSchool.toLowerCase());
+      const gradeMatch = item.grade == selectedGrade;
+  
+      return nameMatch && sectionMatch && schoolMatch && gradeMatch;
+    });
+  
+    setFilteredData(filteredData);
+  };
+  
+
+  const getValue = (e) => {
+    setSearchTerm(e.target.value.toLowerCase());
   };
 
-  const handleChangeId = (e) => {
-    setId(e.target.value);
-  };
-
-  const handleChangeName = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleChangeSchool = (e) => {
-    setSchool(e.target.value);
-  };
-
-  const handleChangeGrade = (e) => {
-    setGrade(e.target.value);
-  };
-
-  const handleChangePhoneNumber = (e) => {
-    setPhoneNumber(e.target.value);
-  };
-
-  const handleDropdownChange = (e) => {
+  const handleDropdownChange = (e, type) => {
     const selectedValue = e.target.value;
 
-    setSelectedBan(selectedValue);
-
-    switch (selectedValue) {
-      case "W":
-        setSectionId(1);
-        break;
-      case "I":
-        setSectionId(2);
-        break;
-      case "N":
-        setSectionId(3);
-        break;
-      case "T":
-        setSectionId(4);
-        break;
-      case "E":
-        setSectionId(5);
-        break;
-      case "R":
-        setSectionId(6);
-        break;
+    if (type === "section") {
+      setSelectedSection(selectedValue);
+      const sectionId = sectionList.indexOf(selectedValue) + 1;
+      setSectionId(sectionId);
+      console.log("하나");
+    } else if (type === "school") {
+      setSelectedSchool(selectedValue);
+      console.log("둘");
+    } else if (type === "grade") {
+      setSelectedGrade(selectedValue);
+      console.log("셋");
     }
+  };
+
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      search();
+    }
+  }
+
+  const handleReset = () => {
+    setSelectedSection("");
+    setSelectedSchool("");
+    setSelectedGrade(0);
+    setFilteredData(studentList);
   };
 
   return (
     <>
       <GlobalStyle />
       <Div>
-        <Form onSubmit={postStudent}>
-          ID:
-          <input type="text" value={id} onChange={handleChangeId} />
-          이름:
-          <input type="text" value={name} onChange={handleChangeName} />
-          학교:
-          <input type="text" value={school} onChange={handleChangeSchool} />
-          학년:
-          <input type="text" value={grade} onChange={handleChangeGrade} />
-          연락처:
-          <input
-            type="text"
-            value={phoneNumber}
-            onChange={handleChangePhoneNumber}
+        <SearhDiv>
+          <Label>학생 이름</Label>
+          <PostInput
+            onChange={getValue}
+            onKeyDown={handleKeyPress}
+            placeholder="학생 이름을 입력해주세요"
           />
-          <select onChange={handleDropdownChange} value={selectedBan || ""}>
+          <Label>반</Label>
+          <select
+            onChange={(e) => handleDropdownChange(e, "section")}
+            value={selectedSection || ""}
+          >
             <option disabled value="">
               반 선택
             </option>
-            {ban.map((banOption) => (
+            {sectionList.map((banOption) => (
               <option key={banOption} value={banOption}>
                 {banOption}
               </option>
             ))}
           </select>
-          <button type="submit">학생 정보 등록</button>
-        </Form>
-
-        <button onClick={viewAllStudent}>학생 정보 조회</button>
+          <Label>학교</Label>
+          <select
+            onChange={(e) => handleDropdownChange(e, "school")}
+            value={selectedSchool || ""}
+          >
+            <option disabled value="">
+              학교 선택
+            </option>
+            {schoolList.map((banOption) => (
+              <option key={banOption} value={banOption}>
+                {banOption}
+              </option>
+            ))}
+          </select>
+          <Label>학년</Label>
+          <select
+            onChange={(e) => handleDropdownChange(e, "grade")}
+            value={selectedGrade || ""}
+          >
+            <option disabled value="">
+              학년 선택
+            </option>
+            {gradeList.map((banOption) => (
+              <option key={banOption} value={banOption}>
+                {banOption}
+              </option>
+            ))}
+          </select>
+          <button onClick={handleReset}>모든 설정 초기화</button>
+          <button onClick={search} onKeyPress={handleKeyPress}>
+            학생 or 반 조회
+          </button>
+        </SearhDiv>
         <TableContainer>
           <h1>학생 목록</h1>
-          <p>등록된 전체 학생 수: {totalCount}</p>
           <StyledTable>
             <StyledThead>
               <tr>
@@ -184,16 +236,18 @@ const WebStudent = () => {
                 <StyledTh>학교</StyledTh>
                 <StyledTh>학년</StyledTh>
                 <StyledTh>연락처</StyledTh>
+                <StyledTh>반</StyledTh>
               </tr>
             </StyledThead>
             <tbody>
-              {studentList.map((student) => (
+              {filteredData.map((student) => (
                 <HoverTr key={student.id}>
                   <StyledTd>{student.id}</StyledTd>
                   <StyledTd>{student.name}</StyledTd>
                   <StyledTd>{student.school}</StyledTd>
                   <StyledTd>{student.grade}</StyledTd>
                   <StyledTd>{student.phoneNumber}</StyledTd>
+                  <StyledTd>{student.sectionName}</StyledTd>
                 </HoverTr>
               ))}
             </tbody>
