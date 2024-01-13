@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getSectionAttendanceInfo } from "../api/AttendanceApi";
+import {
+  getSectionAttendanceInfo,
+  postAttendanceBySection,
+} from "../api/AttendanceApi";
 
 const StyledTable = styled.table`
   width: 100%;
@@ -85,7 +88,6 @@ const Radio3 = styled.input`
 `;
 
 const AtTable = (props) => {
-  // const [data, setData] = useState([]);
   const [sectionInfo, setSectionIfno] = useState([]);
   const [studentInfo, setStudentIfno] = useState([]);
   const sectionId = props.sectionId;
@@ -120,6 +122,30 @@ const AtTable = (props) => {
     });
   };
 
+  const handleNoteChange = (index, value) => {
+    setStudentIfno((prevStudentInfo) => {
+      const updatedStudentInfo = [...prevStudentInfo];
+      updatedStudentInfo[index].note = value;
+      return updatedStudentInfo;
+    });
+  };
+
+  const postAttendance = () => {
+    const data = {
+      sectionId: sectionId,
+      selectedDay: date,
+      attendancePostRequestList: studentInfo.map((info) => ({
+        studentId: info.studentOneResponse.id,
+        attendanceType: info.attendanceType,
+        note: info.note,
+      })),
+    };
+
+    console.log(data);
+
+    postAttendanceBySection(data);
+  };
+
   return (
     <>
       <h1>{date}</h1>
@@ -139,7 +165,7 @@ const AtTable = (props) => {
                 {columns.map((column) => (
                   <StyledTd key={column.key}>
                     {column.key === "num" ? (
-                      index + 1 // num은 인덱스에 1을 더한 값
+                      index + 1
                     ) : column.key === "attendance" ? (
                       <AttendanceLabel>
                         <Radio1
@@ -165,7 +191,6 @@ const AtTable = (props) => {
                         <Radio3
                           type="radio"
                           value="ABSENCE"
-                          // checked={data.attendanceType === "ABSENCE"}
                           checked={
                             studentInfo[index].attendanceType === "ABSENCE"
                           }
@@ -178,7 +203,7 @@ const AtTable = (props) => {
                         type="text"
                         value={data.note}
                         onChange={(e) =>
-                          handleRadioChange(index, e.target.value)
+                          handleNoteChange(index, e.target.value)
                         }
                       />
                     ) : column.key === "name" ? (
@@ -194,7 +219,7 @@ const AtTable = (props) => {
             ))}
         </tbody>
       </StyledTable>
-      <button>저장</button>
+      <button onClick={postAttendance}>저장</button>
     </>
   );
 };
