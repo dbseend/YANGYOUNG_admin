@@ -4,6 +4,7 @@ import Main from "./pages/Main";
 import Attendance from "./pages/Attendance";
 import Student from "./pages/Student";
 import Lecture from "./pages/Lecture";
+import AddSt from "./pages/AddSt";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/attendance" element={<Attendance />} />
         <Route path = "/student" element={<Student />} />
         <Route path = "/lecture" element={<Lecture />} />
+        <Route path = "/addstudent" element={<AddSt />} />
       </Routes>
     </Router>
   );
