@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
-import { addStudent, viewStudent } from "../api/StudentApi";
 import Modal from "./WebModal";
-import { getStudentInfo } from "../api/StudentApi";
+import { getStudentInfo, viewStudent } from "../api/StudentApi";
+import { useNavigate } from "react-router-dom";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -95,11 +95,13 @@ const WebStudent = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [studentInfo, setStudentInfo] = useState({});
   const [lectureInfo, setLectureInfo] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     viewAllStudent();
   }, []);
-
+  const moveToAddSt = () => {
+    navigate("/addstudent");
+  }
   const viewAllStudent = async () => {
     try {
       const response = await viewStudent();
@@ -183,7 +185,7 @@ const WebStudent = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
-
+ 
   return (
     <>
       <GlobalStyle />
@@ -249,7 +251,7 @@ const WebStudent = () => {
             lectureInfo={lectureInfo}
           ></Modal>
         )}
-        <button>학생 추가</button>
+        <button onClick={moveToAddSt}>학생 추가</button>
         <TableContainer>
           <h1>학생 목록</h1>
           <StyledTable>

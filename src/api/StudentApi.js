@@ -1,18 +1,17 @@
 import axios from "axios";
 
 export const addStudent = async (id, name, school, grade, phoneNumber) => {
-  const data = {
-    id,
-    name,
-    school,
-    grade,
-    phoneNumber,
-  };
-
   try {
+    const result = {
+      id: id,
+      name: name,
+      school:school,
+      grade:grade,
+      phoneNumber:phoneNumber,
+    };
     const response = await axios.post(
-      process.env.REACT_APP_URL + `/student`,
-      data
+      process.env.REACT_APP_URL+ `student`,
+      result
     );
     console.log(response.data);
   } catch (error) {
@@ -27,7 +26,7 @@ export const addStudentSection = async (id, sId) => {
   };
   try {
     const response = await axios.post(
-      process.env.REACT_APP_URL + `/student/enrollment`,
+      process.env.REACT_APP_URL + `student/enrollment`,
       data
     );
     console.log(response);
@@ -38,7 +37,7 @@ export const addStudentSection = async (id, sId) => {
 
 export const viewStudent = async () => {
   try {
-    const response = await axios.get(process.env.REACT_APP_URL + `/student`);
+    const response = await axios.get(process.env.REACT_APP_URL + `student`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -49,7 +48,7 @@ export const getStudentInfo = async (id) => {
   console.log(id);
   try {
     const response = await axios.get(
-      process.env.REACT_APP_URL + `/student/lecture/${id}`
+      process.env.REACT_APP_URL + `student/lecture/${id}`
     );
     return response.data;
   } catch (error) {
