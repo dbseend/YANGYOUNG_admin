@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
-import { addStudent, viewStudent } from "../api/StudentAPI";
+import { addStudent, viewStudent } from "../api/StudentApi";
+import Modal from "./WebModal";
+import { getStudentInfo } from "../api/StudentApi";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -60,6 +61,7 @@ const StyledTd = styled.td`
 const HoverTr = styled.tr`
   &:hover {
     background-color: #f5f5f5;
+    cursor: pointer;
   }
 `;
 
@@ -90,6 +92,9 @@ const WebStudent = () => {
   const [sectionList, setSection] = useState([]);
   const [gradeList, setGrade] = useState([]);
   const [schoolList, setSchool] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [studentInfo, setStudentInfo] = useState({});
+  const [lectureInfo, setLectureInfo] = useState([]);
 
   useEffect(() => {
     viewAllStudent();
@@ -111,18 +116,23 @@ const WebStudent = () => {
 
   const search = () => {
     const filteredData = studentList.filter((item) => {
-      const nameMatch = !searchTerm || (item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-      const sectionMatch = !selectedSection || item.sectionName.toLowerCase().includes(selectedSection.toLowerCase());
-      const schoolMatch = !selectedSchool || item.school.toLowerCase().includes(selectedSchool.toLowerCase());
-      const gradeMatch = !selectedGrade || item.grade == selectedGrade;
-  
+      const nameMatch =
+        !searchTerm ||
+        (item.name &&
+          item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+      const sectionMatch =
+        !selectedSection ||
+        item.sectionName.toLowerCase().includes(selectedSection.toLowerCase());
+      const schoolMatch =
+        !selectedSchool ||
+        item.school.toLowerCase().includes(selectedSchool.toLowerCase());
+      const gradeMatch = !selectedGrade || item.grade === selectedGrade;
+
       return nameMatch && sectionMatch && schoolMatch && gradeMatch;
     });
-  
+
     setFilteredData(filteredData);
   };
-  
-  
 
   const getValue = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
@@ -156,6 +166,22 @@ const WebStudent = () => {
     setSelectedSchool("");
     setSelectedGrade(0);
     setFilteredData(studentList);
+  };
+
+  const openModal = async () => {
+    try{
+      const response = await getStudentInfo(studentId);
+      setStudentInfo(response.data.studentOneResponse);
+      setLectureInfo(response.data.lectureGetOneResponseList);
+      setModalOpen(true);
+    } catch (error) {
+      console.log ("학생 상세 데이터를 가져오는 중 오류 발생: ", error);
+    }
+    
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -216,28 +242,35 @@ const WebStudent = () => {
             학생 or 반 조회
           </button>
         </SearhDiv>
+        {isModalOpen && (
+          <Modal onClose={closeModal} studentInfo={studentInfo} lectureInfo={lectureInfo}>
+        </Modal>
+        )}
+        <button>학생 추가</button>
         <TableContainer>
           <h1>학생 목록</h1>
           <StyledTable>
             <StyledThead>
               <tr>
-                <StyledTh>ID</StyledTh>
+                <StyledTh></StyledTh>
+                <StyledTh>반</StyledTh>
                 <StyledTh>이름</StyledTh>
                 <StyledTh>학교</StyledTh>
-                <StyledTh>학년</StyledTh>
                 <StyledTh>연락처</StyledTh>
-                <StyledTh>반</StyledTh>
+                <StyledTh>학년</StyledTh>
+                <StyledTh>ID</StyledTh>
               </tr>
             </StyledThead>
             <tbody>
               {filteredData.map((student) => (
-                <HoverTr key={student.id}>
-                  <StyledTd>{student.id}</StyledTd>
+                <HoverTr onClick={openModal} key={student.id}>
+                  <StyledTd>count </StyledTd>
+                  <StyledTd>{student.sectionName}</StyledTd>
                   <StyledTd>{student.name}</StyledTd>
                   <StyledTd>{student.school}</StyledTd>
-                  <StyledTd>{student.grade}</StyledTd>
                   <StyledTd>{student.phoneNumber}</StyledTd>
-                  <StyledTd>{student.sectionName}</StyledTd>
+                  <StyledTd>{student.grade}</StyledTd>
+                  <StyledTd>{student.id}</StyledTd>
                 </HoverTr>
               ))}
             </tbody>

@@ -44,3 +44,16 @@ export const viewStudent = async () => {
     console.error(error);
   }
 };
+
+export const getStudentInfo = async (id) => {
+  console.log(id);
+  try {
+    const response = await axios.get(
+      process.env.REACT_APP_URL + `/student/lecture/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
