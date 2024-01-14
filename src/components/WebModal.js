@@ -12,17 +12,23 @@ const Overlay = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const ModalContainer = styled.div`
-  width: 50%;
-  height: 50%;
+  /* width: 50%;
+  height: 50%; */
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column; /* Align children in a column */
+  justify-content: center; /* Center children vertically */
+  align-items: center; /* Center children horizontally */
 `;
 
 const CloseButton = styled.button`
+  margin-top: 20px; /* Add some space between content and the close button */
   background-color: #2d6f4c;
   color: white;
   border: none;
