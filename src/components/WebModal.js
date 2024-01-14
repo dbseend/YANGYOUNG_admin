@@ -12,17 +12,23 @@ const Overlay = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const ModalContainer = styled.div`
-  width: 50%;
-  height: 50%;
+  /* width: 50%;
+  height: 50%; */
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column; /* Align children in a column */
+  justify-content: center; /* Center children vertically */
+  align-items: center; /* Center children horizontally */
 `;
 
 const CloseButton = styled.button`
+  margin-top: 20px; /* Add some space between content and the close button */
   background-color: #2d6f4c;
   color: white;
   border: none;
@@ -31,10 +37,6 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-const List = styled.div`
-display: flex;
-flex-direction: column;
-`
 const Modal = ({ onClose, studentInfo, lectureInfo, children }) => {
   const closeModal = () => {
     onClose();
@@ -50,12 +52,13 @@ const Modal = ({ onClose, studentInfo, lectureInfo, children }) => {
           <p>학교: {studentInfo.school}</p>
           <h1>강의 정보</h1>
           {lectureInfo.map((lecture) => (
-            <List key={lecture.id}>
-              <div>이름: {lecture.name}</div>
-              <div>요일: {lecture.day}</div>
-              <div>시간: {lecture.time}</div>
-              <div>강의실: {lecture.room}</div>
-            </List>
+            <div key={lecture.id}>
+              <p>ID: {lecture.id}</p>
+              <p>이름: {lecture.name}</p>
+              <p>요일: {lecture.day}</p>
+              <p>시간: {lecture.time}</p>
+              <p>강의실: {lecture.room}</p>
+            </div>
           ))}
         </div>
         {children}
