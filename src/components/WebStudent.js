@@ -168,16 +168,16 @@ const WebStudent = () => {
     setFilteredData(studentList);
   };
 
-  const openModal = async () => {
-    try{
+  const openModal = async (studentId) => {
+    try {
       const response = await getStudentInfo(studentId);
-      setStudentInfo(response.data.studentOneResponse);
-      setLectureInfo(response.data.lectureGetOneResponseList);
+      console.log(response);
+      setStudentInfo(response.studentOneResponse);
+      setLectureInfo(response.lectureGetOneResponseList);
       setModalOpen(true);
     } catch (error) {
-      console.log ("학생 상세 데이터를 가져오는 중 오류 발생: ", error);
+      console.log("학생 상세 데이터를 가져오는 중 오류 발생: ", error);
     }
-    
   };
 
   const closeModal = () => {
@@ -243,8 +243,11 @@ const WebStudent = () => {
           </button>
         </SearhDiv>
         {isModalOpen && (
-          <Modal onClose={closeModal} studentInfo={studentInfo} lectureInfo={lectureInfo}>
-        </Modal>
+          <Modal
+            onClose={closeModal}
+            studentInfo={studentInfo}
+            lectureInfo={lectureInfo}
+          ></Modal>
         )}
         <button>학생 추가</button>
         <TableContainer>
@@ -263,7 +266,7 @@ const WebStudent = () => {
             </StyledThead>
             <tbody>
               {filteredData.map((student) => (
-                <HoverTr onClick={openModal} key={student.id}>
+                <HoverTr onClick={() => openModal(student.id)} key={student.id}>
                   <StyledTd>count </StyledTd>
                   <StyledTd>{student.sectionName}</StyledTd>
                   <StyledTd>{student.name}</StyledTd>
