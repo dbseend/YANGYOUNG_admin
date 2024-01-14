@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
-import { addStudent, viewStudent } from "../api/StudentApi";
 import Modal from "./WebModal";
-import { getStudentInfo } from "../api/StudentApi";
+import { getStudentInfo, viewStudent } from "../api/StudentAPI";
 
 const GlobalStyle = createGlobalStyle`
   body {

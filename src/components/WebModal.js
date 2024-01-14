@@ -31,6 +31,10 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
+const List = styled.div`
+display: flex;
+flex-direction: column;
+`
 const Modal = ({ onClose, studentInfo, lectureInfo, children }) => {
   const closeModal = () => {
     onClose();
@@ -46,13 +50,12 @@ const Modal = ({ onClose, studentInfo, lectureInfo, children }) => {
           <p>학교: {studentInfo.school}</p>
           <h1>강의 정보</h1>
           {lectureInfo.map((lecture) => (
-            <div key={lecture.id}>
-              <p>ID: {lecture.id}</p>
-              <p>이름: {lecture.name}</p>
-              <p>요일: {lecture.day}</p>
-              <p>시간: {lecture.time}</p>
-              <p>강의실: {lecture.room}</p>
-            </div>
+            <List key={lecture.id}>
+              <div>이름: {lecture.name}</div>
+              <div>요일: {lecture.day}</div>
+              <div>시간: {lecture.time}</div>
+              <div>강의실: {lecture.room}</div>
+            </List>
           ))}
         </div>
         {children}
