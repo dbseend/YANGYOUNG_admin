@@ -101,21 +101,24 @@ const AtTable = (props) => {
   ];
 
   useEffect(() => {
-    // console.log(sectionId);
     const fetchData = async () => {
       getSectionAttendanceInfo(sectionId, date).then(function (data) {
         if (data) {
           setSectionIfno(data.sectionGetOneResponse);
-          setStudentIfno(data.ssAttendanceGetOneResponseList);
-          console.log(data.sectionGetOneResponse);
-          console.log(data.ssAttendanceGetOneResponseList);
+          
+          const sortedStudentInfo = data.ssAttendanceGetOneResponseList.sort((a, b) => {
+            if (a.studentOneResponse.name < b.studentOneResponse.name) return -1;
+            if (a.studentOneResponse.name > b.studentOneResponse.name) return 1;
+            return 0;
+          });
+          
+          setStudentIfno(sortedStudentInfo);
         } else {
           alert("반 정보가 없습니다");
         }
       });
     };
     fetchData();
-    // alert();
   }, [sectionId, date]);
 
   const handleRadioChange = (index, value) => {

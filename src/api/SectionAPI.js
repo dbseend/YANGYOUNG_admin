@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export const viewSection = async () => {
     try {
       const response = await axios.get(
