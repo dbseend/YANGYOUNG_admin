@@ -100,7 +100,7 @@ const Main = () => {
   const [serialNumber, setSerialNumber] = useRecoilState(serialNumberState);
   
   const handleLogin = async () => {
-    
+    navigate("/student");
   };
 
 
