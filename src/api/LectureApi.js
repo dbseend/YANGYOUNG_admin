@@ -9,19 +9,14 @@ export const viewLecture = async () => {
   }
 };
 
-export const addLecture = async (name, day, time, room) => {
-  const data = {
-    name: name,
-    day: day,
-    time: time,
-    room: room,
-  };
+export const addLecture = async (data) => {
   try {
     const response = await axios.post(
-      process.env.REACT_APP_URL + "lecture",
+      process.env.REACT_APP_URL + `lecture`,
       data
     );
     console.log(response.data);
+    alert ("강의가 개설되었습니다.");
   } catch (error) {
     console.error(error);
     throw error;
