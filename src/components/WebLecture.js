@@ -5,7 +5,7 @@ import { viewLecture, addLecture } from "../api/LectureApi";
 
 const GlobalStyle = createGlobalStyle`
   body {
-    margin : 0;
+    margin: 0;
     padding: 0;
   }
 `;
@@ -53,6 +53,7 @@ const HoverTr = styled.tr`
     background-color: #f5f5f5;
   }
 `;
+
 const Lecture = () => {
   const [lectureList, setLectureList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -63,6 +64,7 @@ const Lecture = () => {
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedRoom, setSelectedRoom] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const [lectureTeacher, setLectureTeacher] = useState("");
 
   const viewAllLecture = async () => {
     try {
@@ -76,12 +78,18 @@ const Lecture = () => {
 
   const postLecture = async (e) => {
     e.preventDefault();
-    const lectureDay = mapDayToServerFormat(selectedDay);
-    const lectureRoom = mapRoomToServerFormat(selectedRoom);
-    const lectureTime = mapRoomToServerFormat(selectedTime);
+    setLectureDay(mapDayToServerFormat(selectedDay));
+    setLectureRoom(mapRoomToServerFormat(selectedRoom));
+    setLectureTime(mapTimeToServerFormat(selectedTime));
+    const data = {
+      name: lectureName,
+      day: lectureDay,
+      time: lectureTime,
+      room: lectureRoom,
+      teacher: lectureTeacher,
+    };
     try {
-      await addLecture(lectureName, lectureDay, lectureTime, lectureRoom);
-      // addLecture 함수가 완료된 후에 수행할 작업 추가
+      await addLecture(data);
       console.log("Lecture added successfully!");
     } catch (error) {
       console.error("Error fetching lecture data:", error);
@@ -93,15 +101,21 @@ const Lecture = () => {
     console.log("Selected Day:", selectedOption);
     setSelectedDay(selectedOption);
   };
+
+  const handleTimeDropdownChange = (e) => {
+    const selectedOption = e.target.value;
+    console.log("Selected Time:", selectedOption);
+    setSelectedTime(selectedOption);
+  };
+
   const handleRoomDropdownChange = (e) => {
     const selectedOption = e.target.value;
     console.log("Selected Room:", selectedOption);
     setSelectedRoom(selectedOption);
   };
-  const handleTimeDropdownChange = (e) => {
-    const selectedOption = e.target.value;
-    console.log("Selected Time:", selectedOption);
-    setSelectedTime(selectedOption);
+
+  const handleTeacherChange = (e) => {
+    setLectureTeacher(e.target.value);
   };
 
   const mapDayToServerFormat = (day) => {
@@ -124,6 +138,7 @@ const Lecture = () => {
         return "";
     }
   };
+
   const mapRoomToServerFormat = (room) => {
     switch (room) {
       case "601호":
@@ -142,6 +157,7 @@ const Lecture = () => {
         return "";
     }
   };
+
   const mapTimeToServerFormat = (time) => {
     switch (time) {
       case "12:40-2:10":
@@ -164,9 +180,11 @@ const Lecture = () => {
   const handleNameChange = (e) => {
     setLectureName(e.target.value);
   };
+
   const handleRoomChange = (e) => {
     setLectureRoom(e.target.value);
   };
+
   const handleTimeChange = (e) => {
     setLectureTime(e.target.value);
   };
@@ -195,15 +213,10 @@ const Lecture = () => {
             <option value="토요일">토요일</option>
             <option value="일요일">일요일</option>
           </select>
-          {/* <input
-            type="text"
-            value={lectureDay}
-            onChange={handleDayChange}
-          ></input> */}
           시간{" "}
           <select onChange={handleTimeDropdownChange}>
             <option value={selectedTime} disabled>
-              요일 선택
+              시간 선택
             </option>
             <option value="12:40-2:10">12:40-2:10</option>
             <option value="2:15-3:45">2:15-3:45</option>
@@ -212,15 +225,10 @@ const Lecture = () => {
             <option value="7:00-8:30">7:00-8:30</option>
             <option value="8:35-10:05">8:35-10:05</option>
           </select>
-          {/* <input
-            type="text"
-            value={lectureTime}
-            onChange={handleTimeChange}
-          ></input> */}
           강의실{" "}
           <select onChange={handleRoomDropdownChange}>
             <option value={selectedRoom} disabled>
-              요일 선택
+              강의실 선택
             </option>
             <option value="601호">601호</option>
             <option value="602호">602호</option>
@@ -229,11 +237,12 @@ const Lecture = () => {
             <option value="510호">510호</option>
             <option value="511호">511호</option>
           </select>
-          {/* <input
+          강의자{" "}
+          <input
             type="text"
-            value={lectureRoom}
-            onChange={handleRoomChange}
-          ></input> */}
+            value={lectureTeacher}
+            onChange={handleTeacherChange}
+          ></input>
           <button type="submit"> 강의 생성하기 </button>
         </Form>
         <button onClick={viewAllLecture}> 강의 보기 </button>
@@ -267,4 +276,5 @@ const Lecture = () => {
     </>
   );
 };
+
 export default Lecture;

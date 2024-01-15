@@ -24,7 +24,7 @@ const AddSt = () => {
   const [grade, setGrade] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedBan, setSelectedBan] = useState("");
-  const [sectionId, setSectionId] = useState(0);
+  const [sectionId, setSectionId] = useState("");
   const [section, setSection] = useState("");
   const [buttonText, setButtonText] = useState("");
   const ban = ["W", "I", "N", "T", "E", "R"];
@@ -72,8 +72,8 @@ const handlePhoneNumberChange = (e) => {
         phoneNumber: phoneNumber
     };
     const data2 = {
-        studentID: id,
-        sectionID: sectionId
+        studentId: id,
+        sectionId: sectionId
     };
     console.log(data1, data2);
     addStudent(data1);
@@ -84,6 +84,7 @@ const handlePhoneNumberChange = (e) => {
     setGrade("");
     setPhoneNumber("");
     setSectionId("");
+    alert("학생이 등록되었습니다.");
   };
   const handleDropdownChange = (event) => {
     const selectedValue = event.target.value;
@@ -115,7 +116,6 @@ const handlePhoneNumberChange = (e) => {
   const handleButtonClick = (buttonNumber) => {
     const buttonMap = ["", "W", "I", "N", "T", "E", "R"];
     setButtonText(buttonMap[buttonNumber]);
-    setSection(buttonMap[buttonNumber]);
   };
 
 
@@ -164,7 +164,7 @@ const handlePhoneNumberChange = (e) => {
             </option>
           ))}
         </select>
-        <button type = "submit" onClick={handleSubmit}>제출</button>
+        <button onClick={handleSubmit}>학생 등록</button>
     </Div>
   );
 };
