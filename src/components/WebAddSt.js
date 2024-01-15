@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import { addStudent } from "../api/StudentApi";
+import { addStudent,addStudentSection } from "../api/StudentApi";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -18,25 +18,30 @@ const Div = styled.div`
 `;
 
 const AddSt = () => {
-  const [id, setId] = useState(0);
+  const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [school, setSchool] = useState("");
-  const [grade, setGrade] = useState(0);
+  const [grade, setGrade] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [selectedBan, setSelectedBan] = useState("");
+  const [sectionId, setSectionId] = useState(0);
+  const [section, setSection] = useState("");
+  const [buttonText, setButtonText] = useState("");
+  const ban = ["W", "I", "N", "T", "E", "R"];
 
-//   const hypenTel = (event) => {
-//     let inputValue = event.target.value.replace(/[^0-9]/g, "");
+  const hypenTel = (event) => {
+    let inputValue = event.target.value.replace(/[^0-9]/g, "");
 
-//     if (inputValue.length <= 10) {
-//       setPhoneNumber(inputValue.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"));
-//     } else if (inputValue.length > 10 && inputValue.length <= 13) {
-//       setPhoneNumber(
-//         inputValue
-//           .replace(/-/g, "")
-//           .replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
-//       );
-//     }
-//   };
+    if (inputValue.length <= 10) {
+      setPhoneNumber(inputValue.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"));
+    } else if (inputValue.length > 10 && inputValue.length <= 13) {
+      setPhoneNumber(
+        inputValue
+          .replace(/-/g, "")
+          .replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+      );
+    }
+  };
 const handleIdChange = (e) => {
     e.preventDefault();
     setId(e.target.value);
@@ -57,29 +62,60 @@ const handlePhoneNumberChange = (e) => {
     e.preventDefault();
     setPhoneNumber(e.target.value);
 }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const data1 = {
+        id: id,
+        name: name,
+        school: school,
+        grade: grade,
+        phoneNumber: phoneNumber
+    };
+    const data2 = {
+        studentID: id,
+        sectionID: sectionId
+    };
+    console.log(data1, data2);
+    addStudent(data1);
+    addStudentSection(data2);
+    setId("");
+    setName("");
+    setSchool("");
+    setGrade("");
+    setPhoneNumber("");
+    setSectionId("");
+  };
+  const handleDropdownChange = (event) => {
+    const selectedValue = event.target.value;
 
-    // Your logic to add a student using the addStudent function
-    try {
-      const response = await addStudent({
-        id,
-        name,
-        school,
-        grade,
-        phoneNumber,
-      });
-    } catch (error) {
-      console.log("학생 등록 실패: ", error);
+    setSelectedBan(selectedValue);
+
+    switch (selectedValue) {
+      case "W":
+        setSectionId(1);
+        break;
+      case "I":
+        setSectionId(2);
+        break;
+      case "N":
+        setSectionId(3);
+        break;
+      case "T":
+        setSectionId(4);
+        break;
+      case "E":
+        setSectionId(5);
+        break;
+      case "R":
+        setSectionId(6);
+        break;
     }
+  };
 
-    // Clear the form after submission
-    // setId(0);
-    // setName("");
-    // setSchool("");
-    // setGrade(0);
-    // setPhoneNumber("");
+  const handleButtonClick = (buttonNumber) => {
+    const buttonMap = ["", "W", "I", "N", "T", "E", "R"];
+    setButtonText(buttonMap[buttonNumber]);
+    setSection(buttonMap[buttonNumber]);
   };
 
 
@@ -114,10 +150,20 @@ const handlePhoneNumberChange = (e) => {
           type="text"
           placeholder="전화번호"
           value={phoneNumber}
-          onChange={handlePhoneNumberChange}
-        //   onChange={(e) => hypenTel(e)}
+        //   onChange={handlePhoneNumberChange}
+          onChange={(e) => hypenTel(e)}
           maxLength="13"
         />
+        <select onChange={handleDropdownChange} value={selectedBan || ""}>
+          <option disabled value="">
+            반 선택
+          </option>
+          {ban.map((banOption) => (
+            <option key={banOption} value={banOption}>
+              {banOption}
+            </option>
+          ))}
+        </select>
         <button type = "submit" onClick={handleSubmit}>제출</button>
     </Div>
   );

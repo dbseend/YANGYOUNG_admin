@@ -1,37 +1,30 @@
-import axios from "axios";
+import axios from "axios";  
 
-export const addStudent = async (id, name, school, grade, phoneNumber) => {
+export const addStudent = async (data) => {
   try {
-    const result = {
-      id: id,
-      name: name,
-      school:school,
-      grade:grade,
-      phoneNumber:phoneNumber,
-    };
     const response = await axios.post(
       process.env.REACT_APP_URL+ `student`,
-      result
+      data
     );
     console.log(response.data);
+    return response.data;
   } catch (error) {
-    console.error(error);
+    alert ("학생 인적사항 등록 중 오류가 발생했습니다");
+    console.error("Error fetching attendance info:", error);
   }
 };
 
-export const addStudentSection = async (id, sId) => {
-  const data = {
-    studentId: id,
-    sectionId: sId,
-  };
+export const addStudentSection = async (data) => {
   try {
     const response = await axios.post(
       process.env.REACT_APP_URL + `student/enrollment`,
       data
     );
-    console.log(response);
+    console.log(response.data);
+    return response.data;
   } catch (error) {
-    console.error(error);
+    alert ("학생 반 배정 중 오류가 발생했습니다");
+    console.error("Error fetching attendance info:", error);
   }
 };
 
