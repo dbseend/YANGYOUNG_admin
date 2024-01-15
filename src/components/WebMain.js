@@ -98,13 +98,11 @@ const Button = styled.button`
 const Main = () => {
   const navigate = useNavigate();
   const [serialNumber, setSerialNumber] = useRecoilState(serialNumberState);
+  
   const handleLogin = async () => {
     
   };
 
-  //   const handleLogin2 = async() => {
-  // navigate("/attendance");
-  //   };
 
   const handleInputChange = (e) => {
     setSerialNumber(e.target.value);
@@ -113,7 +111,6 @@ const Main = () => {
     if (e.key === "Enter") {
       e.preventDefault();
       console.log(serialNumber);
-      // handleLogin2();
       handleLogin();
     }
   };
@@ -123,15 +120,7 @@ const Main = () => {
       <Div>
         <Color></Color>
         <Texts>
-          <Login>로그인</Login>
-          <Content>환영합니다.</Content>
-          <Content>입장 토큰을 입력하세요.</Content>
-          <Token>토큰</Token>
-          <Inputing
-            onChange={handleInputChange}
-            onKeyDown={handleInputKeyDown}
-            autoFocus
-          ></Inputing>
+          <Login>양영학원</Login>
           <Button onClick={handleLogin}>Login</Button>
         </Texts>
       </Div>
