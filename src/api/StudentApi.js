@@ -21,6 +21,7 @@ export const addStudentSection = async (data) => {
       data
     );
     console.log(response.data);
+    alert("학생이 등록되었습니다.");
     return response.data;
   } catch (error) {
     alert ("학생 반 배정 중 오류가 발생했습니다");

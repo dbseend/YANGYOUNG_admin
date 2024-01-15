@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import { addStudent,addStudentSection } from "../api/StudentApi";
+import { addStudent, addStudentSection } from "../api/StudentApi";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -21,13 +21,13 @@ const AddSt = () => {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [school, setSchool] = useState("");
-  const [grade, setGrade] = useState("");
+  const [gradeId, setGradeId] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedBan, setSelectedBan] = useState("");
   const [sectionId, setSectionId] = useState("");
-  const [section, setSection] = useState("");
-  const [buttonText, setButtonText] = useState("");
+  const [selectedGrade, setSelectedGrade] = useState("");
   const ban = ["W", "I", "N", "T", "E", "R"];
+  const grade = ["중3", "고1", "고2", "고3"];
 
   const hypenTel = (event) => {
     let inputValue = event.target.value.replace(/[^0-9]/g, "");
@@ -42,51 +42,64 @@ const AddSt = () => {
       );
     }
   };
-const handleIdChange = (e) => {
+  const handleIdChange = (e) => {
     e.preventDefault();
     setId(e.target.value);
-}
-const handleNameChange = (e) => {
+  };
+  const handleNameChange = (e) => {
     e.preventDefault();
     setName(e.target.value);
-}
-const handleSchoolChange = (e) => {
+  };
+  const handleSchoolChange = (e) => {
     e.preventDefault();
     setSchool(e.target.value);
-}
-const handleGradeChange = (e) => {
-    e.preventDefault();
-    setGrade(e.target.value);
-}
-const handlePhoneNumberChange = (e) => {
-    e.preventDefault();
-    setPhoneNumber(e.target.value);
-}
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data1 = {
-        id: id,
-        name: name,
-        school: school,
-        grade: grade,
-        phoneNumber: phoneNumber
+      id: id,
+      name: name,
+      school: school,
+      grade: gradeId,
+      phoneNumber: phoneNumber,
     };
     const data2 = {
-        studentId: id,
-        sectionId: sectionId
+      studentId: id,
+      sectionId: sectionId,
     };
     console.log(data1, data2);
     addStudent(data1);
-    addStudentSection(data2);
+    setTimeout(() => {
+      addStudentSection(data2);
+    }, 100);
     setId("");
     setName("");
     setSchool("");
-    setGrade("");
+    setGradeId("");
     setPhoneNumber("");
     setSectionId("");
-    alert("학생이 등록되었습니다.");
+    setSelectedBan("");
+    setSelectedGrade("");
   };
-  const handleDropdownChange = (event) => {
+  const handelGradeDropdownChange = (e) => {
+    const selectedValue = e.target.value;
+    setSelectedGrade(selectedValue);
+    switch (selectedValue) {
+      case "중3":
+        setGradeId(0);
+        break;
+      case "고1":
+        setGradeId(1);
+        break;
+      case "고2":
+        setGradeId(2);
+        break;
+      case "고3":
+        setGradeId(3);
+        break;
+    }
+  };
+  const handleBanDropdownChange = (event) => {
     const selectedValue = event.target.value;
 
     setSelectedBan(selectedValue);
@@ -113,58 +126,62 @@ const handlePhoneNumberChange = (e) => {
     }
   };
 
-  const handleButtonClick = (buttonNumber) => {
-    const buttonMap = ["", "W", "I", "N", "T", "E", "R"];
-    setButtonText(buttonMap[buttonNumber]);
-  };
-
+//   const handleButtonClick = (buttonNumber) => {
+//     const buttonMap = ["", "W", "I", "N", "T", "E", "R"];
+//     setButtonText(buttonMap[buttonNumber]);
+//     const buttonMap2 = ["", ""]
+//   };
 
   return (
     <Div>
       <GlobalStyle />
-        <input
-          type="text"
-          placeholder="id"
-          value={id}
-          onChange={handleIdChange}
-        />
-        <input
-          type="text"
-          placeholder="이름"
-          value={name}
-          onChange={handleNameChange}
-        />
-        <input
-          type="text"
-          placeholder="학교"
-          value={school}
-          onChange={handleSchoolChange}
-        />
-        <input
-          type="text"
-          placeholder="학년"
-          value={grade}
-          onChange={handleGradeChange}
-        />
-        <input
-          type="text"
-          placeholder="전화번호"
-          value={phoneNumber}
-        //   onChange={handlePhoneNumberChange}
-          onChange={(e) => hypenTel(e)}
-          maxLength="13"
-        />
-        <select onChange={handleDropdownChange} value={selectedBan || ""}>
-          <option disabled value="">
-            반 선택
+      <input
+        type="text"
+        placeholder="id"
+        value={id}
+        onChange={handleIdChange}
+      />
+      <input
+        type="text"
+        placeholder="이름"
+        value={name}
+        onChange={handleNameChange}
+      />
+      <input
+        type="text"
+        placeholder="학교"
+        value={school}
+        onChange={handleSchoolChange}
+      />
+      <select onChange={handelGradeDropdownChange} value={selectedGrade || ""}>
+        <option disabled value="">
+          학년 선택
+        </option>
+        {grade.map((gradeOption) => (
+          <option key={gradeOption} value={gradeOption}>
+            {gradeOption}
           </option>
-          {ban.map((banOption) => (
-            <option key={banOption} value={banOption}>
-              {banOption}
-            </option>
-          ))}
-        </select>
-        <button onClick={handleSubmit}>학생 등록</button>
+        ))}
+      </select>
+      <input
+        type="text"
+        placeholder="전화번호"
+        value={phoneNumber}
+        //   onChange={handlePhoneNumberChange}
+        onChange={(e) => hypenTel(e)}
+        maxLength="13"
+      />
+      <select onChange={handleBanDropdownChange} value={selectedBan || ""}>
+        <option disabled value="">
+          반 선택
+        </option>
+        {ban.map((banOption) => (
+          <option key={banOption} value={banOption}>
+            {banOption}
+          </option>
+        ))}
+      </select>
+      <button onClick={handleSubmit}>학생 등록</button>
     </Div>
   );
 };
