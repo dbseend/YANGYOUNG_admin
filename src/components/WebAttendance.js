@@ -54,7 +54,9 @@ const Button = styled.button`
 `;
 
 const Attendance = () => {
-  const [date, setDate] = useState("");
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString("en-CA");
+  const [date, setDate] = useState(formattedDate);
   const [selectedBan, setSelectedBan] = useState("");
   const [sectionId, setSectionId] = useState(0);
   const [buttonText, setButtonText] = useState("");
@@ -62,10 +64,15 @@ const Attendance = () => {
 
   const changeDate = (e) => {
     setDate(e.target.value);
-    // console.log(e.target.value);
   };
 
   const handleDropdownChange = (event) => {
+
+    if (!date) {
+      alert("날짜를 먼저 선택하세요.");
+      return;
+    }
+
     const selectedValue = event.target.value;
 
     setSelectedBan(selectedValue);
@@ -108,7 +115,7 @@ const Attendance = () => {
       <Container>
         <h1>{buttonText}</h1>
         <Label>날짜</Label>
-        <Inputing type="date" onChange={changeDate} />
+        <Inputing type="date" value={date} onChange={changeDate} />
         <Label>반</Label>
         <select onChange={handleDropdownChange} value={selectedBan || ""}>
           <option disabled value="">
