@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { createGlobalStyle } from "styled-components";
@@ -57,9 +57,19 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+
+    if (!email) {
+      alert("로그인 후 이용해주세요");
+      navigate("/");
+    }
+  }, []);
+
   const onLogOutClick = () => {
     console.log("logout");
     alert("로그아웃 되었습니다.");
+    localStorage.removeItem("email");
     navigate("/");
   };
 

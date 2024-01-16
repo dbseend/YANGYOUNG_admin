@@ -69,9 +69,11 @@ const AddSt = () => {
     };
     console.log(data1, data2);
     addStudent(data1);
+
     setTimeout(() => {
       addStudentSection(data2);
-    }, 100);
+    }, 1000);
+
     setId("");
     setName("");
     setSchool("");

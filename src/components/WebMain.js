@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { useRecoilState } from "recoil";
 import { serialNumberState } from "../recoil/atom";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../fbase";
 // import { checkTokenValidity } from "../api/StudentApi";
 const GlobalStyle = createGlobalStyle`
   body {
@@ -41,6 +43,7 @@ const Login = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  margin-left: 80px;
 `;
 
 const Content = styled.div`
@@ -98,11 +101,25 @@ const Button = styled.button`
 const Main = () => {
   const navigate = useNavigate();
   const [serialNumber, setSerialNumber] = useRecoilState(serialNumberState);
-  
-  const handleLogin = async () => {
-    navigate("/student");
-  };
 
+  const handleLogin = async () => {
+    try {
+      // const auth = getAuth();
+      const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+      await signInWithPopup(auth, provider); // popup을 이용한 signup
+      const user = auth.currentUser;
+      console.log("유저 ", user);
+
+      if (user.email === "black.princeee@gmail.com") {
+        localStorage.setItem("email", user.email);
+        navigate("/attendance");
+      } else {
+        alert("허용되지 않은 이메일입니다");
+      }
+    } catch (error) {
+      console.error("Google 로그인 에러:", error);
+    }
+  };
 
   const handleInputChange = (e) => {
     setSerialNumber(e.target.value);

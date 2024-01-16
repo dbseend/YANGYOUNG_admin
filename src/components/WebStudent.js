@@ -17,7 +17,7 @@ const Div = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
-  align-items: center;
+  /* align-items: center; */
 `;
 const ButtonWrapper = styled.div`
   margin-top: 20px;
@@ -70,18 +70,42 @@ const PostInput = styled.input`
   width: 200px;
 `;
 
+const SearhDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  width: 300px;
+  padding-top: 30px;
+  margin: 0 auto;
+`;
+
+const OptionDiv = styled.div`
+
+`
+
 const Label = styled.label`
-  /* margin-top: 20px; */
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  text-align: center;
+`;
+
+const ColumnDiv = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const SearhDiv = styled.div`
+const RowDiv = styled.div`
   display: flex;
   flex-direction: row;
 `;
 
+const SearchButtonDiv = styled.div`
+  align-items: center;
+`;
+
 const WebStudent = () => {
+  const navigate = useNavigate();
   const [sectionId, setSectionId] = useState(0);
   const [studentList, setStudentList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -95,13 +119,15 @@ const WebStudent = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [studentInfo, setStudentInfo] = useState({});
   const [lectureInfo, setLectureInfo] = useState([]);
-  const navigate = useNavigate();
+
   useEffect(() => {
     viewAllStudent();
   }, []);
+
   const moveToAddSt = () => {
     navigate("/addstudent");
-  }
+  };
+
   const viewAllStudent = async () => {
     try {
       const response = await viewStudent();
@@ -148,13 +174,14 @@ const WebStudent = () => {
       const sectionId = sectionList.indexOf(selectedValue) + 1;
       setSectionId(sectionId);
       console.log("하나");
-    } else if (type === "school") {
-      setSelectedSchool(selectedValue);
-      console.log("둘");
     } else if (type === "grade") {
       setSelectedGrade(selectedValue);
       console.log("셋");
     }
+  };
+
+  const handleSchoolChange = (e) => {
+    setSelectedSchool(e.target.value);
   };
 
   function handleKeyPress(event) {
@@ -185,64 +212,67 @@ const WebStudent = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
- 
+
   return (
     <>
       <GlobalStyle />
       <Div>
         <SearhDiv>
-          <Label>학생 이름</Label>
-          <PostInput
-            onChange={getValue}
-            onKeyDown={handleKeyPress}
-            placeholder="학생 이름을 입력해주세요"
-          />
-          <Label>반</Label>
-          <select
-            onChange={(e) => handleDropdownChange(e, "section")}
-            value={selectedSection || ""}
-          >
-            <option disabled value="">
-              반 선택
-            </option>
-            {sectionList.map((banOption) => (
-              <option key={banOption} value={banOption}>
-                {banOption}
+          <RowDiv>
+            <Label>학생 이름</Label>
+            <PostInput
+              onChange={getValue}
+              onKeyDown={handleKeyPress}
+              placeholder="학생 이름을 입력해주세요"
+            />
+          </RowDiv>
+          <RowDiv>
+            <Label>반</Label>
+            <select
+              onChange={(e) => handleDropdownChange(e, "section")}
+              value={selectedSection || ""}
+            >
+              <option disabled value="">
+                반 선택
               </option>
-            ))}
-          </select>
-          <Label>학교</Label>
-          <select
-            onChange={(e) => handleDropdownChange(e, "school")}
-            value={selectedSchool || ""}
-          >
-            <option disabled value="">
-              학교 선택
-            </option>
-            {schoolList.map((banOption) => (
-              <option key={banOption} value={banOption}>
-                {banOption}
+              {sectionList.map((banOption) => (
+                <option key={banOption} value={banOption}>
+                  {banOption}
+                </option>
+              ))}
+            </select>
+          </RowDiv>
+          <RowDiv>
+            <Label>학교</Label>
+            <input
+              type="text"
+              value={selectedSchool}
+              onChange={handleSchoolChange}
+              onKeyDown={handleKeyPress}
+            />
+          </RowDiv>
+          <RowDiv>
+            <Label>학년</Label>
+            <select
+              onChange={(e) => handleDropdownChange(e, "grade")}
+              value={selectedGrade || ""}
+            >
+              <option disabled value="">
+                학년 선택
               </option>
-            ))}
-          </select>
-          <Label>학년</Label>
-          <select
-            onChange={(e) => handleDropdownChange(e, "grade")}
-            value={selectedGrade || ""}
-          >
-            <option disabled value="">
-              학년 선택
-            </option>
-            {gradeList.map((banOption) => (
-              <option key={banOption} value={banOption}>
-                {banOption}
-              </option>
-            ))}
-          </select>
-          <button onClick={handleReset}>모든 설정 초기화</button>
-          <button onClick={search} onKeyPress={handleKeyPress}>
-            학생 or 반 조회
-          </button>
+              {gradeList.map((banOption) => (
+                <option key={banOption} value={banOption}>
+                  {banOption}
+                </option>
+              ))}
+            </select>
+          </RowDiv>
+          <RowDiv>
+              <button onClick={handleReset}>초기화</button>
+              <button onClick={search} onKeyPress={handleKeyPress}>
+                검색
+              </button>
+          </RowDiv>
         </SearhDiv>
         {isModalOpen && (
           <Modal
