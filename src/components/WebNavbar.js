@@ -80,11 +80,13 @@ const Navbar = () => {
   };
 
   const moveToStudent = () => {
-    navigate("/student");
+    alert("서비스 준비 중입니다.");
+    // navigate("/student");
   };
 
   const moveToLecture = () => {
-    navigate("/lecture");
+    alert("서비스 준비 중입니다.");
+    // navigate("/lecture");
   };
 
   return (
