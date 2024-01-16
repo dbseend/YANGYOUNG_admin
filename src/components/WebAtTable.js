@@ -39,7 +39,7 @@ const AttendanceLabel = styled.label`
   }
 `;
 const Radio1 = styled.input`
-  margin-bottom: 4px;
+  /* margin-top: 5px; */
   appearance: none;
   width: 15px;
   height: 15px;
@@ -55,7 +55,7 @@ const Radio1 = styled.input`
   }
 `;
 const Radio2 = styled.input`
-  margin-bottom: 4px;
+  /* margin-bottom: 4px; */
   appearance: none;
   width: 15px;
   height: 15px;
@@ -71,7 +71,7 @@ const Radio2 = styled.input`
   }
 `;
 const Radio3 = styled.input`
-  margin-bottom: 4px;
+  /* margin-bottom: 4px; */
   appearance: none;
   width: 15px;
   height: 15px;
@@ -105,13 +105,17 @@ const AtTable = (props) => {
       getSectionAttendanceInfo(sectionId, date).then(function (data) {
         if (data) {
           setSectionIfno(data.sectionGetOneResponse);
-          
-          const sortedStudentInfo = data.ssAttendanceGetOneResponseList.sort((a, b) => {
-            if (a.studentOneResponse.name < b.studentOneResponse.name) return -1;
-            if (a.studentOneResponse.name > b.studentOneResponse.name) return 1;
-            return 0;
-          });
-          
+
+          const sortedStudentInfo = data.ssAttendanceGetOneResponseList.sort(
+            (a, b) => {
+              if (a.studentOneResponse.name < b.studentOneResponse.name)
+                return -1;
+              if (a.studentOneResponse.name > b.studentOneResponse.name)
+                return 1;
+              return 0;
+            }
+          );
+
           setStudentIfno(sortedStudentInfo);
         } else {
           alert("반 정보가 없습니다");
@@ -173,35 +177,43 @@ const AtTable = (props) => {
                       index + 1
                     ) : column.key === "attendance" ? (
                       <AttendanceLabel>
-                        <Radio1
-                          type="radio"
-                          value="ATTENDANCE"
-                          checked={
-                            studentInfo[index].attendanceType === "ATTENDANCE"
-                          }
-                          onChange={() =>
-                            handleRadioChange(index, "ATTENDANCE")
-                          }
-                        />
-                        출석
-                        <Radio2
-                          type="radio"
-                          value="LATENESS"
-                          checked={
-                            studentInfo[index].attendanceType === "LATENESS"
-                          }
-                          onChange={() => handleRadioChange(index, "LATENESS")}
-                        />
-                        지각
-                        <Radio3
-                          type="radio"
-                          value="ABSENCE"
-                          checked={
-                            studentInfo[index].attendanceType === "ABSENCE"
-                          }
-                          onChange={() => handleRadioChange(index, "ABSENCE")}
-                        />
-                        결석
+                        <label>
+                          <Radio1
+                            type="radio"
+                            value="ATTENDANCE"
+                            checked={
+                              studentInfo[index].attendanceType === "ATTENDANCE"
+                            }
+                            onChange={() =>
+                              handleRadioChange(index, "ATTENDANCE")
+                            }
+                          />
+                          출석
+                        </label>
+                        <label>
+                          <Radio2
+                            type="radio"
+                            value="LATENESS"
+                            checked={
+                              studentInfo[index].attendanceType === "LATENESS"
+                            }
+                            onChange={() =>
+                              handleRadioChange(index, "LATENESS")
+                            }
+                          />
+                          지각
+                        </label>
+                        <label>
+                          <Radio3
+                            type="radio"
+                            value="ABSENCE"
+                            checked={
+                              studentInfo[index].attendanceType === "ABSENCE"
+                            }
+                            onChange={() => handleRadioChange(index, "ABSENCE")}
+                          />
+                          결석
+                        </label>
                       </AttendanceLabel>
                     ) : column.key === "note" ? (
                       <InputNote
