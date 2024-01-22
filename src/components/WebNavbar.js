@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
 const Div = styled.div`
   height: 41px;
   flex-shrink: 0;
-  background: #2d6f4c;
+  background: #9D221A;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -80,13 +80,13 @@ const Navbar = () => {
   };
 
   const moveToStudent = () => {
-    alert("서비스 준비 중입니다.");
-    // navigate("/student");
+    // alert("서비스 준비 중입니다.");
+    navigate("/student");
   };
 
   const moveToLecture = () => {
-    alert("서비스 준비 중입니다.");
-    // navigate("/lecture");
+    // alert("서비스 준비 중입니다.");
+    navigate("/lecture");
   };
 
   return (

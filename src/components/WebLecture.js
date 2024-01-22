@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { viewLecture, addLecture } from "../api/LectureApi";
@@ -66,6 +66,10 @@ const Lecture = () => {
   const [selectedTime, setSelectedTime] = useState("");
   const [lectureTeacher, setLectureTeacher] = useState("");
 
+  useEffect(() => {
+    viewAllLecture();
+  }, []);
+
   const viewAllLecture = async () => {
     try {
       const { lectureGetOneResponseList, count } = await viewLecture();
@@ -78,16 +82,20 @@ const Lecture = () => {
 
   const postLecture = async (e) => {
     e.preventDefault();
-    setLectureDay(mapDayToServerFormat(selectedDay));
-    setLectureRoom(mapRoomToServerFormat(selectedRoom));
-    setLectureTime(mapTimeToServerFormat(selectedTime));
+    const day = mapDayToServerFormat(selectedDay);
+    const room = mapRoomToServerFormat(selectedRoom);
+    const time = mapTimeToServerFormat(selectedTime);
+    // setLectureDay(mapDayToServerFormat(selectedDay));
+    // setLectureRoom(mapRoomToServerFormat(selectedRoom));
+    // setLectureTime(mapTimeToServerFormat(selectedTime));
     const data = {
       name: lectureName,
       day: lectureDay,
-      time: lectureTime,
-      room: lectureRoom,
+      time: time,
+      room: room,
       teacher: lectureTeacher,
     };
+    console.log("not api: ", data);
     try {
       await addLecture(data);
       console.log("Lecture added successfully!");
@@ -99,19 +107,19 @@ const Lecture = () => {
   const handleDayDropdownChange = (e) => {
     const selectedOption = e.target.value;
     console.log("Selected Day:", selectedOption);
-    setSelectedDay(selectedOption);
+    mapDayToServerFormat(selectedOption);
   };
 
   const handleTimeDropdownChange = (e) => {
     const selectedOption = e.target.value;
     console.log("Selected Time:", selectedOption);
-    setSelectedTime(selectedOption);
+    mapTimeToServerFormat(selectedOption);
   };
 
   const handleRoomDropdownChange = (e) => {
     const selectedOption = e.target.value;
     console.log("Selected Room:", selectedOption);
-    setSelectedRoom(selectedOption);
+    mapRoomToServerFormat(selectedOption);
   };
 
   const handleTeacherChange = (e) => {
@@ -119,21 +127,28 @@ const Lecture = () => {
   };
 
   const mapDayToServerFormat = (day) => {
+    console.log(day);
     switch (day) {
       case "월요일":
-        return "MONDAY";
+        setLectureDay("MONDAY");
+        break;
       case "화요일":
-        return "TUESDAY";
+        setLectureDay("TUESDAY");
+        break;
       case "수요일":
-        return "WEDNESDAY";
+        setLectureDay("WEDNESDAY");
+        break;
       case "목요일":
-        return "THURSDAY";
+        setLectureDay("THURSDAY");
+        break;
       case "금요일":
-        return "FRIDAY";
+        setLectureDay("FRIDAY");
+        break;
       case "토요일":
-        return "SATURDAY";
+        setLectureDay("SATURDAY")
+        break;
       case "일요일":
-        return "SUNDAY";
+        setLectureDay("SUNDAY");
       default:
         return "";
     }
@@ -142,7 +157,7 @@ const Lecture = () => {
   const mapRoomToServerFormat = (room) => {
     switch (room) {
       case "601호":
-        return "R1";
+        setLectureRoom("R1");
       case "602호":
         return "R2";
       case "603호":
@@ -193,7 +208,7 @@ const Lecture = () => {
     <>
       <GlobalStyle />
       <Div>
-        <Form onSubmit={postLecture}>
+        {/* <Form onSubmit={postLecture}>
           강의 제목{" "}
           <input
             type="text"
@@ -244,10 +259,10 @@ const Lecture = () => {
             onChange={handleTeacherChange}
           ></input>
           <button type="submit"> 강의 생성하기 </button>
-        </Form>
-        <button onClick={viewAllLecture}> 강의 보기 </button>
+        </Form> */}
+        {/* <button onClick={viewAllLecture}> 강의 보기 </button> */}
         <TableContainer>
-          <h1>Lecture List</h1>
+          <h1>수업 정보</h1>
           <p> 개설 강좌 수: {totalCount}</p>
           <StyledTable>
             <StyledThead>
