@@ -113,7 +113,8 @@ const Attendance = () => {
     <>
       <GlobalStyle />
       <Container>
-        <h1>{buttonText}</h1>
+        <h1>출결관리</h1>
+        <h2>날짜와 반을 선택해주세요</h2>
         <Label>날짜</Label>
         <Inputing type="date" value={date} onChange={changeDate} />
         <Label>반</Label>

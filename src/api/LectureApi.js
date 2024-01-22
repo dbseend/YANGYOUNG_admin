@@ -10,6 +10,7 @@ export const viewLecture = async () => {
 };
 
 export const addLecture = async (data) => {
+  console.log(data);
   try {
     const response = await axios.post(
       process.env.REACT_APP_URL + `lecture`,

@@ -24,7 +24,7 @@ const Color = styled.div`
   width: 50vw;
   height: 100vh;
   flex-shrink: 0;
-  background: #2d6f4c;
+  background: #9D221A;
 `;
 
 const Texts = styled.div`
@@ -110,12 +110,12 @@ const Main = () => {
       const user = auth.currentUser;
       console.log("유저 ", user);
 
-      if (user.email === "black.princeee@gmail.com") {
+      // if (user.email === "black.princeee@gmail.com") {
         localStorage.setItem("email", user.email);
         navigate("/attendance");
-      } else {
-        alert("허용되지 않은 이메일입니다");
-      }
+      // } else {
+      //   alert("허용되지 않은 이메일입니다");
+      // }
     } catch (error) {
       console.error("Google 로그인 에러:", error);
     }
