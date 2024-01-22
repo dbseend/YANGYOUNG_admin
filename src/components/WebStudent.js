@@ -17,19 +17,21 @@ const Div = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
-  /* align-items: center; */
-`;
-const ButtonWrapper = styled.div`
-  margin-top: 20px;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
 `;
 
-const Form = styled.form`
+const Title = styled.div`
+  font-family: Noto Sans KR;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 45px;
+  letter-spacing: 0px;
+  text-align: left;
+`;
+
+const RowDiv = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  margin-bottom: 10px;
 `;
 
 const TableContainer = styled.div`
@@ -65,43 +67,49 @@ const HoverTr = styled.tr`
   }
 `;
 
-const PostInput = styled.input`
-  /* margin-top: 30px; */
-  width: 200px;
-`;
-
-const SearhDiv = styled.div`
+const SearchDiv = styled.div`
   display: flex;
   flex-direction: column;
-  justify-items: center;
-  width: 300px;
-  padding-top: 30px;
+  justify-content: center; /* 수정된 부분 */
   margin: 0 auto;
+  padding: 0px 10px 0px 10px;
+  border: 2px solid #9d221a; /* 수정된 부분 */
+  border-radius: 10px;
 `;
-
-const OptionDiv = styled.div`
-
-`
 
 const Label = styled.label`
   display: flex;
   flex-direction: column;
-  width: 100px;
   text-align: center;
 `;
 
-const ColumnDiv = styled.div`
-  display: flex;
-  flex-direction: column;
+const PostInput = styled.input`
+  margin-right: 10px;
 `;
 
-const RowDiv = styled.div`
-  display: flex;
-  flex-direction: row;
+const OptionSelect = styled.select`
+  margin-right: 10px;
 `;
 
-const SearchButtonDiv = styled.div`
+const OptionSelectDiv = styled(RowDiv)`
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+const SearchButtonDiv = styled(RowDiv)`
+  display: flex;
+  justify-content: center;
+`;
+
+const CenteredContainer = styled.div`
+  display: flex;
+  justify-content: center;
   align-items: center;
+  margin-top: 30px;
+`;
+
+const AddStudentButton = styled.button`
+  width: 300px;
 `;
 
 const WebStudent = () => {
@@ -144,6 +152,7 @@ const WebStudent = () => {
 
   const search = () => {
     const filteredData = studentList.filter((item) => {
+      console.log(typeof selectedGrade);
       const nameMatch =
         !searchTerm ||
         (item.name &&
@@ -156,7 +165,8 @@ const WebStudent = () => {
         item.school.toLowerCase().includes(selectedSchool.toLowerCase());
       const gradeMatch = !selectedGrade || item.grade === selectedGrade;
 
-      return nameMatch && sectionMatch && schoolMatch && gradeMatch;
+      return nameMatch && sectionMatch && schoolMatch;
+      // && gradeMatch;
     });
 
     setFilteredData(filteredData);
@@ -175,7 +185,8 @@ const WebStudent = () => {
       setSectionId(sectionId);
       console.log("하나");
     } else if (type === "grade") {
-      setSelectedGrade(selectedValue);
+      setSelectedGrade(parseInt(selectedValue));
+      console.log(selectedValue);
       console.log("셋");
     }
   };
@@ -217,43 +228,38 @@ const WebStudent = () => {
     <>
       <GlobalStyle />
       <Div>
-        <SearhDiv>
-          <RowDiv>
+        <Title>학생 검색</Title>
+        <SearchDiv>
+          <OptionSelectDiv>
             <Label>학생 이름</Label>
             <PostInput
               onChange={getValue}
               onKeyDown={handleKeyPress}
               placeholder="학생 이름을 입력해주세요"
             />
-          </RowDiv>
-          <RowDiv>
             <Label>반</Label>
-            <select
+            <OptionSelect
               onChange={(e) => handleDropdownChange(e, "section")}
               value={selectedSection || ""}
             >
-              <option disabled value="">
+              <OptionSelect disabled value="">
                 반 선택
-              </option>
+              </OptionSelect>
               {sectionList.map((banOption) => (
                 <option key={banOption} value={banOption}>
                   {banOption}
                 </option>
               ))}
-            </select>
-          </RowDiv>
-          <RowDiv>
+            </OptionSelect>
             <Label>학교</Label>
-            <input
+            <PostInput
               type="text"
               value={selectedSchool}
               onChange={handleSchoolChange}
               onKeyDown={handleKeyPress}
             />
-          </RowDiv>
-          <RowDiv>
             <Label>학년</Label>
-            <select
+            <OptionSelect
               onChange={(e) => handleDropdownChange(e, "grade")}
               value={selectedGrade || ""}
             >
@@ -265,15 +271,15 @@ const WebStudent = () => {
                   {banOption}
                 </option>
               ))}
-            </select>
-          </RowDiv>
-          <RowDiv>
-              <button onClick={handleReset}>초기화</button>
-              <button onClick={search} onKeyPress={handleKeyPress}>
-                검색
-              </button>
-          </RowDiv>
-        </SearhDiv>
+            </OptionSelect>
+          </OptionSelectDiv>
+          <SearchButtonDiv>
+            <button onClick={handleReset}>초기화</button>
+            <button onClick={search} onKeyPress={handleKeyPress}>
+              검색
+            </button>
+          </SearchButtonDiv>
+        </SearchDiv>
         {isModalOpen && (
           <Modal
             onClose={closeModal}
@@ -281,9 +287,11 @@ const WebStudent = () => {
             lectureInfo={lectureInfo}
           ></Modal>
         )}
-        <button onClick={moveToAddSt}>학생 추가</button>
+        <CenteredContainer>
+          <AddStudentButton>학생 추가</AddStudentButton>
+        </CenteredContainer>{" "}
+        <Title>학생 목록</Title>
         <TableContainer>
-          <h1>학생 목록</h1>
           <StyledTable>
             <StyledThead>
               <tr>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { addStudent, addStudentSection } from "../api/StudentApi";
+import navigate from "navigate";
+import { useNavigate } from "react-router-dom";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -18,6 +20,7 @@ const Div = styled.div`
 `;
 
 const AddSt = () => {
+  const navigate = useNavigate();
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [school, setSchool] = useState("");
@@ -54,6 +57,7 @@ const AddSt = () => {
     e.preventDefault();
     setSchool(e.target.value);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data1 = {
@@ -69,11 +73,11 @@ const AddSt = () => {
     };
     console.log(data1, data2);
     addStudent(data1);
-
-    setTimeout(() => {
-      addStudentSection(data2);
-    }, 1000);
-
+  
+    await new Promise(resolve => setTimeout(resolve, 1000)); // 비동기 대기
+  
+    await addStudentSection(data2);
+  
     setId("");
     setName("");
     setSchool("");
@@ -82,7 +86,10 @@ const AddSt = () => {
     setSectionId("");
     setSelectedBan("");
     setSelectedGrade("");
+  
+    navigate("/student");
   };
+  
   const handelGradeDropdownChange = (e) => {
     const selectedValue = e.target.value;
     setSelectedGrade(selectedValue);
