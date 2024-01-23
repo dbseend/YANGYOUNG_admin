@@ -5,88 +5,6 @@ import {
   postAttendanceBySection,
 } from "../api/AttendanceApi";
 
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-`;
-
-const StyledTh = styled.th`
-  border: 1px solid #ddd;
-  padding: 10px;
-  background-color: #f2f2f2;
-  text-align: center;
-`;
-
-const StyledTd = styled.td`
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
-`;
-
-const InputNote = styled.input`
-  width: 100%;
-  padding: 5px;
-  box-sizing: border-box;
-`;
-
-const AttendanceLabel = styled.label`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  input {
-    cursor: pointer;
-  }
-`;
-const Radio1 = styled.input`
-  /* margin-top: 5px; */
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  border-radius: 10px;
-  border: 1px solid;
-  /* 선택되지 않은 상태의 배경색과 기타 스타일 */
-  &:not(:checked) {
-    background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
-  }
-  /* 선택된 상태에서의 배경색과 기타 스타일 */
-  &:checked {
-    background-color: #50d68f; /* 선택된 상태에서의 배경색 */
-  }
-`;
-const Radio2 = styled.input`
-  /* margin-bottom: 4px; */
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  border-radius: 10px;
-  border: 1px solid;
-  /* 선택되지 않은 상태의 배경색과 기타 스타일 */
-  &:not(:checked) {
-    background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
-  }
-  /* 선택된 상태에서의 배경색과 기타 스타일 */
-  &:checked {
-    background-color: #f6cc62; /* 선택된 상태에서의 배경색 */
-  }
-`;
-const Radio3 = styled.input`
-  /* margin-bottom: 4px; */
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  border-radius: 10px;
-  border: 1px solid;
-  /* 선택되지 않은 상태의 배경색과 기타 스타일 */
-  &:not(:checked) {
-    background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
-  }
-  /* 선택된 상태에서의 배경색과 기타 스타일 */
-  &:checked {
-    background-color: #cb3c44; /* 선택된 상태에서의 배경색 */
-  }
-`;
-
 const AtTable = (props) => {
   const [sectionInfo, setSectionIfno] = useState([]);
   const [studentInfo, setStudentIfno] = useState([]);
@@ -240,5 +158,87 @@ const AtTable = (props) => {
     </>
   );
 };
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+`;
+
+const StyledTh = styled.th`
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f2f2f2;
+  text-align: center;
+`;
+
+const StyledTd = styled.td`
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+`;
+
+const InputNote = styled.input`
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+`;
+
+const AttendanceLabel = styled.label`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  input {
+    cursor: pointer;
+  }
+`;
+const Radio1 = styled.input`
+  /* margin-top: 5px; */
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 10px;
+  border: 1px solid;
+  /* 선택되지 않은 상태의 배경색과 기타 스타일 */
+  &:not(:checked) {
+    background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
+  }
+  /* 선택된 상태에서의 배경색과 기타 스타일 */
+  &:checked {
+    background-color: #50d68f; /* 선택된 상태에서의 배경색 */
+  }
+`;
+const Radio2 = styled.input`
+  /* margin-bottom: 4px; */
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 10px;
+  border: 1px solid;
+  /* 선택되지 않은 상태의 배경색과 기타 스타일 */
+  &:not(:checked) {
+    background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
+  }
+  /* 선택된 상태에서의 배경색과 기타 스타일 */
+  &:checked {
+    background-color: #f6cc62; /* 선택된 상태에서의 배경색 */
+  }
+`;
+const Radio3 = styled.input`
+  /* margin-bottom: 4px; */
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 10px;
+  border: 1px solid;
+  /* 선택되지 않은 상태의 배경색과 기타 스타일 */
+  &:not(:checked) {
+    background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
+  }
+  /* 선택된 상태에서의 배경색과 기타 스타일 */
+  &:checked {
+    background-color: #cb3c44; /* 선택된 상태에서의 배경색 */
+  }
+`;
 
 export default AtTable;

@@ -2,57 +2,6 @@ import React, { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import AtTable from "./WebAtTable";
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-  }
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Head = styled.div`
-  color: #000;
-  font-family: IBM Plex Sans KR;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: normal;
-`;
-
-const Label = styled.label`
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Inputing = styled.input`
-  margin-left: 10px;
-  width: 159px;
-  height: 17px;
-  flex-shrink: 0;
-`;
-
-const ButtonWrapper = styled.div`
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-  width: 30px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const Attendance = () => {
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-CA");
@@ -67,7 +16,6 @@ const Attendance = () => {
   };
 
   const handleDropdownChange = (event) => {
-
     if (!date) {
       alert("날짜를 먼저 선택하세요.");
       return;
@@ -113,27 +61,72 @@ const Attendance = () => {
     <>
       <GlobalStyle />
       <Container>
-        <h1>출결관리</h1>
-        <h2>날짜와 반을 선택해주세요</h2>
-        <Label>날짜</Label>
-        <Inputing type="date" value={date} onChange={changeDate} />
-        <Label>반</Label>
-        <select onChange={handleDropdownChange} value={selectedBan || ""}>
-          <option disabled value="">
-            반 선택
-          </option>
-          {ban.map((banOption) => (
-            <option key={banOption} value={banOption}>
-              {banOption}
-            </option>
-          ))}
-        </select>
+      <Div>
+        <Title>출결관리</Title>
+
+        <Box>
+          <Guide>1. 날짜를 선택해주세요.</Guide>
+          <input type="date" value={date} onChange={changeDate} />
+        </Box>
+
         <div>
-          {selectedBan && <AtTable date={date} sectionId={sectionId} />}
+          <Guide>2. 반을 선택해주세요.</Guide>
+          <select onChange={handleDropdownChange} value={selectedBan || ""}>
+            <option disabled value="">
+              반 선택
+            </option>
+            {ban.map((banOption) => (
+              <option key={banOption} value={banOption}>
+                {banOption}
+              </option>
+            ))}
+          </select>
         </div>
+      </Div>
+
+      <StyledTable>{selectedBan && <AtTable date={date} sectionId={sectionId} />}</StyledTable>
       </Container>
     </>
   );
 };
 
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+  }
+`;
+
+const Container = styled.div`
+display: flex;
+flex-direction: row;
+`;
+const Div = styled.div`
+  margin-top: 39px;
+  margin-left: 67px;
+`;
+
+const Title = styled.div`
+  color: #000;
+  font-family: Poppins;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 13px;
+`;
+
+const Box = styled.div`
+margin-bottom: 13px;
+`;
+const Guide = styled.div`
+  color: #000;
+  font-family: Poppins;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+`;
+const StyledTable = styled.div`
+`;
 export default Attendance;
