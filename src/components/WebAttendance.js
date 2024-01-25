@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import AtTable from "./WebAtTable";
+import { viewStudent } from "../api/StudentApi";
 
 const Attendance = () => {
   const today = new Date();
@@ -8,84 +9,79 @@ const Attendance = () => {
   const [date, setDate] = useState(formattedDate);
   const [selectedBan, setSelectedBan] = useState("");
   const [sectionId, setSectionId] = useState(0);
-  const [buttonText, setButtonText] = useState("");
-  const ban = ["W", "I", "N", "T", "E", "R"];
+  const [selectedSection, setSelectedSection] = useState("");
+  const [sectionList, setSection] = useState([]);
+
+  useEffect(() => {
+    viewAllStudent();
+  }, []);
 
   const changeDate = (e) => {
     setDate(e.target.value);
   };
 
-  const handleDropdownChange = (event) => {
+  const handleReset = () => {
+    setSelectedSection("");
+  };
+  const handleDropdownChange = (e, type) => {
     if (!date) {
       alert("날짜를 먼저 선택하세요.");
       return;
     }
+    const selectedValue = e.target.value;
 
-    const selectedValue = event.target.value;
-
-    setSelectedBan(selectedValue);
-
-    switch (selectedValue) {
-      case "W":
-        setSectionId(1);
-        break;
-      case "I":
-        setSectionId(2);
-        break;
-      case "N":
-        setSectionId(3);
-        break;
-      case "T":
-        setSectionId(4);
-        break;
-      case "E":
-        setSectionId(5);
-        break;
-      case "R":
-        setSectionId(6);
-        break;
+    if (type === "section") {
+      setSelectedSection(selectedValue);
+      const sectionId = sectionList.indexOf(selectedValue) + 1;
+      setSectionId(sectionId);
+      setSelectedBan(selectedValue);
     }
   };
+  const viewAllStudent = async () => {
+    try {
+      const response = await viewStudent();
 
-  const handleButtonClick = (buttonNumber) => {
-    if (!date) {
-      alert("날짜를 먼저 선택하세요.");
-      return;
+      setSection(response.sectionList);
+
+      console.log(response);
+    } catch (error) {
+      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
     }
-
-    const buttonMap = ["", "W", "I", "N", "T", "E", "R"];
-    setButtonText(buttonMap[buttonNumber]);
   };
 
   return (
     <>
       <GlobalStyle />
-      <Container>
-      <Div>
-        <Title>출결관리</Title>
+      <AttendanceContainer>
+        <AttendanceContent>
+          <Title>출결관리</Title>
 
-        <Box>
-          <Guide>1. 날짜를 선택해주세요.</Guide>
-          <input type="date" value={date} onChange={changeDate} />
-        </Box>
+          <Box>
+            <Guide>1. 날짜를 선택해주세요.</Guide>
+            <DatePicker type="date" value={date} onChange={changeDate} />
+          </Box>
 
-        <div>
-          <Guide>2. 반을 선택해주세요.</Guide>
-          <select onChange={handleDropdownChange} value={selectedBan || ""}>
-            <option disabled value="">
-              반 선택
-            </option>
-            {ban.map((banOption) => (
-              <option key={banOption} value={banOption}>
-                {banOption}
-              </option>
-            ))}
-          </select>
-        </div>
-      </Div>
+          <div>
+            <Guide>2. 반을 선택해주세요.</Guide>
+            <Select
+              onChange={(e) => handleDropdownChange(e, "section")}
+              value={selectedSection || ""}
+            >
+              {sectionList.map((banOption) => (
+                <option key={banOption} value={banOption}>
+                  {banOption}
+                </option>
+              ))}
+            </Select>
+          </div>
+        </AttendanceContent>
 
-      <StyledTable>{selectedBan && <AtTable date={date} sectionId={sectionId} />}</StyledTable>
-      </Container>
+        <StyledTableContainer>
+          <StyledTable>
+            {selectedBan && <AtTable date={date} sectionId={sectionId} />}
+          </StyledTable>
+        </StyledTableContainer>
+      </AttendanceContainer>
     </>
   );
 };
@@ -97,27 +93,38 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const Container = styled.div`
-display: flex;
-flex-direction: row;
+const AttendanceContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 120px;
 `;
-const Div = styled.div`
+
+const AttendanceContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 200px;
+  /* margin-top: 120px; */
+  margin-bottom: 90px;
+`;
+
+const StyledTableContainer = styled.div`
+  margin-right: 200px;
   margin-top: 39px;
-  margin-left: 67px;
+  margin-bottom: 90px;
 `;
 
 const Title = styled.div`
   color: #000;
   font-family: Poppins;
-  font-size: 30px;
+  font-size: 40px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-bottom: 13px;
+  margin-bottom: 20px;
 `;
 
 const Box = styled.div`
-margin-bottom: 13px;
+  margin-bottom: 13px;
 `;
 const Guide = styled.div`
   color: #000;
@@ -126,7 +133,23 @@ const Guide = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  margin-bottom: 10px;
 `;
-const StyledTable = styled.div`
+const Select = styled.select`
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 339px;
 `;
+const DatePicker = styled.input`
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 320px;
+  margin-bottom: 10px;
+`;
+const StyledTable = styled.div``;
+
 export default Attendance;

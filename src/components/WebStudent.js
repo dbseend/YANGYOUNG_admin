@@ -5,113 +5,6 @@ import Modal from "./WebModal";
 import { getStudentInfo, viewStudent } from "../api/StudentApi";
 import { useNavigate } from "react-router-dom";
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin : 0;
-    padding: 0;
-  }
-`;
-
-const Div = styled.div`
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-`;
-
-const Title = styled.div`
-  font-family: Noto Sans KR;
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 45px;
-  letter-spacing: 0px;
-  text-align: left;
-`;
-
-const RowDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 10px;
-`;
-
-const TableContainer = styled.div`
-  margin: 20px;
-`;
-
-const StyledTable = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 20px;
-`;
-
-const StyledThead = styled.thead`
-  background-color: #f2f2f2;
-`;
-
-const StyledTh = styled.th`
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-`;
-
-const StyledTd = styled.td`
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-`;
-
-const HoverTr = styled.tr`
-  &:hover {
-    background-color: #f5f5f5;
-    cursor: pointer;
-  }
-`;
-
-const SearchDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* 수정된 부분 */
-  margin: 0 auto;
-  padding: 0px 10px 0px 10px;
-  border: 2px solid #9d221a; /* 수정된 부분 */
-  border-radius: 10px;
-`;
-
-const Label = styled.label`
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-`;
-
-const PostInput = styled.input`
-  margin-right: 10px;
-`;
-
-const OptionSelect = styled.select`
-  margin-right: 10px;
-`;
-
-const OptionSelectDiv = styled(RowDiv)`
-  margin-top: 10px;
-  margin-bottom: 10px;
-`;
-
-const SearchButtonDiv = styled(RowDiv)`
-  display: flex;
-  justify-content: center;
-`;
-
-const CenteredContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 30px;
-`;
-
-const AddStudentButton = styled.button`
-  width: 300px;
-`;
-
 const WebStudent = () => {
   const navigate = useNavigate();
   const [sectionId, setSectionId] = useState(0);
@@ -324,4 +217,110 @@ const WebStudent = () => {
   );
 };
 
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin : 0;
+    padding: 0;
+  }
+`;
+
+const Div = styled.div`
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+`;
+
+const Title = styled.div`
+  font-family: Noto Sans KR;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 45px;
+  letter-spacing: 0px;
+  text-align: left;
+`;
+
+const RowDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+`;
+
+const TableContainer = styled.div`
+  margin: 20px;
+`;
+
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+const StyledThead = styled.thead`
+  background-color: #f2f2f2;
+`;
+
+const StyledTh = styled.th`
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+`;
+
+const StyledTd = styled.td`
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+`;
+
+const HoverTr = styled.tr`
+  &:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
+  }
+`;
+
+const SearchDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 수정된 부분 */
+  margin: 0 auto;
+  padding: 0px 10px 0px 10px;
+  border: 2px solid #9d221a; /* 수정된 부분 */
+  border-radius: 10px;
+`;
+
+const Label = styled.label`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+`;
+
+const PostInput = styled.input`
+  margin-right: 10px;
+`;
+
+const OptionSelect = styled.select`
+  margin-right: 10px;
+`;
+
+const OptionSelectDiv = styled(RowDiv)`
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+const SearchButtonDiv = styled(RowDiv)`
+  display: flex;
+  justify-content: center;
+`;
+
+const CenteredContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+`;
+
+const AddStudentButton = styled.button`
+  width: 300px;
+`;
 export default WebStudent;
