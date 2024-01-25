@@ -2,6 +2,85 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 
+const Navbar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+
+    if (!email) {
+      alert("로그인 후 이용해주세요");
+      navigate("/");
+    }
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const scrollThreshold = 100;
+
+      setIsScrolled(scrollTop > scrollThreshold);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [navigate]);
+
+  const onLogOutClick = () => {
+    alert("로그아웃 되었습니다.");
+    localStorage.removeItem("email");
+    navigate("/");
+  };
+
+  const isActive = (path) => location.pathname === path;
+
+  const moveTo = (path) => {
+    navigate(path);
+  };
+
+  return (
+    <div>
+      <GlobalStyle />
+      <NavbarContainer $scrolled={isScrolled}>
+        <Logo>양영학원 고등부</Logo>
+        <MenuList>
+          <MenuItem>
+            <NavLink
+              href="#"
+              onClick={() => moveTo("/attendance")}
+              isActive={isActive("/attendance")}
+            >
+              출결관리
+            </NavLink>
+          </MenuItem>
+          <MenuItem>
+            <NavLink
+              href="#"
+              onClick={() => moveTo("/student")}
+              isActive={isActive("/student")}
+            >
+              학생관리
+            </NavLink>
+          </MenuItem>
+          <MenuItem>
+            <NavLink
+              href="#"
+              onClick={() => moveTo("/lecture")}
+              isActive={isActive("/lecture")}
+            >
+              수업관리
+            </NavLink>
+          </MenuItem>
+        </MenuList>
+        <LogoutButton onClick={onLogOutClick}>로그아웃</LogoutButton>
+      </NavbarContainer>
+    </div>
+  );
+};
+
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
@@ -14,12 +93,19 @@ const NavbarContainer = styled.div`
   background-color: white;
   padding: 10px;
   z-index: 1000;
-  border-bottom: 1px solid ${(props) => (props.$scrolled ? "#7f8c8d" : "transparent")};
+  border-bottom: 1px solid
+    ${(props) => (props.$scrolled ? "#7f8c8d" : "transparent")};
   transition: border-color 0.3s ease;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
+  /* 스크롤 내릴 때 고정 */
+  position: fixed;
+  top: 0;
+  width: 100%;
 `;
+
 
 const Logo = styled.div`
   font-size: 24px;
@@ -68,72 +154,5 @@ const LogoutButton = styled.button`
     background-color: #2c3e50;
   }
 `;
-
-const Navbar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const email = localStorage.getItem("email");
-
-    if (!email) {
-      alert("로그인 후 이용해주세요");
-      navigate("/");
-    }
-
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const scrollThreshold = 100;
-
-      setIsScrolled(scrollTop > scrollThreshold);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [navigate]);
-
-  const onLogOutClick = () => {
-    alert("로그아웃 되었습니다.");
-    localStorage.removeItem("email");
-    navigate("/");
-  };
-
-  const isActive = (path) => location.pathname === path;
-
-  const moveTo = (path) => {
-    navigate(path);
-  };
-
-  return (
-    <div>
-      <GlobalStyle />
-      <NavbarContainer $scrolled={isScrolled}>
-        <Logo>양영학원 고등부</Logo>
-        <MenuList>
-          <MenuItem>
-            <NavLink href="#" onClick={() => moveTo("/attendance")} isActive={isActive("/attendance")}>
-              출결관리
-            </NavLink>
-          </MenuItem>
-          <MenuItem>
-            <NavLink href="#" onClick={() => moveTo("/student")} isActive={isActive("/student")}>
-              학생관리
-            </NavLink>
-          </MenuItem>
-          <MenuItem>
-            <NavLink href="#" onClick={() => moveTo("/lecture")} isActive={isActive("/lecture")}>
-              수업관리
-            </NavLink>
-          </MenuItem>
-        </MenuList>
-        <LogoutButton onClick={onLogOutClick}>로그아웃</LogoutButton>
-      </NavbarContainer>
-    </div>
-  );
-};
 
 export default Navbar;

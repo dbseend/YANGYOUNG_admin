@@ -4,21 +4,6 @@ import { addStudent, addStudentSection } from "../api/StudentApi";
 import navigate from "navigate";
 import { useNavigate } from "react-router-dom";
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-  }
-`;
-
-const Div = styled.div`
-  height: 41px;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const AddSt = () => {
   const navigate = useNavigate();
   const [id, setId] = useState("");
@@ -73,11 +58,11 @@ const AddSt = () => {
     };
     console.log(data1, data2);
     addStudent(data1);
-  
-    await new Promise(resolve => setTimeout(resolve, 1000)); // 비동기 대기
-  
+
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // 비동기 대기
+
     await addStudentSection(data2);
-  
+
     setId("");
     setName("");
     setSchool("");
@@ -86,10 +71,10 @@ const AddSt = () => {
     setSectionId("");
     setSelectedBan("");
     setSelectedGrade("");
-  
+
     navigate("/student");
   };
-  
+
   const handelGradeDropdownChange = (e) => {
     const selectedValue = e.target.value;
     setSelectedGrade(selectedValue);
@@ -135,11 +120,11 @@ const AddSt = () => {
     }
   };
 
-//   const handleButtonClick = (buttonNumber) => {
-//     const buttonMap = ["", "W", "I", "N", "T", "E", "R"];
-//     setButtonText(buttonMap[buttonNumber]);
-//     const buttonMap2 = ["", ""]
-//   };
+  //   const handleButtonClick = (buttonNumber) => {
+  //     const buttonMap = ["", "W", "I", "N", "T", "E", "R"];
+  //     setButtonText(buttonMap[buttonNumber]);
+  //     const buttonMap2 = ["", ""]
+  //   };
 
   return (
     <Div>
@@ -194,5 +179,20 @@ const AddSt = () => {
     </Div>
   );
 };
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+  }
+`;
+
+const Div = styled.div`
+  height: 41px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default AddSt;

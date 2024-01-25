@@ -8,6 +8,7 @@ export const getSectionAttendanceInfo = async (id, date) => {
       `${process.env.REACT_APP_URL}section/attendance/${id}`,
       {
         params: {
+          sectionId: id,
           date: date,
         },
       }
