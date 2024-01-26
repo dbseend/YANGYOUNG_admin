@@ -23,6 +23,7 @@ function App() {
         <Route path="/student" element={<Student />} />
         <Route path="/lecture" element={<Lecture />} />
         <Route path="/addstudent" element={<AddSt />} />
+        
       </Routes>
     </Router>
   );
