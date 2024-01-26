@@ -5,91 +5,8 @@ import {
   postAttendanceBySection,
 } from "../api/AttendanceApi";
 
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-`;
-
-const StyledTh = styled.th`
-  border: 1px solid #ddd;
-  padding: 10px;
-  background-color: #f2f2f2;
-  text-align: center;
-`;
-
-const StyledTd = styled.td`
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
-`;
-
-const InputNote = styled.input`
-  width: 100%;
-  padding: 5px;
-  box-sizing: border-box;
-`;
-
-const AttendanceLabel = styled.label`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  input {
-    cursor: pointer;
-  }
-`;
-const Radio1 = styled.input`
-  /* margin-top: 5px; */
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  border-radius: 10px;
-  border: 1px solid;
-  /* 선택되지 않은 상태의 배경색과 기타 스타일 */
-  &:not(:checked) {
-    background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
-  }
-  /* 선택된 상태에서의 배경색과 기타 스타일 */
-  &:checked {
-    background-color: #50d68f; /* 선택된 상태에서의 배경색 */
-  }
-`;
-const Radio2 = styled.input`
-  /* margin-bottom: 4px; */
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  border-radius: 10px;
-  border: 1px solid;
-  /* 선택되지 않은 상태의 배경색과 기타 스타일 */
-  &:not(:checked) {
-    background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
-  }
-  /* 선택된 상태에서의 배경색과 기타 스타일 */
-  &:checked {
-    background-color: #f6cc62; /* 선택된 상태에서의 배경색 */
-  }
-`;
-const Radio3 = styled.input`
-  /* margin-bottom: 4px; */
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  border-radius: 10px;
-  border: 1px solid;
-  /* 선택되지 않은 상태의 배경색과 기타 스타일 */
-  &:not(:checked) {
-    background-color: transparent; /* 선택되지 않은 상태에서는 배경색이 투명합니다. */
-  }
-  /* 선택된 상태에서의 배경색과 기타 스타일 */
-  &:checked {
-    background-color: #cb3c44; /* 선택된 상태에서의 배경색 */
-  }
-`;
-
 const AtTable = (props) => {
-  const [sectionInfo, setSectionIfno] = useState([]);
-  const [studentInfo, setStudentIfno] = useState([]);
+  const [studentInfo, setStudentInfo] = useState([]);
   const sectionId = props.sectionId;
   const date = props.date;
   const columns = [
@@ -100,33 +17,31 @@ const AtTable = (props) => {
     { key: "note", label: "비고" },
   ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      getSectionAttendanceInfo(sectionId, date).then(function (data) {
-        if (data) {
-          setSectionIfno(data.sectionGetOneResponse);
-
-          const sortedStudentInfo = data.ssAttendanceGetOneResponseList.sort(
-            (a, b) => {
-              if (a.studentOneResponse.name < b.studentOneResponse.name)
-                return -1;
-              if (a.studentOneResponse.name > b.studentOneResponse.name)
-                return 1;
-              return 0;
-            }
-          );
-
-          setStudentIfno(sortedStudentInfo);
-        } else {
-          alert("반 정보가 없습니다");
-        }
-      });
-    };
-    fetchData();
-  }, [sectionId, date]);
+  
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const data = await getSectionAttendanceInfo(sectionId, date);
+      if (data && data.ssAttendanceGetOneResponseList) {
+        const sortedStudentInfo = data.ssAttendanceGetOneResponseList.sort((a, b) => {
+          if (a.studentResponse.name < b.studentResponse.name) return -1;
+          if (a.studentResponse.name > b.studentResponse.name) return 1;
+          return 0;
+        });
+        setStudentInfo(sortedStudentInfo);
+      } else {
+        alert("반 정보가 없습니다.");
+        setStudentInfo([]); // 반 정보가 없는 경우 빈 배열로 설정
+      }
+    } catch (error) {
+      console.log("반 정보를 불러오는 도중 에러 발생:", error);
+    }
+  };
+  fetchData();
+}, [sectionId, date]);
 
   const handleRadioChange = (index, value) => {
-    setStudentIfno((prevStudentInfo) => {
+    setStudentInfo((prevStudentInfo) => {
       const updatedStudentInfo = [...prevStudentInfo];
       updatedStudentInfo[index].attendanceType = value;
       return updatedStudentInfo;
@@ -134,7 +49,7 @@ const AtTable = (props) => {
   };
 
   const handleNoteChange = (index, value) => {
-    setStudentIfno((prevStudentInfo) => {
+    setStudentInfo((prevStudentInfo) => {
       const updatedStudentInfo = [...prevStudentInfo];
       updatedStudentInfo[index].note = value;
       return updatedStudentInfo;
@@ -146,7 +61,7 @@ const AtTable = (props) => {
       sectionId: sectionId,
       selectedDay: date,
       attendancePostRequestList: studentInfo.map((info) => ({
-        studentId: info.studentOneResponse.id,
+        studentId: info.studentResponse.id,
         attendanceType: info.attendanceType,
         note: info.note,
       })),
@@ -159,6 +74,8 @@ const AtTable = (props) => {
 
   return (
     <>
+      <Button onClick={postAttendance}>저장</Button>
+
       <StyledTable>
         <thead>
           <tr>
@@ -178,7 +95,7 @@ const AtTable = (props) => {
                     ) : column.key === "attendance" ? (
                       <AttendanceLabel>
                         <label>
-                          <Radio1
+                          <input
                             type="radio"
                             value="ATTENDANCE"
                             checked={
@@ -191,7 +108,7 @@ const AtTable = (props) => {
                           출석
                         </label>
                         <label>
-                          <Radio2
+                          <input
                             type="radio"
                             value="LATENESS"
                             checked={
@@ -204,7 +121,7 @@ const AtTable = (props) => {
                           지각
                         </label>
                         <label>
-                          <Radio3
+                          <input
                             type="radio"
                             value="ABSENCE"
                             checked={
@@ -224,9 +141,9 @@ const AtTable = (props) => {
                         }
                       />
                     ) : column.key === "name" ? (
-                      data.studentOneResponse.name
+                      data.studentResponse.name
                     ) : column.key === "phoneNumber" ? (
-                      data.studentOneResponse.phoneNumber
+                      data.studentResponse.phoneNumber
                     ) : (
                       ""
                     )}
@@ -236,9 +153,73 @@ const AtTable = (props) => {
             ))}
         </tbody>
       </StyledTable>
-      <button onClick={postAttendance}>저장</button>
     </>
   );
 };
 
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+
+  @media screen and (min-width: 768px) {
+    width: 40vw;
+  }
+`;
+
+const StyledTh = styled.th`
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  background-color: #dfdfdf;
+  @media screen and (min-width: 768px) {
+    width: auto;
+  }
+`;
+
+const StyledTd = styled.td`
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+
+  @media screen and (min-width: 768px) {
+    width: auto;
+  }
+`;
+
+const InputNote = styled.input`
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid;
+  border-color: lightgray;
+`;
+
+const AttendanceLabel = styled.label`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  input {
+    cursor: pointer;
+  }
+  /* 라디오 버튼과 텍스트 간격 조절 */
+  label {
+    padding: 0 8px; /* 좌우 패딩을 조정하여 간격을 조절합니다. */
+  }
+`;
+
+const Button = styled.button`
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 16px;
+  font-weight: normal;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #2c3e50;
+  }
+`;
 export default AtTable;

@@ -1,7 +1,6 @@
 import React from "react";
-import WebStudent from "../components/WebStudent";
 import WebNavbar from "../components/WebNavbar";
-
+import WebStudent from "../components/WebStudent";
 const Student = () => {
   return (
     <div>

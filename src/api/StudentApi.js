@@ -19,8 +19,7 @@ export const addStudentSection = async (data) => {
 
   try {
     const response = await axios.post(
-      `http://192.168.0.6:8080/api/v0/student/enrollment`,
-      // process.env.REACT_APP_URL + `student/enrollment`,
+      process.env.REACT_APP_URL + `student/enrollment`,
       data
     );
     console.log(response.data);

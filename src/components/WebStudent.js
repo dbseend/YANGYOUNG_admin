@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+<<<<<<< HEAD
 import { createGlobalStyle } from "styled-components";
 import Modal from "./WebModal";
 import { getStudentInfo, viewStudent } from "../api/StudentApi";
@@ -224,10 +225,15 @@ const WebStudent = () => {
     setModalOpen(false);
   };
 
+=======
+import StudentList from "./WebStudentList";
+const WebStudent = () => {
+  const [studentInfo, setStudentInfo] = useState([]);
+>>>>>>> main
   return (
     <>
-      <GlobalStyle />
       <Div>
+<<<<<<< HEAD
         <Title>학생 검색</Title>
         <SearchDiv>
           <OptionSelectDiv>
@@ -319,9 +325,16 @@ const WebStudent = () => {
             </tbody>
           </StyledTable>
         </TableContainer>
+=======
+        <div>학생검색</div>
+        <div>학생목록</div>
+        <StudentList />
+>>>>>>> main
       </Div>
     </>
   );
 };
-
+const Div = styled.div`
+  margin-top: 120px;
+`;
 export default WebStudent;
