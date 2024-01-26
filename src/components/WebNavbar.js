@@ -35,7 +35,7 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const isActive = (path) => location.pathname === path;
+  const isactive = (path) => location.pathname === path;
 
   const moveTo = (path) => {
     navigate(path);
@@ -51,7 +51,7 @@ const Navbar = () => {
             <NavLink
               href="#"
               onClick={() => moveTo("/attendance")}
-              isActive={isActive("/attendance")}
+              isactive={isactive("/attendance").toString()}
             >
               출결관리
             </NavLink>
@@ -60,7 +60,7 @@ const Navbar = () => {
             <NavLink
               href="#"
               onClick={() => moveTo("/student")}
-              isActive={isActive("/student")}
+              isactive={isactive("/student").toString()}
             >
               학생관리
             </NavLink>
@@ -69,7 +69,7 @@ const Navbar = () => {
             <NavLink
               href="#"
               onClick={() => moveTo("/lecture")}
-              isActive={isActive("/lecture")}
+              isactive={isactive("/lecture").toString()}
             >
               수업관리
             </NavLink>
@@ -131,7 +131,7 @@ const NavLink = styled.a`
   text-decoration: none;
   color: black;
   font-size: 16px;
-  font-weight: ${(props) => (props.isActive ? "bold" : "normal")};
+  font-weight: ${(props) => (props.isactive === "true" ? "bold" : "normal")};
   transition: color 0.3s ease;
 
   &:hover {

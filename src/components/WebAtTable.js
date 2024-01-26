@@ -7,7 +7,6 @@ import {
 
 const AtTable = (props) => {
   const [studentInfo, setStudentInfo] = useState([]);
-  const [attendanceCheck, setAttendanceCheck] = useState([]);
   const sectionId = props.sectionId;
   const date = props.date;
   const columns = [
@@ -18,26 +17,28 @@ const AtTable = (props) => {
     { key: "note", label: "비고" },
   ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      getSectionAttendanceInfo(sectionId, date).then(function (data) {
-        if (data && data.ssAttendanceGetOneResponseList) {
-          setAttendanceCheck(data.ssAttendanceGetOneResponseList);
-
-          const sortedStudentInfo = attendanceCheck.sort((a, b) => {
-            if (a.studentResponse.name < b.studentResponse.name) return -1;
-            if (a.studentResponse.name > b.studentResponse.name) return 1;
-            return 0;
-          });
-
-          setStudentInfo(sortedStudentInfo);
-        } else {
-          alert("반 정보가 없습니다.");
-        }
-      });
-    };
-    fetchData();
-  }, [sectionId, date]);
+  
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const data = await getSectionAttendanceInfo(sectionId, date);
+      if (data && data.ssAttendanceGetOneResponseList) {
+        const sortedStudentInfo = data.ssAttendanceGetOneResponseList.sort((a, b) => {
+          if (a.studentResponse.name < b.studentResponse.name) return -1;
+          if (a.studentResponse.name > b.studentResponse.name) return 1;
+          return 0;
+        });
+        setStudentInfo(sortedStudentInfo);
+      } else {
+        alert("반 정보가 없습니다.");
+        setStudentInfo([]); // 반 정보가 없는 경우 빈 배열로 설정
+      }
+    } catch (error) {
+      console.log("반 정보를 불러오는 도중 에러 발생:", error);
+    }
+  };
+  fetchData();
+}, [sectionId, date]);
 
   const handleRadioChange = (index, value) => {
     setStudentInfo((prevStudentInfo) => {
