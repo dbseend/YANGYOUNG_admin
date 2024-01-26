@@ -1,146 +1,50 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  getSectionAttendanceInfo,
-  postAttendanceBySection,
-} from "../api/AttendanceApi";
+import { viewStudent } from "../api/StudentApi";
 
-const StudentList = (props) => {
+const columns = [
+  { key: "index", label: "#" },
+  { key: "name", label: "이름" },
+  { key: "school", label: "학교" },
+  { key: "grade", label: "학년" },
+  { key: "sectionName", label: "반" },
+  { key: "phoneNumber", label: "연락처" },
+  { key: "id", label: "아이디" },
+];
+
+const StudentList = () => {
   const [studentInfo, setStudentInfo] = useState([]);
-  const sectionId = props.sectionId;
-  const date = props.date;
-  const columns = [
-    { key: "num", label: "" },
-    { key: "name", label: "이름" },
-    { key: "phoneNumber", label: "연락처" },
-    { key: "attendance", label: "출결" },
-    { key: "note", label: "비고" },
-  ];
+  const [filteredStudents, setFilteredStudents] = useState([]);
 
-  
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const data = await getSectionAttendanceInfo(sectionId, date);
-      if (data && data.ssAttendanceGetOneResponseList) {
-        const sortedStudentInfo = data.ssAttendanceGetOneResponseList.sort((a, b) => {
-          if (a.studentResponse.name < b.studentResponse.name) return -1;
-          if (a.studentResponse.name > b.studentResponse.name) return 1;
-          return 0;
-        });
-        setStudentInfo(sortedStudentInfo);
-      } else {
-        alert("반 정보가 없습니다.");
-        setStudentInfo([]); // 반 정보가 없는 경우 빈 배열로 설정
-      }
-    } catch (error) {
-      console.log("반 정보를 불러오는 도중 에러 발생:", error);
-    }
-  };
-  fetchData();
-}, [sectionId, date]);
+  useEffect(() => {
+    viewAllStudent();
+  }, []);
 
-  const handleRadioChange = (index, value) => {
-    setStudentInfo((prevStudentInfo) => {
-      const updatedStudentInfo = [...prevStudentInfo];
-      updatedStudentInfo[index].attendanceType = value;
-      return updatedStudentInfo;
-    });
-  };
-
-  const handleNoteChange = (index, value) => {
-    setStudentInfo((prevStudentInfo) => {
-      const updatedStudentInfo = [...prevStudentInfo];
-      updatedStudentInfo[index].note = value;
-      return updatedStudentInfo;
-    });
-  };
-
-  const postAttendance = () => {
-    const data = {
-      sectionId: sectionId,
-      selectedDay: date,
-      attendancePostRequestList: studentInfo.map((info) => ({
-        studentId: info.studentResponse.id,
-        attendanceType: info.attendanceType,
-        note: info.note,
-      })),
-    };
-
-    console.log(data);
-
-    postAttendanceBySection(data);
-  };
-
-  return (
-    <>
-      <Button onClick={postAttendance}>저장</Button>
-{/*
-{isModalOpen && (
-          <Modal
-            onClose={closeModal}
-            studentInfo={studentInfo}
-            lectureInfo={lectureInfo}
-          ></Modal>
-        )}
-  const openModal = async (studentId) => {
-    try {
-      const response = await getStudentInfo(studentId);
-      console.log(response);
-      setStudentInfo(response.studentOneResponse);
-      setLectureInfo(response.lectureGetOneResponseList);
-      setModalOpen(true);
-    } catch (error) {
-      console.log("학생 상세 데이터를 가져오는 중 오류 발생: ", error);
-    }
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
- // useEffect(() => {
-  //   viewAllStudent();
-  // }, []);
-const viewAllStudent = async () => {
+  const viewAllStudent = async () => {
     try {
       const response = await viewStudent();
-      setStudentList(response.studentOneResponseList);
-      setFilteredData(response.studentOneResponseList);
-      setSection(response.sectionList);
-      setGrade(response.gradeList);
-      setSchool(response.schoolList);
-      console.log(response);
+      const studentsWithIndex = response.studentResponseList.map(
+        (student, index) => ({
+          ...student,
+          index: index + 1,
+        })
+      );
+      setStudentInfo(studentsWithIndex);
+      setFilteredStudents(studentsWithIndex);
     } catch (error) {
       console.log("학생 데이터를 가져오는 중 오류 발생:", error);
     }
   };
-<StyledTable>
-            <StyledThead>
-              <tr>
-                <StyledTh></StyledTh>
-                <StyledTh>반</StyledTh>
-                <StyledTh>이름</StyledTh>
-                <StyledTh>학교</StyledTh>
-                <StyledTh>연락처</StyledTh>
-                <StyledTh>학년</StyledTh>
-                <StyledTh>ID</StyledTh>
-              </tr>
-            </StyledThead>
-            {/* <tbody>
-              {filteredData.map((student) => (
-                <HoverTr onClick={() => openModal(student.id)} key={student.id}>
-                  <StyledTd>count </StyledTd>
-                  <StyledTd>{student.sectionName}</StyledTd>
-                  <StyledTd>{student.name}</StyledTd>
-                  <StyledTd>{student.school}</StyledTd>
-                  <StyledTd>{student.phoneNumber}</StyledTd>
-                  <StyledTd>{student.grade}</StyledTd>
-                  <StyledTd>{student.id}</StyledTd>
-                </HoverTr>
-              ))}
-            </tbody>
-          </StyledTable>
- */}
+
+  const handleSearch = (searchTerm) => {
+    const filtered = studentInfo.filter((student) =>
+      student.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredStudents(filtered);
+  };
+
+  return (
+    <>
       <StyledTable>
         <thead>
           <tr>
@@ -150,72 +54,13 @@ const viewAllStudent = async () => {
           </tr>
         </thead>
         <tbody>
-          {studentInfo &&
-            studentInfo.map((data, index) => (
-              <tr key={index}>
-                {columns.map((column) => (
-                  <StyledTd key={column.key}>
-                    {column.key === "num" ? (
-                      index + 1
-                    ) : column.key === "attendance" ? (
-                      <AttendanceLabel>
-                        <label>
-                          <input
-                            type="radio"
-                            value="ATTENDANCE"
-                            checked={
-                              studentInfo[index].attendanceType === "ATTENDANCE"
-                            }
-                            onChange={() =>
-                              handleRadioChange(index, "ATTENDANCE")
-                            }
-                          />
-                          출석
-                        </label>
-                        <label>
-                          <input
-                            type="radio"
-                            value="LATENESS"
-                            checked={
-                              studentInfo[index].attendanceType === "LATENESS"
-                            }
-                            onChange={() =>
-                              handleRadioChange(index, "LATENESS")
-                            }
-                          />
-                          지각
-                        </label>
-                        <label>
-                          <input
-                            type="radio"
-                            value="ABSENCE"
-                            checked={
-                              studentInfo[index].attendanceType === "ABSENCE"
-                            }
-                            onChange={() => handleRadioChange(index, "ABSENCE")}
-                          />
-                          결석
-                        </label>
-                      </AttendanceLabel>
-                    ) : column.key === "note" ? (
-                      <InputNote
-                        type="text"
-                        value={data.note}
-                        onChange={(e) =>
-                          handleNoteChange(index, e.target.value)
-                        }
-                      />
-                    ) : column.key === "name" ? (
-                      data.studentResponse.name
-                    ) : column.key === "phoneNumber" ? (
-                      data.studentResponse.phoneNumber
-                    ) : (
-                      ""
-                    )}
-                  </StyledTd>
-                ))}
-              </tr>
-            ))}
+          {filteredStudents.map((student, index) => (
+            <tr key={index}>
+              {columns.map((column) => (
+                <StyledTd key={column.key}>{student[column.key]}</StyledTd>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </StyledTable>
     </>
@@ -225,66 +70,18 @@ const viewAllStudent = async () => {
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-
-  @media screen and (min-width: 768px) {
-    width: 40vw;
-  }
 `;
 
 const StyledTh = styled.th`
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
-  background-color: #dfdfdf;
-  @media screen and (min-width: 768px) {
-    width: auto;
-  }
 `;
 
 const StyledTd = styled.td`
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
-
-  @media screen and (min-width: 768px) {
-    width: auto;
-  }
 `;
 
-const InputNote = styled.input`
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  border: 1px solid;
-  border-color: lightgray;
-`;
-
-const AttendanceLabel = styled.label`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  input {
-    cursor: pointer;
-  }
-  /* 라디오 버튼과 텍스트 간격 조절 */
-  label {
-    padding: 0 8px; /* 좌우 패딩을 조정하여 간격을 조절합니다. */
-  }
-`;
-
-const Button = styled.button`
-  background-color: black;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  font-size: 16px;
-  font-weight: normal;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: background-color 0.3s ease;
-  &:hover {
-    background-color: #2c3e50;
-  }
-`;
 export default StudentList;
