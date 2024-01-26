@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -105,7 +105,6 @@ const WebStudent = () => {
     <>
       <Div>
         <Title>학생 검색</Title>
-        <h1>{sectionList.length}</h1>
         <SearchDiv>
           <OptionSelectDiv>
             <Label>학생 이름</Label>
@@ -162,7 +161,7 @@ const WebStudent = () => {
           </SearchButtonDiv>
         </SearchDiv>
         <CenteredContainer>
-          <AddStudentButton>학생 추가</AddStudentButton>
+          <AddStudentButton onClick={moveToAddSt}>학생 추가</AddStudentButton>
         </CenteredContainer>{" "}
         <Title>학생 목록</Title>
         <TableContainer>
