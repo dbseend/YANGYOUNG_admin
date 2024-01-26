@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import StudentList from "./WebStudentList";
 const WebStudent = () => {
-  
+
   const [studentInfo, setStudentInfo] = useState([]);
+  
   return (
     <>
       <Div>
