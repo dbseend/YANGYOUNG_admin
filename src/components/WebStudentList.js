@@ -12,13 +12,13 @@ const columns = [
   { key: "id", label: "아이디" },
 ];
 
-const StudentList = () => {
+const StudentList = ({filteredData}) => {
   const [studentInfo, setStudentInfo] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
 
   useEffect(() => {
-    viewAllStudent();
-  }, []);
+    console.log(filteredData.length)
+  }, [filteredData]);
 
   const viewAllStudent = async () => {
     try {
@@ -54,7 +54,7 @@ const StudentList = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredStudents.map((student, index) => (
+          {filteredData.map((student, index) => (
             <tr key={index}>
               {columns.map((column) => (
                 <StyledTd key={column.key}>{student[column.key]}</StyledTd>
