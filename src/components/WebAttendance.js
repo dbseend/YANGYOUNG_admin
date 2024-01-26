@@ -7,22 +7,26 @@ const Attendance = () => {
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-CA");
   const [date, setDate] = useState(formattedDate);
-  const [selectedBan, setSelectedBan] = useState("");
+  const [selectedSection, setSelectedSection] = useState(""); // 초기값을 빈 문자열로 설정
   const [sectionId, setSectionId] = useState(0);
-  const [selectedSection, setSelectedSection] = useState("");
   const [sectionList, setSection] = useState([]);
 
   useEffect(() => {
     viewAllStudent();
   }, []);
 
+  useEffect(() => {
+    // sectionList가 업데이트될 때 첫 번째 항목을 선택
+    if (sectionList.length > 0) {
+      setSelectedSection(sectionList[0]);
+      setSectionId(1); // 첫 번째 항목 선택에 따른 sectionId 설정
+    }
+  }, [sectionList]);
+
   const changeDate = (e) => {
     setDate(e.target.value);
   };
 
-  const handleReset = () => {
-    setSelectedSection("");
-  };
   const handleDropdownChange = (e, type) => {
     if (!date) {
       alert("날짜를 먼저 선택하세요.");
@@ -34,9 +38,9 @@ const Attendance = () => {
       setSelectedSection(selectedValue);
       const sectionId = sectionList.indexOf(selectedValue) + 1;
       setSectionId(sectionId);
-      setSelectedBan(selectedValue);
     }
   };
+
   const viewAllStudent = async () => {
     try {
       const response = await viewStudent();
@@ -65,7 +69,7 @@ const Attendance = () => {
             <Guide>2. 반을 선택해주세요.</Guide>
             <Select
               onChange={(e) => handleDropdownChange(e, "section")}
-              value={selectedSection || ""}
+              value={selectedSection}
             >
               {sectionList.map((banOption) => (
                 <option key={banOption} value={banOption}>
@@ -78,7 +82,9 @@ const Attendance = () => {
 
         <StyledTableContainer>
           <StyledTable>
-            {selectedBan && <AtTable date={date} sectionId={sectionId} />}
+            {selectedSection && (
+              <AtTable date={date} sectionId={sectionId} />
+            )}
           </StyledTable>
         </StyledTableContainer>
       </AttendanceContainer>
@@ -103,7 +109,6 @@ const AttendanceContent = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 200px;
-  /* margin-top: 120px; */
   margin-bottom: 90px;
 `;
 
@@ -126,6 +131,7 @@ const Title = styled.div`
 const Box = styled.div`
   margin-bottom: 13px;
 `;
+
 const Guide = styled.div`
   color: #000;
   font-family: Poppins;
@@ -135,6 +141,7 @@ const Guide = styled.div`
   line-height: normal;
   margin-bottom: 10px;
 `;
+
 const Select = styled.select`
   padding: 8px;
   font-size: 16px;
@@ -142,6 +149,7 @@ const Select = styled.select`
   border: 1px solid #ccc;
   width: 339px;
 `;
+
 const DatePicker = styled.input`
   padding: 8px;
   font-size: 16px;
@@ -150,6 +158,7 @@ const DatePicker = styled.input`
   width: 320px;
   margin-bottom: 10px;
 `;
+
 const StyledTable = styled.div``;
 
 export default Attendance;

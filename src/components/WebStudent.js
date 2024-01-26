@@ -16,31 +16,9 @@ const WebStudent = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [sectionList, setSection] = useState([]);
   const [gradeList, setGrade] = useState([]);
-  const [schoolList, setSchool] = useState([]);
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [studentInfo, setStudentInfo] = useState({});
-  const [lectureInfo, setLectureInfo] = useState([]);
-
-  useEffect(() => {
-    viewAllStudent();
-  }, []);
 
   const moveToAddSt = () => {
     navigate("/addstudent");
-  };
-
-  const viewAllStudent = async () => {
-    try {
-      const response = await viewStudent();
-      setStudentList(response.studentOneResponseList);
-      setFilteredData(response.studentOneResponseList);
-      setSection(response.sectionList);
-      setGrade(response.gradeList);
-      setSchool(response.schoolList);
-      console.log(response);
-    } catch (error) {
-      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
-    }
   };
 
   const search = () => {
@@ -101,22 +79,6 @@ const WebStudent = () => {
     setFilteredData(studentList);
   };
 
-  const openModal = async (studentId) => {
-    try {
-      const response = await getStudentInfo(studentId);
-      console.log(response);
-      setStudentInfo(response.studentOneResponse);
-      setLectureInfo(response.lectureGetOneResponseList);
-      setModalOpen(true);
-    } catch (error) {
-      console.log("학생 상세 데이터를 가져오는 중 오류 발생: ", error);
-    }
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
   return (
     <>
       <GlobalStyle />
@@ -130,20 +92,19 @@ const WebStudent = () => {
               onKeyDown={handleKeyPress}
               placeholder="학생 이름을 입력해주세요"
             />
+
             <Label>반</Label>
             <OptionSelect
               onChange={(e) => handleDropdownChange(e, "section")}
               value={selectedSection || ""}
             >
-              <OptionSelect disabled value="">
-                반 선택
-              </OptionSelect>
               {sectionList.map((banOption) => (
                 <option key={banOption} value={banOption}>
                   {banOption}
                 </option>
               ))}
             </OptionSelect>
+
             <Label>학교</Label>
             <PostInput
               type="text"
@@ -151,6 +112,7 @@ const WebStudent = () => {
               onChange={handleSchoolChange}
               onKeyDown={handleKeyPress}
             />
+
             <Label>학년</Label>
             <OptionSelect
               onChange={(e) => handleDropdownChange(e, "grade")}
@@ -166,6 +128,7 @@ const WebStudent = () => {
               ))}
             </OptionSelect>
           </OptionSelectDiv>
+
           <SearchButtonDiv>
             <button onClick={handleReset}>초기화</button>
             <button onClick={search} onKeyPress={handleKeyPress}>
@@ -173,45 +136,11 @@ const WebStudent = () => {
             </button>
           </SearchButtonDiv>
         </SearchDiv>
-        {isModalOpen && (
-          <Modal
-            onClose={closeModal}
-            studentInfo={studentInfo}
-            lectureInfo={lectureInfo}
-          ></Modal>
-        )}
         <CenteredContainer>
           <AddStudentButton>학생 추가</AddStudentButton>
         </CenteredContainer>{" "}
         <Title>학생 목록</Title>
-        <TableContainer>
-          <StyledTable>
-            <StyledThead>
-              <tr>
-                <StyledTh></StyledTh>
-                <StyledTh>반</StyledTh>
-                <StyledTh>이름</StyledTh>
-                <StyledTh>학교</StyledTh>
-                <StyledTh>연락처</StyledTh>
-                <StyledTh>학년</StyledTh>
-                <StyledTh>ID</StyledTh>
-              </tr>
-            </StyledThead>
-            <tbody>
-              {filteredData.map((student) => (
-                <HoverTr onClick={() => openModal(student.id)} key={student.id}>
-                  <StyledTd>count </StyledTd>
-                  <StyledTd>{student.sectionName}</StyledTd>
-                  <StyledTd>{student.name}</StyledTd>
-                  <StyledTd>{student.school}</StyledTd>
-                  <StyledTd>{student.phoneNumber}</StyledTd>
-                  <StyledTd>{student.grade}</StyledTd>
-                  <StyledTd>{student.id}</StyledTd>
-                </HoverTr>
-              ))}
-            </tbody>
-          </StyledTable>
-        </TableContainer>
+        <TableContainer></TableContainer>
       </Div>
     </>
   );
@@ -229,15 +158,18 @@ const Div = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
+  margin-top: 120px;
 `;
 
 const Title = styled.div`
-  font-family: Noto Sans KR;
-  font-size: 32px;
+  color: #000;
+  font-family: Poppins;
+  font-size: 40px;
+  font-style: normal;
   font-weight: 700;
-  line-height: 45px;
-  letter-spacing: 0px;
-  text-align: left;
+  line-height: normal;
+  margin-bottom: 20px;
+  margin-left: 200px;
 `;
 
 const RowDiv = styled.div`

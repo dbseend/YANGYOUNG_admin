@@ -5,7 +5,7 @@ import {
   postAttendanceBySection,
 } from "../api/AttendanceApi";
 
-const AtTable = (props) => {
+const StudentList = (props) => {
   const [studentInfo, setStudentInfo] = useState([]);
   const sectionId = props.sectionId;
   const date = props.date;
@@ -75,7 +75,72 @@ useEffect(() => {
   return (
     <>
       <Button onClick={postAttendance}>저장</Button>
+{/*
+{isModalOpen && (
+          <Modal
+            onClose={closeModal}
+            studentInfo={studentInfo}
+            lectureInfo={lectureInfo}
+          ></Modal>
+        )}
+  const openModal = async (studentId) => {
+    try {
+      const response = await getStudentInfo(studentId);
+      console.log(response);
+      setStudentInfo(response.studentOneResponse);
+      setLectureInfo(response.lectureGetOneResponseList);
+      setModalOpen(true);
+    } catch (error) {
+      console.log("학생 상세 데이터를 가져오는 중 오류 발생: ", error);
+    }
+  };
 
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+ // useEffect(() => {
+  //   viewAllStudent();
+  // }, []);
+const viewAllStudent = async () => {
+    try {
+      const response = await viewStudent();
+      setStudentList(response.studentOneResponseList);
+      setFilteredData(response.studentOneResponseList);
+      setSection(response.sectionList);
+      setGrade(response.gradeList);
+      setSchool(response.schoolList);
+      console.log(response);
+    } catch (error) {
+      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
+    }
+  };
+<StyledTable>
+            <StyledThead>
+              <tr>
+                <StyledTh></StyledTh>
+                <StyledTh>반</StyledTh>
+                <StyledTh>이름</StyledTh>
+                <StyledTh>학교</StyledTh>
+                <StyledTh>연락처</StyledTh>
+                <StyledTh>학년</StyledTh>
+                <StyledTh>ID</StyledTh>
+              </tr>
+            </StyledThead>
+            {/* <tbody>
+              {filteredData.map((student) => (
+                <HoverTr onClick={() => openModal(student.id)} key={student.id}>
+                  <StyledTd>count </StyledTd>
+                  <StyledTd>{student.sectionName}</StyledTd>
+                  <StyledTd>{student.name}</StyledTd>
+                  <StyledTd>{student.school}</StyledTd>
+                  <StyledTd>{student.phoneNumber}</StyledTd>
+                  <StyledTd>{student.grade}</StyledTd>
+                  <StyledTd>{student.id}</StyledTd>
+                </HoverTr>
+              ))}
+            </tbody>
+          </StyledTable>
+ */}
       <StyledTable>
         <thead>
           <tr>
@@ -222,4 +287,4 @@ const Button = styled.button`
     background-color: #2c3e50;
   }
 `;
-export default AtTable;
+export default StudentList;
