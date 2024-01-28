@@ -1,0 +1,222 @@
+import React, { useState } from "react";
+import styled from "styled-components";
+import { addStudent } from "../api/StudentApi";
+
+const AddStudentModal = ({ onClose, onAdd }) => {
+  const [newStudent, setNewStudent] = useState({
+    id: 0,
+    name: "",
+    grade: "",
+    sectionId: 0,
+    school: "",
+    phoneNumber: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewStudent((prevStudent) => ({ ...prevStudent, [name]: value }));
+  };
+
+  const handleAddStudent = async (e) => {
+    try {
+      e.preventDefault();
+
+      const studentData = {
+        id: newStudent.id,
+        name: newStudent.name,
+        grade: newStudent.grade,
+        sectionId: newStudent.sectionId,
+        school: newStudent.school,
+        phoneNumber: newStudent.phoneNumber,
+      };
+
+      console.log("전송 데이터:", studentData);
+
+      const response = await addStudent({ data: studentData });
+
+      // 서버에서 데이터 추가 완료 후에 처리
+      alert("학생 정보가 추가 되었습니다");
+
+      // 실제 추가된 학생 정보를 사용하여 onAdd 호출
+      onAdd(response);
+
+      onClose();
+    } catch (error) {
+      alert("에러 발생: " + error.message);
+      console.error("Error adding student:", error);
+    }
+  };
+
+  return (
+    <ModalOverlay>
+      <ModalWrapper>
+        <ModalContent>
+          <ModalHeader>
+            <h2>학생 등록</h2>
+            <CloseButton onClick={onClose}>닫기</CloseButton>
+          </ModalHeader>
+          <Form>
+            <FormGroup>
+              <Label>아이디</Label>
+              <Input
+                type="text"
+                name="id"
+                value={newStudent.id === 0 ? "" : newStudent.id}
+                onChange={handleInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Label>이름</Label>
+              <Input
+                type="text"
+                name="name"
+                value={newStudent.name}
+                onChange={handleInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Label>학년</Label>
+              <Select
+                name="grade"
+                value={newStudent.grade}
+                onChange={handleInputChange}
+              >
+                <option value="">학년 선택</option>
+                <option value="M1">M1</option>
+                <option value="M2">M2</option>
+                {/* 다른 학년 옵션들 추가 */}
+              </Select>
+            </FormGroup>
+
+            <FormGroup>
+              <Label>반</Label>
+              <Select
+                name="sectionId"
+                value={newStudent.sectionId}
+                onChange={handleInputChange}
+              >
+                <option value="">반 선택</option>
+                <option value="0">중1</option>
+                <option value="1">중2</option>
+                {/* 다른 학년 옵션들 추가 */}
+              </Select>
+            </FormGroup>
+
+            <FormGroup>
+              <Label>학교</Label>
+              <Input
+                type="text"
+                name="school"
+                value={newStudent.school}
+                onChange={handleInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Label>연락처</Label>
+              <Input
+                type="text"
+                name="phoneNumber"
+                value={newStudent.phoneNumber}
+                onChange={handleInputChange}
+              />
+            </FormGroup>
+
+            <AddButton onClick={handleAddStudent}>추가</AddButton>
+          </Form>
+        </ModalContent>
+      </ModalWrapper>
+    </ModalOverlay>
+  );
+};
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+`;
+
+const ModalWrapper = styled.div`
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px; /* 최대 넓이 설정 */
+  width: 100%;
+`;
+
+const ModalContent = styled.div`
+  padding: 20px;
+`;
+
+const ModalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #666;
+`;
+
+const Form = styled.form``;
+
+const FormGroup = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Label = styled.label`
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+`;
+const Select = styled.select`
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+`;
+const AddButton = styled.button`
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+`;
+
+export default AddStudentModal;
