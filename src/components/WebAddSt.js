@@ -182,7 +182,7 @@ const AddSt = () => {
 
 const GlobalStyle = createGlobalStyle`
   body {
-    margin: 0;
+    margin-top: 150px;
     padding: 0;
   }
 `;
@@ -191,6 +191,7 @@ const Div = styled.div`
   height: 41px;
   flex-shrink: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;

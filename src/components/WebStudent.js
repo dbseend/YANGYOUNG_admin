@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import StudentList from "./WebStudentList";
 import { viewStudent } from "../api/StudentApi";
+import { IoIosAddCircleOutline, IoMdColorWand, IoIosTrash } from "react-icons/io";
 
 const WebStudent = () => {
   const navigate = useNavigate();
@@ -44,8 +44,6 @@ const WebStudent = () => {
   };
 
   const search = () => {
-    console.log(sectionList);
-    console.log(gradeList);
     const filteredData = studentList.filter((item) => {
       const nameMatch =
         !searchTerm ||
@@ -60,7 +58,6 @@ const WebStudent = () => {
       const gradeMatch = !selectedGrade || item.grade === selectedGrade;
 
       return nameMatch && sectionMatch && schoolMatch;
-      // && gradeMatch;
     });
     setFilteredData(filteredData);
   };
@@ -76,11 +73,8 @@ const WebStudent = () => {
       setSelectedSection(selectedValue);
       const sectionId = sectionList.indexOf(selectedValue) + 1;
       setSectionId(sectionId);
-      console.log("하나");
     } else if (type === "grade") {
       setSelectedGrade(parseInt(selectedValue));
-      console.log(selectedValue);
-      console.log("셋");
     }
   };
 
@@ -88,11 +82,11 @@ const WebStudent = () => {
     setSelectedSchool(e.target.value);
   };
 
-  function handleKeyPress(event) {
+  const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       search();
     }
-  }
+  };
 
   const handleReset = () => {
     setSelectedSection("");
@@ -111,7 +105,7 @@ const WebStudent = () => {
             <PostInput
               onChange={getValue}
               onKeyDown={handleKeyPress}
-              placeholder="학생 이름을 입력해주세요"
+              placeholder="학생 이름으로 검색"
             />
 
             <Label>반</Label>
@@ -135,6 +129,7 @@ const WebStudent = () => {
               value={selectedSchool}
               onChange={handleSchoolChange}
               onKeyDown={handleKeyPress}
+              placeholder="학교 이름으로 검색"
             />
 
             <Label>학년</Label>
@@ -154,16 +149,19 @@ const WebStudent = () => {
           </OptionSelectDiv>
 
           <SearchButtonDiv>
-            <button onClick={handleReset}>초기화</button>
-            <button onClick={search} onKeyPress={handleKeyPress}>
+            <Button onClick={handleReset}>초기화</Button>
+            <Button onClick={search} onKeyPress={handleKeyPress}>
               검색
-            </button>
+            </Button>
           </SearchButtonDiv>
         </SearchDiv>
-        <CenteredContainer>
-          <AddStudentButton onClick={moveToAddSt}>학생 추가</AddStudentButton>
-        </CenteredContainer>{" "}
+
         <Title>학생 목록</Title>
+        <IconDiv>
+          <StyledAddIcon onClick={moveToAddSt} size={30} />
+          <StyledColorWandIcon size={30} />
+          <StyledTrashIcon size={30} />
+        </IconDiv>
         <TableContainer>
           {filteredData && <StudentList filteredData={filteredData} />}
         </TableContainer>
@@ -171,105 +169,144 @@ const WebStudent = () => {
     </>
   );
 };
+
 const Div = styled.div`
   justify-content: center;
   display: flex;
   flex-direction: column;
   overflow: auto;
   margin-top: 100px;
+  margin-left: 10%;
+  margin-right:10%;
 `;
 
 const Title = styled.div`
-  font-family: Noto Sans KR;
-  font-size: 32px;
+  color: #000;
+  font-family: Poppins;
+  font-size: 40px;
   font-weight: 700;
-  line-height: 45px;
-  letter-spacing: 0px;
-  text-align: left;
-`;
-
-const RowDiv = styled.div`
-  display: flex;
-  flex-direction: row;
   margin-bottom: 10px;
 `;
 
-const TableContainer = styled.div`
-  margin: 20px;
-`;
-
-const StyledTable = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 20px;
-`;
-
-const StyledThead = styled.thead`
-  background-color: #f2f2f2;
-`;
-
-const StyledTh = styled.th`
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-`;
-
-const StyledTd = styled.td`
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-`;
-
-const HoverTr = styled.tr`
-  &:hover {
-    background-color: #f5f5f5;
-    cursor: pointer;
-  }
-`;
+const TableContainer = styled.div``;
 
 const SearchDiv = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center; /* 수정된 부분 */
-  margin: 0 auto;
-  padding: 0px 10px 0px 10px;
-  border: 2px solid #9d221a; /* 수정된 부분 */
-  border-radius: 10px;
+  justify-content: center;
+  margin-bottom: 100px;
 `;
 
 const Label = styled.label`
-  display: flex;
-  flex-direction: column;
-  text-align: center;
+  font-family: Poppins;
+  font-size: 20px;
+  line-height: 40px;
+  margin-right: 10px;
 `;
 
 const PostInput = styled.input`
-  margin-right: 10px;
+  width: 188px;
+  height: 21px;
+  font-size: 16px;
+  color: #000;
+  font-family: Poppins;
+  font-weight: 400;
+  margin-right: 40px;
+  padding: 8px;
+  border: 0.5px solid #d0d5dd;
+  border-radius: 6px;
+
+  &:focus {
+    outline: none;
+    border-color: #5b76f7;
+    box-shadow: 0 0 5px rgba(91, 118, 247, 0.5);
+  }
 `;
 
 const OptionSelect = styled.select`
-  margin-right: 10px;
+  width: 188px;
+  height: 40px;
+  font-size: 16px;
+  color: #000;
+  font-family: Poppins;
+  font-weight: 400;
+  margin-right: 40px;
+  padding: 8px;
+  border: 0.5px solid #d0d5dd;
+  border-radius: 6px;
+
+  &:focus {
+    outline: none;
+    border-color: #5b76f7;
+    box-shadow: 0 0 5px rgba(91, 118, 247, 0.5);
+  }
+
+  &::-ms-expand {
+    display: none;
+  }
+
+  &::after {
+    content: '▼';
+    color: #000;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
 `;
 
-const OptionSelectDiv = styled(RowDiv)`
+const OptionSelectDiv = styled.div`
+  display: flex;
+  flex-direction: row;
   margin-top: 10px;
   margin-bottom: 10px;
+  position: relative;
 `;
 
-const SearchButtonDiv = styled(RowDiv)`
+const SearchButtonDiv = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  margin-top: 5px;
+  gap: 26px;
 `;
 
-const CenteredContainer = styled.div`
+const Button = styled.button`
+  width: 80px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  font-family: Poppins;
+  font-size: 15px;
+  font-style: normal;
+  line-height: normal;
+  cursor: pointer;
+  border: none;
+`;
+
+const IconDiv = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 30px;
+  justify-content: flex-end; /* Align icons to the right */
+  cursor: pointer;
+  margin-top: 20px;
+  gap: 20px;
+  @media screen and (max-width: 768px) {
+    margin-right: 50px;
+  }
 `;
 
-const AddStudentButton = styled.button`
-  width: 300px;
+const StyledAddIcon = styled(IoIosAddCircleOutline)`
+  cursor: pointer;
+`;
+
+const StyledColorWandIcon = styled(IoMdColorWand)`
+  cursor: pointer;
+`;
+
+const StyledTrashIcon = styled(IoIosTrash)`
+  cursor: pointer;
 `;
 
 export default WebStudent;
