@@ -108,7 +108,7 @@ const AttendanceContainer = styled.div`
 const AttendanceContent = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 200px;
+  margin-left: 20%;
   margin-bottom: 90px;
 `;
 

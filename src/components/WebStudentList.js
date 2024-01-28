@@ -12,12 +12,12 @@ const columns = [
   { key: "id", label: "아이디" },
 ];
 
-const StudentList = ({filteredData}) => {
+const StudentList = ({ filteredData }) => {
   const [studentInfo, setStudentInfo] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
 
   useEffect(() => {
-    console.log(filteredData.length)
+    console.log(filteredData.length);
   }, [filteredData]);
 
   const viewAllStudent = async () => {
@@ -55,11 +55,11 @@ const StudentList = ({filteredData}) => {
         </thead>
         <tbody>
           {filteredData.map((student, index) => (
-            <tr key={index}>
+            <StyledTr key={index}>
               {columns.map((column) => (
                 <StyledTd key={column.key}>{student[column.key]}</StyledTd>
               ))}
-            </tr>
+            </StyledTr>
           ))}
         </tbody>
       </StyledTable>
@@ -68,20 +68,39 @@ const StudentList = ({filteredData}) => {
 };
 
 const StyledTable = styled.table`
-  width: 100%;
   border-collapse: collapse;
+  margin-top: 20px;
+
+  @media screen and (min-width: 768px) {
+    width: 80vw;
+  }
 `;
 
 const StyledTh = styled.th`
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
+  background-color: #dfdfdf;
+  @media screen and (min-width: 768px) {
+    width: 80vw;
+  }
 `;
 
 const StyledTd = styled.td`
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
+
+  @media screen and (min-width: 768px) {
+    width: 90vw;
+  }
 `;
 
+const StyledTr = styled.tr`
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
 export default StudentList;
