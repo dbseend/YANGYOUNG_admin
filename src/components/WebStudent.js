@@ -55,9 +55,13 @@ const WebStudent = () => {
       const schoolMatch =
         !selectedSchool ||
         item.school.toLowerCase().includes(selectedSchool.toLowerCase());
-      const gradeMatch = !selectedGrade || item.grade === selectedGrade;
 
-      return nameMatch && sectionMatch && schoolMatch;
+      const gradeMatch =
+        !selectedGrade ||
+        item.grade.toLowerCase().includes(selectedGrade.toLowerCase());
+      // const gradeMatch = !selectedGrade || item.grade === selectedGrade;
+
+      return nameMatch && sectionMatch && schoolMatch && gradeMatch;
     });
     setFilteredData(filteredData);
   };
@@ -89,9 +93,10 @@ const WebStudent = () => {
   };
 
   const handleReset = () => {
+    setSearchTerm("");
     setSelectedSection("");
     setSelectedSchool("");
-    setSelectedGrade(0);
+    setSelectedGrade("");
     setFilteredData(studentList);
   };
 
@@ -103,6 +108,7 @@ const WebStudent = () => {
           <OptionSelectDiv>
             <Label>학생 이름</Label>
             <PostInput
+              value={searchTerm}
               onChange={getValue}
               onKeyDown={handleKeyPress}
               placeholder="학생 이름으로 검색"
