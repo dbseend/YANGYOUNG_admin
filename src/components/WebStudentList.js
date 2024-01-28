@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { viewStudent } from "../api/StudentApi";
 
@@ -16,6 +17,10 @@ const StudentList = ({ filteredData }) => {
   const [studentInfo, setStudentInfo] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
 
+  const navigate = useNavigate();
+  const moveToStudentDetail = () => {
+    navigate("/studentDetail");
+  };
   useEffect(() => {
     console.log(filteredData.length);
   }, [filteredData]);
@@ -55,7 +60,7 @@ const StudentList = ({ filteredData }) => {
         </thead>
         <tbody>
           {filteredData.map((student, index) => (
-            <StyledTr key={index}>
+            <StyledTr key={index} onClick={moveToStudentDetail}>
               {columns.map((column) => (
                 <StyledTd key={column.key}>{student[column.key]}</StyledTd>
               ))}

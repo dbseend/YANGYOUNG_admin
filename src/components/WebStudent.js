@@ -3,7 +3,12 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import StudentList from "./WebStudentList";
 import { viewStudent } from "../api/StudentApi";
-import { IoIosAddCircleOutline, IoMdColorWand, IoIosTrash } from "react-icons/io";
+import {
+  IoIosAddCircleOutline,
+  IoMdColorWand,
+  IoIosTrash,
+} from "react-icons/io";
+import AddStudentModal from "./AddStudentModal";
 
 const WebStudent = () => {
   const navigate = useNavigate();
@@ -16,6 +21,7 @@ const WebStudent = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [sectionList, setSectionList] = useState([]);
   const [gradeList, setGradeList] = useState([]);
+  const [isAddModalOpen, setAddModalOpen] = useState(false);
 
   useEffect(() => {
     viewAllStudent();
@@ -39,10 +45,17 @@ const WebStudent = () => {
     }
   };
 
-  const moveToAddSt = () => {
-    navigate("/addstudent");
+  const openAddModal = () => {
+    setAddModalOpen(true);
   };
 
+  const closeAddModal = () => {
+    setAddModalOpen(false);
+  };
+
+  const handleAddStudent = (response) => {
+    console.log("새 학생 정보: ", response);
+  };
   const search = () => {
     const filteredData = studentList.filter((item) => {
       const nameMatch =
@@ -164,10 +177,13 @@ const WebStudent = () => {
 
         <Title>학생 목록</Title>
         <IconDiv>
-          <StyledAddIcon onClick={moveToAddSt} size={30} />
-          <StyledColorWandIcon size={30} />
-          <StyledTrashIcon size={30} />
+          <StyledAddIcon onClick={openAddModal} size={30} />
+          {/* <StyledColorWandIcon size={30} />
+          <StyledTrashIcon size={30} /> */}
         </IconDiv>
+        {isAddModalOpen && (
+          <AddStudentModal onClose={closeAddModal} onAdd={handleAddStudent} />
+        )}
         <TableContainer>
           {filteredData && <StudentList filteredData={filteredData} />}
         </TableContainer>
@@ -183,7 +199,7 @@ const Div = styled.div`
   overflow: auto;
   margin-top: 100px;
   margin-left: 10%;
-  margin-right:10%;
+  margin-right: 10%;
 `;
 
 const Title = styled.div`
@@ -194,7 +210,9 @@ const Title = styled.div`
   margin-bottom: 10px;
 `;
 
-const TableContainer = styled.div``;
+const TableContainer = styled.div`
+  margin-bottom: 200px;
+`;
 
 const SearchDiv = styled.div`
   display: flex;
@@ -221,12 +239,6 @@ const PostInput = styled.input`
   padding: 8px;
   border: 0.5px solid #d0d5dd;
   border-radius: 6px;
-
-  &:focus {
-    outline: none;
-    border-color: #5b76f7;
-    box-shadow: 0 0 5px rgba(91, 118, 247, 0.5);
-  }
 `;
 
 const OptionSelect = styled.select`
@@ -240,26 +252,6 @@ const OptionSelect = styled.select`
   padding: 8px;
   border: 0.5px solid #d0d5dd;
   border-radius: 6px;
-
-  &:focus {
-    outline: none;
-    border-color: #5b76f7;
-    box-shadow: 0 0 5px rgba(91, 118, 247, 0.5);
-  }
-
-  &::-ms-expand {
-    display: none;
-  }
-
-  &::after {
-    content: '▼';
-    color: #000;
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    pointer-events: none;
-  }
 `;
 
 const OptionSelectDiv = styled.div`

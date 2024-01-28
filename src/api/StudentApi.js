@@ -10,24 +10,7 @@ export const addStudent = async (data) => {
     return response.data;
   } catch (error) {
     alert("학생 인적사항 등록 중 오류가 발생했습니다");
-    console.error("Error fetching attendance info:", error);
-  }
-};
-
-export const addStudentSection = async (data) => {
-  console.log(data);
-
-  try {
-    const response = await axios.post(
-      process.env.REACT_APP_URL + `student/enrollment`,
-      data
-    );
-    console.log(response.data);
-    alert("학생이 등록되었습니다.");
-    return response.data;
-  } catch (error) {
-    alert("학생 반 배정 중 오류가 발생했습니다");
-    console.error("Error fetching attendance info:", error);
+    console.error("Error adding student:", error);
   }
 };
 
