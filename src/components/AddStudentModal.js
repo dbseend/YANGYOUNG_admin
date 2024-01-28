@@ -7,9 +7,9 @@ const AddStudentModal = ({ onClose, onAdd }) => {
     id: 0,
     name: "",
     grade: "",
-    sectionId: 0,
     school: "",
     phoneNumber: "",
+    sectionId: 0
   });
 
   const handleInputChange = (e) => {
@@ -25,14 +25,14 @@ const AddStudentModal = ({ onClose, onAdd }) => {
         id: newStudent.id,
         name: newStudent.name,
         grade: newStudent.grade,
-        sectionId: newStudent.sectionId,
         school: newStudent.school,
         phoneNumber: newStudent.phoneNumber,
+        sectionId: newStudent.sectionId
       };
 
       console.log("전송 데이터:", studentData);
 
-      const response = await addStudent({ data: studentData });
+      const response = await addStudent(studentData);
 
       // 서버에서 데이터 추가 완료 후에 처리
       alert("학생 정보가 추가 되었습니다");
@@ -84,8 +84,10 @@ const AddStudentModal = ({ onClose, onAdd }) => {
                 onChange={handleInputChange}
               >
                 <option value="">학년 선택</option>
-                <option value="M1">M1</option>
-                <option value="M2">M2</option>
+                <option value="M3">중3</option>
+                <option value="H1">고1</option>
+                <option value="H2">고2</option>
+                <option value="H3">고3</option>
                 {/* 다른 학년 옵션들 추가 */}
               </Select>
             </FormGroup>
