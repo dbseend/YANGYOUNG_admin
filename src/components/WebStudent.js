@@ -91,7 +91,7 @@ const WebStudent = () => {
       const sectionId = sectionList.indexOf(selectedValue) + 1;
       setSectionId(sectionId);
     } else if (type === "grade") {
-      setSelectedGrade(parseInt(selectedValue));
+      setSelectedGrade(selectedValue);
     }
   };
 
