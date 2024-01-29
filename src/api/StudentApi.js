@@ -35,3 +35,23 @@ export const getStudentInfo = async (id) => {
     throw error;
   }
 };
+export const editStudentInfo = async (data) => {
+  try {
+    const response = await axios.patch(
+      process.env.REACT_APP_URL + 'student', // 요청 URL
+      data, // 요청 본문 데이터
+      {
+        headers: {
+          'Content-Type': 'application/json', // 요청 본문의 Content-Type 설정
+          'Accept': 'application/json', // 서버로부터 JSON 형식의 응답을 받기 위한 Accept 헤더 설정
+        },
+      }
+    );
+    return response.data; // 응답 데이터 반환
+  } catch (error) {
+    console.error("학생 정보 수정 중 오류 발생: ", error);
+    throw error; // 에러 던지기
+  }
+};
+
+
