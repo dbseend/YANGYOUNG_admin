@@ -14,39 +14,13 @@ const columns = [
 ];
 
 const StudentList = ({ filteredData }) => {
-  const [studentInfo, setStudentInfo] = useState([]);
-  const [filteredStudents, setFilteredStudents] = useState([]);
-
   const navigate = useNavigate();
-  const moveToStudentDetail = () => {
-    navigate("/studentDetail");
+  const moveToStudentDetail = (studentId) => {
+    navigate(`/student/${studentId}`);
   };
   useEffect(() => {
     console.log(filteredData.length);
   }, [filteredData]);
-
-  const viewAllStudent = async () => {
-    try {
-      const response = await viewStudent();
-      const studentsWithIndex = response.studentResponseList.map(
-        (student, index) => ({
-          ...student,
-          index: index + 1,
-        })
-      );
-      setStudentInfo(studentsWithIndex);
-      setFilteredStudents(studentsWithIndex);
-    } catch (error) {
-      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
-    }
-  };
-
-  const handleSearch = (searchTerm) => {
-    const filtered = studentInfo.filter((student) =>
-      student.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredStudents(filtered);
-  };
 
   return (
     <>
@@ -60,7 +34,7 @@ const StudentList = ({ filteredData }) => {
         </thead>
         <tbody>
           {filteredData.map((student, index) => (
-            <StyledTr key={index} onClick={moveToStudentDetail}>
+            <StyledTr key={index} onClick={() => moveToStudentDetail(student.id)}>
               {columns.map((column) => (
                 <StyledTd key={column.key}>{student[column.key]}</StyledTd>
               ))}

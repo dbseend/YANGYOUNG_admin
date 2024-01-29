@@ -27,7 +27,7 @@ export const getStudentInfo = async (id) => {
   console.log(id);
   try {
     const response = await axios.get(
-      process.env.REACT_APP_URL + `student/lecture/${id}`
+      process.env.REACT_APP_URL + `student/${id}`
     );
     return response.data;
   } catch (error) {
