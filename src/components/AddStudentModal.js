@@ -9,25 +9,62 @@ const AddStudentModal = ({ onClose, onAdd }) => {
     grade: "",
     school: "",
     phoneNumber: "",
-    sectionId: 0
+    sectionId: 0,
   });
+  const formatPhoneNumber = (value) => {
+    // Basic phone number formatting: 010-0000-0000
+    const phoneNumberRegex = /^(\d{3})(\d{4})(\d{4})$/;
+    const match = value.replace(/-/g, "").match(phoneNumberRegex);
+
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    }
+
+    return value;
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewStudent((prevStudent) => ({ ...prevStudent, [name]: value }));
+    if (name === "phoneNumber") {
+      setNewStudent((prevStudent) => ({
+        ...prevStudent,
+        [name]: formatPhoneNumber(value),
+      }));
+    } else {
+      setNewStudent((prevStudent) => ({ ...prevStudent, [name]: value }));
+    }
   };
 
   const handleAddStudent = async (e) => {
     try {
       e.preventDefault();
-
+      if (
+        newStudent.id === 0 ||
+        newStudent.name.trim() === "" ||
+        newStudent.grade === "" ||
+        newStudent.sectionId === "" ||
+        newStudent.school.trim() === "" ||
+        newStudent.phoneNumber.trim() === ""
+      ) {
+        alert("모든 필수 항목을 입력하세요.");
+        return;
+      }
+      // Detailed phone number validation
+      const phoneNumberRegex = /^(\d{3}-\d{4}-\d{4})?$/;
+      if (
+        newStudent.phoneNumber.trim() !== "" &&
+        !phoneNumberRegex.test(newStudent.phoneNumber.trim())
+      ) {
+        alert("올바른 전화번호 형식이 아닙니다.");
+        return;
+      }
       const studentData = {
         id: newStudent.id,
         name: newStudent.name,
         grade: newStudent.grade,
         school: newStudent.school,
         phoneNumber: newStudent.phoneNumber,
-        sectionId: newStudent.sectionId
+        sectionId: newStudent.sectionId,
       };
 
       console.log("전송 데이터:", studentData);
