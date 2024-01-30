@@ -5,7 +5,7 @@ import WebNavbar from "../components/WebNavbar";
 const StudentDetail = () => {
   return (
     <div>
-      {/* <WebNavbar /> */}
+      <WebNavbar />
       <WebStudentDetail />
     </div>
   );

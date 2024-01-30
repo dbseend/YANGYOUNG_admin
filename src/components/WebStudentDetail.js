@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { getStudentInfo, editStudentInfo } from "../api/StudentApi";
-import { IoMdColorWand, IoIosTrash } from "react-icons/io";
+
 const WebStudentDetail = () => {
   const { id } = useParams();
   const [studentPersonalInfo, setStudentPersonalInfo] = useState({});
   const [originalStudentPersonalInfo, setOriginalStudentPersonalInfo] =
     useState({});
   const [lectureInfo, setLectureInfo] = useState([]);
-  const [taskInfo, setTaskInfo] = useState([]);
   const [lectureCount, setLectureCount] = useState(0);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [grades, setGrades] = useState(["M3", "H1", "H2", "H3"]);
+  const [sections, setSections] = useState([]); // API로부터 섹션 정보를 가져와야 함
 
   useEffect(() => {
     const fetchStudentDetail = async () => {
@@ -22,7 +23,6 @@ const WebStudentDetail = () => {
         setLectureInfo(
           response.lectureGetAllResponse.lectureGetOneResponseList
         );
-        setTaskInfo(response.taskGetAllResponse.taskGetOneResponseList);
         setLectureCount(response.lectureGetAllResponse.count);
       } catch (error) {
         console.log("학생 상세 정보 가져오는 중 오류 발생: ", error);
@@ -33,6 +33,10 @@ const WebStudentDetail = () => {
 
   const handleToggleEditMode = () => {
     setIsEditMode(!isEditMode);
+    // 수정 모드가 종료되면 원래의 정보로 복원
+    if (!isEditMode) {
+      setStudentPersonalInfo(originalStudentPersonalInfo);
+    }
   };
 
   const handleSaveChanges = async () => {
@@ -52,30 +56,24 @@ const WebStudentDetail = () => {
     }
   };
 
-  const handleCancelEdit = () => {
-    setStudentPersonalInfo(originalStudentPersonalInfo); // 원래의 값으로 복원
-    setIsEditMode(false); // 편집 모드 종료
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setStudentPersonalInfo({
+      ...studentPersonalInfo,
+      [name]: value,
+    });
   };
 
   return (
-    <div>
-      <h2>상세 정보</h2>
-      <IconDiv>
-        {isEditMode ? (
-          <>
-            <StyledSaveButton onClick={handleSaveChanges}>
-              저장
-            </StyledSaveButton>
-            <StyledCancelButton onClick={handleCancelEdit}>
-              취소
-            </StyledCancelButton>
-          </>
-        ) : (
-          <StyledColorWandIcon size={30} onClick={handleToggleEditMode} />
-        )}
-        <StyledTrashIcon size={30} />
-      </IconDiv>
-      {/* 학생 개인 정보 */}
+    <Div>
+      <Title>상세 정보</Title>
+      <Button onClick={handleToggleEditMode}>
+        {isEditMode ? "취소" : "수정"}
+      </Button>
+      {isEditMode && (
+        <Button onClick={handleSaveChanges}>저장</Button>
+      )}
+      <Guide1>학생 인적 사항</Guide1>
       <Table>
         <tbody>
           <tr>
@@ -84,32 +82,22 @@ const WebStudentDetail = () => {
               {isEditMode ? (
                 <input
                   type="text"
+                  name="name"
                   value={studentPersonalInfo.name}
-                  onChange={(e) =>
-                    setStudentPersonalInfo({
-                      ...studentPersonalInfo,
-                      name: e.target.value,
-                    })
-                  }
+                  onChange={handleInputChange}
                 />
               ) : (
                 studentPersonalInfo.name
               )}
             </td>
-          </tr>
-          <tr>
             <th>학번</th>
             <td>
               {isEditMode ? (
                 <input
                   type="text"
+                  name="id"
                   value={studentPersonalInfo.id}
-                  onChange={(e) =>
-                    setStudentPersonalInfo({
-                      ...studentPersonalInfo,
-                      id: e.target.value,
-                    })
-                  }
+                  onChange={handleInputChange}
                 />
               ) : (
                 studentPersonalInfo.id
@@ -122,33 +110,28 @@ const WebStudentDetail = () => {
               {isEditMode ? (
                 <input
                   type="text"
+                  name="school"
                   value={studentPersonalInfo.school}
-                  onChange={(e) =>
-                    setStudentPersonalInfo({
-                      ...studentPersonalInfo,
-                      school: e.target.value,
-                    })
-                  }
+                  onChange={handleInputChange}
                 />
               ) : (
                 studentPersonalInfo.school
               )}
             </td>
-          </tr>
-          <tr>
             <th>학년</th>
             <td>
               {isEditMode ? (
-                <input
-                  type="text"
+                <select
+                  name="grade"
                   value={studentPersonalInfo.grade}
-                  onChange={(e) =>
-                    setStudentPersonalInfo({
-                      ...studentPersonalInfo,
-                      grade: e.target.value,
-                    })
-                  }
-                />
+                  onChange={handleInputChange}
+                >
+                  {grades.map((grade) => (
+                    <option key={grade} value={grade}>
+                      {grade}
+                    </option>
+                  ))}
+                </select>
               ) : (
                 studentPersonalInfo.grade
               )}
@@ -160,33 +143,28 @@ const WebStudentDetail = () => {
               {isEditMode ? (
                 <input
                   type="text"
+                  name="phoneNumber"
                   value={studentPersonalInfo.phoneNumber}
-                  onChange={(e) =>
-                    setStudentPersonalInfo({
-                      ...studentPersonalInfo,
-                      phoneNumber: e.target.value,
-                    })
-                  }
+                  onChange={handleInputChange}
                 />
               ) : (
                 studentPersonalInfo.phoneNumber
               )}
             </td>
-          </tr>
-          <tr>
             <th>반</th>
             <td>
               {isEditMode ? (
-                <input
-                  type="text"
-                  value={studentPersonalInfo.sectionName}
-                  onChange={(e) =>
-                    setStudentPersonalInfo({
-                      ...studentPersonalInfo,
-                      sectionName: e.target.value,
-                    })
-                  }
-                />
+                <select
+                  name="sectionId"
+                  value={studentPersonalInfo.sectionId}
+                  onChange={handleInputChange}
+                >
+                  {sections.map((section) => (
+                    <option key={section.id} value={section.id}>
+                      {section.name}
+                    </option>
+                  ))}
+                </select>
               ) : (
                 studentPersonalInfo.sectionName
               )}
@@ -194,9 +172,8 @@ const WebStudentDetail = () => {
           </tr>
         </tbody>
       </Table>
-      {/* 수강 정보 */}
-      <h3>수강 정보</h3>
-      <p>총 강의 수: {lectureCount}</p> {/* 강의 수 출력 */}
+      <Guide2>수강 정보</Guide2>
+      <p>{studentPersonalInfo.name} 학생은 총 {lectureCount} 개의 수업을 수강 중입니다.</p>
       <Table>
         <thead>
           <tr>
@@ -217,68 +194,68 @@ const WebStudentDetail = () => {
           ))}
         </tbody>
       </Table>
-      {/* 과제 정보 */}
-      {/* <h3>과제 정보</h3>
-        <Table>
-          <thead>
-            <tr>
-              <th>과제</th>
-              <th>진행 상태</th>
-            </tr>
-          </thead>
-          <tbody>
-            {taskInfo.map((task) => (
-              <tr key={task.id}>
-                <td>{task.assignment}</td>
-                <td>{task.taskProgress}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table> */}
-    </div>
+    </Div>
   );
 };
 
-const IconDiv = styled.div`
+const Div = styled.div`
+  justify-content: center;
   display: flex;
-  justify-content: flex-end;
-  cursor: pointer;
+  flex-direction: column;
+  overflow: auto;
+  margin-top: 100px;
+  margin-left: 12.5%;
+  margin-right: 12.5%;
+`;
+
+const Title = styled.div`
+  color: #000;
+  font-family: Poppins;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 10px;
+`;
+
+const Guide1 = styled.h3`
   margin-top: 20px;
-  gap: 20px;
-  @media screen and (max-width: 768px) {
-    margin-right: 50px;
-  }
 `;
 
-const StyledColorWandIcon = styled(IoMdColorWand)`
-  cursor: pointer;
-`;
-
-const StyledTrashIcon = styled(IoIosTrash)`
-  cursor: pointer;
+const Guide2 = styled.h3`
+  margin-top: 40px;
 `;
 
 const Table = styled.table`
-  width: 100%;
+  width: 50%;
   border-collapse: collapse;
 
-  th,
+  th {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+    background-color: #f2f2f2;
+    width: 15%;
+  }
+
   td {
     padding: 8px;
     border: 1px solid #ddd;
-    text-align: left;
-  }
-
-  th {
-    background-color: #f2f2f2;
+    text-align: center;
   }
 `;
-const StyledSaveButton = styled.button`
+
+const Button = styled.button`
   cursor: pointer;
+  width: 80px;
+  height: 30px;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  font-family: Poppins;
+  font-size: 15px;
+  font-style: normal;
+  line-height: normal;
+  border: none;
+  margin-right: 10px;
 `;
 
-const StyledCancelButton = styled.button`
-  /* 버튼에 대한 스타일 지정 */
-  cursor: pointer;
-`;
 export default WebStudentDetail;

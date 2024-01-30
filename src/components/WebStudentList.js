@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { viewStudent, deleteStudent } from "../api/StudentApi";
+import AddStudentModal from "./AddStudentModal";
 
 const columns = [
   { key: "index", label: "#" },
@@ -16,9 +17,20 @@ const columns = [
 const StudentList = ({ filteredData }) => {
   const navigate = useNavigate();
   const [selectedStudents, setSelectedStudents] = useState([]);
+  const [isAddModalOpen, setAddModalOpen] = useState(false);
 
   const moveToStudentDetail = (studentId) => {
     navigate(`/student/${studentId}`);
+  };
+  const openAddModal = () => {
+    setAddModalOpen(true);
+  };
+
+  const closeAddModal = () => {
+    setAddModalOpen(false);
+  };
+  const handleAddStudent = (response) => {
+    console.log("새 학생 정보: ", response);
   };
 
   const handleCheckboxChange = (studentId) => {
@@ -52,6 +64,14 @@ const StudentList = ({ filteredData }) => {
 
   return (
     <>
+      <StyledButtonContainer>
+        <Button onClick={openAddModal}>등록</Button>
+        <Button onClick={handleDelete}>삭제</Button>
+
+        {isAddModalOpen && (
+          <AddStudentModal onClose={closeAddModal} onAdd={handleAddStudent} />
+        )}
+      </StyledButtonContainer>
       <StyledTable>
         <thead>
           <tr>
@@ -64,28 +84,25 @@ const StudentList = ({ filteredData }) => {
         <tbody>
           {filteredData.map((student, index) => (
             <StyledTr key={index}>
-              <td>
+              <StyledTd>
                 <input
                   type="checkbox"
                   checked={selectedStudents.includes(student.id)}
                   onChange={() => handleCheckboxChange(student.id)}
                 />
-              </td>
+              </StyledTd>
               {columns.map((column) => (
                 <StyledTd
                   onClick={() => moveToStudentDetail(student.id)}
                   key={column.key}
                 >
-                  {student[column.key]}
+                  {column.key === "index" ? index + 1 : student[column.key]}
                 </StyledTd>
               ))}
             </StyledTr>
           ))}
         </tbody>
       </StyledTable>
-      <DeleteButtonContainer>
-        <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
-      </DeleteButtonContainer>
     </>
   );
 };
@@ -93,10 +110,6 @@ const StudentList = ({ filteredData }) => {
 const StyledTable = styled.table`
   border-collapse: collapse;
   margin-top: 20px;
-
-  @media screen and (min-width: 768px) {
-    width: 80vw;
-  }
 `;
 
 const StyledTh = styled.th`
@@ -105,7 +118,7 @@ const StyledTh = styled.th`
   text-align: center;
   background-color: #dfdfdf;
   @media screen and (min-width: 768px) {
-    width: 80vw;
+    width: 75vw;
   }
 `;
 
@@ -115,7 +128,7 @@ const StyledTd = styled.td`
   text-align: center;
 
   @media screen and (min-width: 768px) {
-    width: 90vw;
+    width: 75vw;
   }
 `;
 
@@ -127,13 +140,25 @@ const StyledTr = styled.tr`
   }
 `;
 
-const DeleteButtonContainer = styled.div`
-  margin-top: 20px;
-  text-align: right;
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 23px;
+  margin-bottom: 20px;
 `;
 
-const DeleteButton = styled.button`
+const Button = styled.button`
+  width: 80px;
+  height: 30px;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  font-family: Poppins;
+  font-size: 15px;
+  font-style: normal;
+  line-height: normal;
   cursor: pointer;
+  border: none;
 `;
 
 export default StudentList;
