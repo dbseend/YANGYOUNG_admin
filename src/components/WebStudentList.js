@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { viewStudent } from "../api/StudentApi";
+import { viewStudent, deleteStudent } from "../api/StudentApi";
+import AddStudentModal from "./AddStudentModal";
 
 const columns = [
   { key: "index", label: "#" },
@@ -15,18 +16,66 @@ const columns = [
 
 const StudentList = ({ filteredData }) => {
   const navigate = useNavigate();
+  const [selectedStudents, setSelectedStudents] = useState([]);
+  const [isAddModalOpen, setAddModalOpen] = useState(false);
+
   const moveToStudentDetail = (studentId) => {
     navigate(`/student/${studentId}`);
   };
+  const openAddModal = () => {
+    setAddModalOpen(true);
+  };
+
+  const closeAddModal = () => {
+    setAddModalOpen(false);
+  };
+  const handleAddStudent = (response) => {
+    console.log("새 학생 정보: ", response);
+  };
+
+  const handleCheckboxChange = (studentId) => {
+    setSelectedStudents((prevSelected) => {
+      if (prevSelected.includes(studentId)) {
+        return prevSelected.filter((id) => id !== studentId);
+      } else {
+        return [...prevSelected, studentId];
+      }
+    });
+  };
+
+  const handleDelete = async () => {
+    try {
+      for (const studentId of selectedStudents) {
+        await deleteStudent(studentId);
+      }
+      // 성공적으로 삭제되면 선택된 학생들 초기화
+      setSelectedStudents([]);
+      alert("선택한 학생이 삭제되었습니다.");
+      // 삭제 후 학생 목록 갱신
+      // await viewAllStudent();
+    } catch (error) {
+      console.error("학생 삭제 중 오류 발생:", error);
+    }
+  };
+
   useEffect(() => {
     console.log(filteredData.length);
   }, [filteredData]);
 
   return (
     <>
+      <StyledButtonContainer>
+        <Button onClick={openAddModal}>등록</Button>
+        <Button onClick={handleDelete}>삭제</Button>
+
+        {isAddModalOpen && (
+          <AddStudentModal onClose={closeAddModal} onAdd={handleAddStudent} />
+        )}
+      </StyledButtonContainer>
       <StyledTable>
         <thead>
           <tr>
+            <th></th>
             {columns.map((column) => (
               <StyledTh key={column.key}>{column.label}</StyledTh>
             ))}
@@ -34,9 +83,21 @@ const StudentList = ({ filteredData }) => {
         </thead>
         <tbody>
           {filteredData.map((student, index) => (
-            <StyledTr key={index} onClick={() => moveToStudentDetail(student.id)}>
+            <StyledTr key={index}>
+              <StyledTd>
+                <input
+                  type="checkbox"
+                  checked={selectedStudents.includes(student.id)}
+                  onChange={() => handleCheckboxChange(student.id)}
+                />
+              </StyledTd>
               {columns.map((column) => (
-                <StyledTd key={column.key}>{student[column.key]}</StyledTd>
+                <StyledTd
+                  onClick={() => moveToStudentDetail(student.id)}
+                  key={column.key}
+                >
+                  {column.key === "index" ? index + 1 : student[column.key]}
+                </StyledTd>
               ))}
             </StyledTr>
           ))}
@@ -49,10 +110,6 @@ const StudentList = ({ filteredData }) => {
 const StyledTable = styled.table`
   border-collapse: collapse;
   margin-top: 20px;
-
-  @media screen and (min-width: 768px) {
-    width: 80vw;
-  }
 `;
 
 const StyledTh = styled.th`
@@ -61,7 +118,7 @@ const StyledTh = styled.th`
   text-align: center;
   background-color: #dfdfdf;
   @media screen and (min-width: 768px) {
-    width: 80vw;
+    width: 75vw;
   }
 `;
 
@@ -71,7 +128,7 @@ const StyledTd = styled.td`
   text-align: center;
 
   @media screen and (min-width: 768px) {
-    width: 90vw;
+    width: 75vw;
   }
 `;
 
@@ -82,4 +139,26 @@ const StyledTr = styled.tr`
     background-color: #f0f0f0;
   }
 `;
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 23px;
+  margin-bottom: 20px;
+`;
+
+const Button = styled.button`
+  width: 80px;
+  height: 30px;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  font-family: Poppins;
+  font-size: 15px;
+  font-style: normal;
+  line-height: normal;
+  cursor: pointer;
+  border: none;
+`;
+
 export default StudentList;

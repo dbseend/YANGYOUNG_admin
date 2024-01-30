@@ -3,11 +3,6 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import StudentList from "./WebStudentList";
 import { viewStudent } from "../api/StudentApi";
-import {
-  IoIosAddCircleOutline,
-  IoMdColorWand,
-  IoIosTrash,
-} from "react-icons/io";
 import AddStudentModal from "./AddStudentModal";
 
 const WebStudent = () => {
@@ -176,14 +171,6 @@ const WebStudent = () => {
         </SearchDiv>
 
         <Title>학생 목록</Title>
-        <IconDiv>
-          <StyledAddIcon onClick={openAddModal} size={30} />
-          {/* <StyledColorWandIcon size={30} />
-          <StyledTrashIcon size={30} /> */}
-        </IconDiv>
-        {isAddModalOpen && (
-          <AddStudentModal onClose={closeAddModal} onAdd={handleAddStudent} />
-        )}
         <TableContainer>
           {filteredData && <StudentList filteredData={filteredData} />}
         </TableContainer>
@@ -198,8 +185,8 @@ const Div = styled.div`
   flex-direction: column;
   overflow: auto;
   margin-top: 100px;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: 12.5%;
+  margin-right: 12.5%;
 `;
 
 const Title = styled.div`
@@ -284,27 +271,5 @@ const Button = styled.button`
   border: none;
 `;
 
-const IconDiv = styled.div`
-  display: flex;
-  justify-content: flex-end; /* Align icons to the right */
-  cursor: pointer;
-  margin-top: 20px;
-  gap: 20px;
-  @media screen and (max-width: 768px) {
-    margin-right: 50px;
-  }
-`;
-
-const StyledAddIcon = styled(IoIosAddCircleOutline)`
-  cursor: pointer;
-`;
-
-const StyledColorWandIcon = styled(IoMdColorWand)`
-  cursor: pointer;
-`;
-
-const StyledTrashIcon = styled(IoIosTrash)`
-  cursor: pointer;
-`;
 
 export default WebStudent;
