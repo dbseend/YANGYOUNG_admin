@@ -13,8 +13,8 @@ const WebStudentDetail = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedSection, setSelectedSection] = useState(0);
   const [selectedGrade, setSelectedGrade] = useState("");
-  const [grades, setGrades] = useState(["M3", "H1", "H2", "H3"]);
-  const [sections, setSections] = useState([1,2,3,4,5,6,7]); // API로부터 섹션 정보를 가져와야 함
+  const [grades, setGrades] = useState(["중3", "고1", "고2", "고3"]);
+  const [sections, setSections] = useState(["W","I","N","T","E","R"]); // API로부터 섹션 정보를 가져와야 함
 
   useEffect(() => {
     const fetchStudentDetail = async () => {
@@ -76,12 +76,14 @@ const WebStudentDetail = () => {
   return (
     <Div>
       <Title>상세 정보</Title>
+      <Container>
       <Button onClick={handleToggleEditMode}>
         {isEditMode ? "취소" : "수정"}
       </Button>
       {isEditMode && (
         <Button onClick={handleSaveChanges}>저장</Button>
       )}
+      </Container>
       <Guide1>학생 인적 사항</Guide1>
       <Table>
         <tbody>
@@ -217,6 +219,11 @@ const Div = styled.div`
   margin-right: 12.5%;
 `;
 
+const Container = styled.div`
+display: flex;
+flex-direction: row;
+gap: 23px;
+`
 const Title = styled.div`
   color: #000;
   font-family: Poppins;
