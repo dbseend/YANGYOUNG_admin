@@ -12,7 +12,7 @@ const WebStudentDetail = () => {
   const [lectureCount, setLectureCount] = useState(0);
   const [isEditMode, setIsEditMode] = useState(false);
   const [grades, setGrades] = useState(["M3", "H1", "H2", "H3"]);
-  const [sections, setSections] = useState([]); // API로부터 섹션 정보를 가져와야 함
+  const [sections, setSections] = useState([1,2,3,4,5,6,7]); // API로부터 섹션 정보를 가져와야 함
 
   useEffect(() => {
     const fetchStudentDetail = async () => {
@@ -41,7 +41,8 @@ const WebStudentDetail = () => {
 
   const handleSaveChanges = async () => {
     try {
-      await editStudentInfo(id, {
+      console.log("수정 전 학생 정보:", studentPersonalInfo);
+      await editStudentInfo({
         studentId: studentPersonalInfo.id,
         school: studentPersonalInfo.school,
         grade: studentPersonalInfo.grade,
@@ -50,11 +51,13 @@ const WebStudentDetail = () => {
       });
       // 학생 정보가 성공적으로 업데이트되면 편집 모드를 해제합니다.
       setIsEditMode(false);
+      console.log("수정 후 학생 정보:", studentPersonalInfo);
     } catch (error) {
       console.error("학생 정보 수정 중 오류 발생: ", error);
       // 에러 처리
     }
   };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -156,12 +159,12 @@ const WebStudentDetail = () => {
               {isEditMode ? (
                 <select
                   name="sectionId"
-                  value={studentPersonalInfo.sectionId}
+                  // value={studentPersonalInfo.sectionId}
                   onChange={handleInputChange}
                 >
                   {sections.map((section) => (
-                    <option key={section.id} value={section.id}>
-                      {section.name}
+                    <option key={section} value={section}>
+                      {section}
                     </option>
                   ))}
                 </select>
