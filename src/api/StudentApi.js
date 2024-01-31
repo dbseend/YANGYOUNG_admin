@@ -36,6 +36,7 @@ export const getStudentInfo = async (id) => {
   }
 };
 export const editStudentInfo = async (data) => {
+  console.log(data);
   try {
     const response = await axios.patch(
       process.env.REACT_APP_URL + `student`, // 요청 URL

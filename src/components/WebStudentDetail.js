@@ -11,6 +11,8 @@ const WebStudentDetail = () => {
   const [lectureInfo, setLectureInfo] = useState([]);
   const [lectureCount, setLectureCount] = useState(0);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [selectedSection, setSelectedSection] = useState(0);
+  const [selectedGrade, setSelectedGrade] = useState("");
   const [grades, setGrades] = useState(["M3", "H1", "H2", "H3"]);
   const [sections, setSections] = useState([1,2,3,4,5,6,7]); // API로부터 섹션 정보를 가져와야 함
 
@@ -45,9 +47,9 @@ const WebStudentDetail = () => {
       await editStudentInfo({
         studentId: studentPersonalInfo.id,
         school: studentPersonalInfo.school,
-        grade: studentPersonalInfo.grade,
+        grade: "M3",
         phoneNumber: studentPersonalInfo.phoneNumber,
-        sectionId: studentPersonalInfo.sectionId,
+        sectionId: parseInt(selectedSection),
       });
       // 학생 정보가 성공적으로 업데이트되면 편집 모드를 해제합니다.
       setIsEditMode(false);
@@ -65,6 +67,10 @@ const WebStudentDetail = () => {
       ...studentPersonalInfo,
       [name]: value,
     });
+  };
+
+  const handleSectionChange = (e) => {
+    setSelectedSection(e.target.value);
   };
 
   return (
@@ -160,7 +166,7 @@ const WebStudentDetail = () => {
                 <select
                   name="sectionId"
                   // value={studentPersonalInfo.sectionId}
-                  onChange={handleInputChange}
+                  onChange={handleSectionChange}
                 >
                   {sections.map((section) => (
                     <option key={section} value={section}>
