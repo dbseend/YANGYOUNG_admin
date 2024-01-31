@@ -101,7 +101,9 @@ const GlobalStyle = createGlobalStyle`
 
 const AttendanceContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  gap: 10%;
+  /* justify-content: space-between; */
   margin-top: 120px;
 `;
 
