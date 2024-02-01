@@ -137,8 +137,12 @@ const AddStudentModal = ({ onClose, onAdd }) => {
                 onChange={handleInputChange}
               >
                 <option value="">반 선택</option>
-                <option value="0">W</option>
-                <option value="1">I</option>
+                <option value="1">W</option>
+                <option value="2">I</option>
+                <option value="3">N</option>
+                <option value="4">T</option>
+                <option value="5">E</option>
+                <option value="6">R</option>
                 {/* 다른 학년 옵션들 추가 */}
               </Select>
             </FormGroup>
