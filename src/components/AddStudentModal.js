@@ -72,7 +72,7 @@ const AddStudentModal = ({ onClose, onAdd }) => {
       const response = await addStudent(studentData);
 
       // 서버에서 데이터 추가 완료 후에 처리
-      alert("학생 정보가 추가 되었습니다");
+      // alert("학생 정보가 추가 되었습니다");
 
       // 실제 추가된 학생 정보를 사용하여 onAdd 호출
       onAdd(response);

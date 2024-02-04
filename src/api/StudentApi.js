@@ -7,6 +7,7 @@ export const addStudent = async (data) => {
       data
     );
     console.log(response.data);
+    alert("학생 정보가 등록되었습니다.");
     return response.data;
   } catch (error) {
     alert("학생 인적사항 등록 중 오류가 발생했습니다");
