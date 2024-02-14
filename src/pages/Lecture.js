@@ -1,5 +1,5 @@
 import React from "react";
-import WebLecture from "../components/WebLecture";
+import WebLecture from "../components/Lecture/WebLecture";
 import WebNavbar from "../components/WebNavbar";
 
 const Lecture = () => {

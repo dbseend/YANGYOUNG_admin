@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {
   getSectionAttendanceInfo,
   postAttendanceBySection,
-} from "../api/AttendanceApi";
+} from "../../api/AttendanceApi";
 
 const AtTable = (props) => {
   const [studentInfo, setStudentInfo] = useState([]);

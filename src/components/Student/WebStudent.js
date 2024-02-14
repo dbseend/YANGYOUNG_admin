@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import StudentList from "./WebStudentList";
-import { viewStudent } from "../api/StudentApi";
+import { viewStudent } from "../../api/StudentApi";
 import AddStudentModal from "./AddStudentModal";
+import { GlobalStyle } from "../../Globalstyle";
 
 const WebStudent = () => {
   const navigate = useNavigate();
@@ -110,7 +111,7 @@ const WebStudent = () => {
 
   return (
     <>
-      <Div>
+      <GlobalStyle />
         <Title>학생 검색</Title>
         <SearchDiv>
           <OptionSelectDiv>
@@ -174,12 +175,12 @@ const WebStudent = () => {
         <TableContainer>
           {filteredData && <StudentList filteredData={filteredData} />}
         </TableContainer>
-      </Div>
+
     </>
   );
 };
 
-const Div = styled.div`
+/* const Div = styled.div`
   justify-content: center;
   display: flex;
   flex-direction: column;
@@ -187,7 +188,7 @@ const Div = styled.div`
   margin-top: 100px;
   margin-left: 12.5%;
   margin-right: 12.5%;
-`;
+`; */
 
 const Title = styled.div`
   color: #000;

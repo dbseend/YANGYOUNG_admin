@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import AtTable from "./WebAtTable";
-import { viewStudent } from "../api/StudentApi";
-
+import { viewStudent } from "../../api/StudentApi";
+import { GlobalStyle } from "../../Globalstyle";
 const Attendance = () => {
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-CA");
@@ -56,6 +56,7 @@ const Attendance = () => {
   return (
     <>
       <GlobalStyle />
+
       <AttendanceContainer>
         <AttendanceContent>
           <Title>출결관리</Title>
@@ -87,37 +88,30 @@ const Attendance = () => {
             )}
           </StyledTable>
         </StyledTableContainer>
+        
       </AttendanceContainer>
     </>
   );
 };
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-  }
-`;
 
 const AttendanceContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 10%;
-  /* justify-content: space-between; */
   margin-top: 120px;
 `;
 
 const AttendanceContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 20%;
-  margin-bottom: 90px;
+  // display: flex;
+  // flex-direction: column;
+  // margin-left: 20%;
+  // margin-bottom: 90px;
 `;
 
 const StyledTableContainer = styled.div`
-  margin-right: 200px;
-  margin-top: 39px;
-  margin-bottom: 90px;
+  // margin-right: 200px;
+  // margin-top: 39px;
+  // margin-bottom: 90px;
 `;
 
 const Title = styled.div`

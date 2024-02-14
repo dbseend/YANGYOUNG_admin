@@ -1,5 +1,5 @@
 import React from "react";
-import WebStudentDetail from "../components/WebStudentDetail";
+import WebStudentDetail from "../components/Student/WebStudentDetail";
 import WebNavbar from "../components/WebNavbar";
 
 const StudentDetail = () => {

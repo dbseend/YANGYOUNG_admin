@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
-import { viewLecture, addLecture } from "../api/LectureApi";
+import { viewLecture, addLecture } from "../../api/LectureApi";
 
 const GlobalStyle = createGlobalStyle`
   body {
