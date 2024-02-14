@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { viewStudent, deleteStudent } from "../api/StudentApi";
+import { viewStudent, deleteStudent } from "../../api/StudentApi";
 import AddStudentModal from "./AddStudentModal";
 
 const columns = [

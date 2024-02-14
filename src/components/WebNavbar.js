@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -18,7 +18,6 @@ const Navbar = () => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       const scrollThreshold = 100;
-
       setIsScrolled(scrollTop > scrollThreshold);
     };
 
@@ -42,89 +41,68 @@ const Navbar = () => {
   };
 
   return (
-    <div>
-      <GlobalStyle />
-      <NavbarContainer $scrolled={isScrolled}>
-        <Logo>양영학원 고등부</Logo>
-        <MenuList>
-          <MenuItem>
-            <NavLink
-              href="#"
-              onClick={() => moveTo("/attendance")}
-              isactive={isactive("/attendance").toString()}
-            >
-              출결관리
-            </NavLink>
-          </MenuItem>
-          <MenuItem>
-            <NavLink
-              href="#"
-              onClick={() => moveTo("/student")}
-              isactive={isactive("/student").toString()}
-            >
-              학생관리
-            </NavLink>
-          </MenuItem>
-          <MenuItem>
-            <NavLink
-              href="#"
-              onClick={() => moveTo("/lecture")}
-              isactive={isactive("/lecture").toString()}
-            >
-              수업관리
-            </NavLink>
-          </MenuItem>
-        </MenuList>
+    <NavbarContainer $scrolled={isScrolled}>
+      <Logo>양영학원 고등부</Logo>
+      <MenuList>
+        <NavLink
+          href="#"
+          onClick={() => moveTo("/attendance")}
+          isactive={isactive("/attendance").toString()}
+        >
+          출결관리
+        </NavLink>
+
+        <NavLink
+          href="#"
+          onClick={() => moveTo("/student")}
+          isactive={isactive("/student").toString()}
+        >
+          학생관리
+        </NavLink>
+
+        <NavLink
+          href="#"
+          onClick={() => moveTo("/lecture")}
+          isactive={isactive("/lecture").toString()}
+        >
+          수업관리
+        </NavLink>
         <LogoutButton onClick={onLogOutClick}>로그아웃</LogoutButton>
-      </NavbarContainer>
-    </div>
+      </MenuList>
+    </NavbarContainer>
   );
 };
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-  }
-`;
-
 const NavbarContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
   background-color: white;
+  width: 100vw;
+  height: 5%;
   padding: 10px;
   z-index: 1000;
   border-bottom: 1px solid
     ${(props) => (props.$scrolled ? "#7f8c8d" : "transparent")};
   transition: border-color 0.3s ease;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  
-  /* 스크롤 내릴 때 고정 */
-  position: fixed;
-  top: 0;
-  width: 100%;
+  gap: 60%;
 `;
-
 
 const Logo = styled.div`
   font-size: 24px;
   color: black;
   font-weight: bold;
-  margin-left: 40px;
+  margin-left: 3%;
+  min-width: 200px;
 `;
 
 const MenuList = styled.ul`
   list-style: none;
   display: flex;
-  margin-right: 40px;
-  padding: 0;
   justify-content: flex-end;
-  flex-grow: 1;
-`;
-
-const MenuItem = styled.li`
-  margin-left: 40px;
+  align-items: center;
+  gap: 40px;
 `;
 
 const NavLink = styled.a`
@@ -137,6 +115,7 @@ const NavLink = styled.a`
   &:hover {
     color: #3498db;
   }
+  min-width: 70px;
 `;
 
 const LogoutButton = styled.button`
@@ -153,6 +132,7 @@ const LogoutButton = styled.button`
   &:hover {
     background-color: #2c3e50;
   }
+  min-width: 100px;
 `;
 
 export default Navbar;
