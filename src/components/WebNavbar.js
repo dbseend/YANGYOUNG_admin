@@ -82,7 +82,7 @@ const NavbarContainer = styled.div`
   left: 0;
   background-color: white;
   width: 100vw;
-  height: 5%;
+  height: 3%;
   padding: 10px;
   z-index: 1000;
   border-bottom: 1px solid
@@ -93,12 +93,13 @@ const NavbarContainer = styled.div`
 `;
 
 const Logo = styled.div`
-  font-size: 24px;
+  font-size: 18px;
   color: black;
   font-weight: bold;
   margin-left: 3%;
-  min-width: 200px;
+  min-width: 70px;
   cursor: pointer;
+  font-family: "Poppins";
 `;
 
 const MenuList = styled.ul`
@@ -106,15 +107,15 @@ const MenuList = styled.ul`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 40px;
+  gap: 1%;
   flex-grow: 1;
-  margin-right: 3%;
+  margin-right: 5%;
 `;
 
 const NavLink = styled.a`
   text-decoration: none;
   color: black;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: ${(props) => (props.isactive === "true" ? "bold" : "normal")};
   transition: color 0.3s ease;
 
@@ -128,17 +129,18 @@ const LogoutButton = styled.button`
   background-color: black;
   color: white;
   border: none;
-  padding: 8px 12px;
-  font-size: 16px;
+  padding: 2px 7px 2px 7px;
+  line-height: 27px;
+  font-size: 13px;
   font-weight: normal;
   cursor: pointer;
   border-radius: 6px;
   transition: background-color 0.3s ease;
-  margin-right: 40px;
+  height: 31px;
   &:hover {
     background-color: #2c3e50;
   }
-  min-width: 100px;
+  min-width: 60px;
 `;
 
 export default Navbar;

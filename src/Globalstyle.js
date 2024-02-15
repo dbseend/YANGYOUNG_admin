@@ -11,6 +11,6 @@ export const GlobalStyle = createGlobalStyle`
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-color: aliceblue;
+    cursor: default;
   }
 `;

@@ -41,7 +41,7 @@ const Main = () => {
         </Head>
         <Button onClick={handleLogin}>Login</Button>
       </Container>
-      <img src={Login} />/{" "}
+      <img src={Login} />
     </>
   );
 };
