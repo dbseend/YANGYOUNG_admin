@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 import AtTable from "./WebAtTable";
 import { viewStudent } from "../../api/StudentApi";
 import { GlobalStyle } from "../../Globalstyle";
@@ -65,8 +65,6 @@ const Attendance = () => {
             <Guide>1. 날짜를 선택해주세요.</Guide>
             <DatePicker type="date" value={date} onChange={changeDate} />
           </Box>
-
-          <div>
             <Guide>2. 반을 선택해주세요.</Guide>
             <Select
               onChange={(e) => handleDropdownChange(e, "section")}
@@ -78,15 +76,12 @@ const Attendance = () => {
                 </option>
               ))}
             </Select>
-          </div>
         </AttendanceContent>
 
         <StyledTableContainer>
-          <StyledTable>
             {selectedSection && (
               <AtTable date={date} sectionId={sectionId} />
             )}
-          </StyledTable>
         </StyledTableContainer>
         
       </AttendanceContainer>
@@ -98,14 +93,15 @@ const Attendance = () => {
 const AttendanceContainer = styled.div`
   display: flex;
   flex-direction: row;
+  // justify-content: center; 
   margin-top: 120px;
+  gap: 10%;
 `;
 
 const AttendanceContent = styled.div`
-  // display: flex;
-  // flex-direction: column;
-  // margin-left: 20%;
-  // margin-bottom: 90px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 90px;
 `;
 
 const StyledTableContainer = styled.div`
@@ -155,6 +151,5 @@ const DatePicker = styled.input`
   margin-bottom: 10px;
 `;
 
-const StyledTable = styled.div``;
 
 export default Attendance;

@@ -40,9 +40,13 @@ const Navbar = () => {
     navigate(path);
   };
 
+  const onRefreshClick = () => {
+    window.location.reload(true);  // Reload the page
+  };
+
   return (
     <NavbarContainer $scrolled={isScrolled}>
-      <Logo>양영학원 고등부</Logo>
+      <Logo onClick={onRefreshClick}>양영학원 고등부</Logo>
       <MenuList>
         <NavLink
           href="#"
@@ -86,7 +90,6 @@ const NavbarContainer = styled.div`
   transition: border-color 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 60%;
 `;
 
 const Logo = styled.div`
@@ -95,6 +98,7 @@ const Logo = styled.div`
   font-weight: bold;
   margin-left: 3%;
   min-width: 200px;
+  cursor: pointer;
 `;
 
 const MenuList = styled.ul`
@@ -103,6 +107,8 @@ const MenuList = styled.ul`
   justify-content: flex-end;
   align-items: center;
   gap: 40px;
+  flex-grow: 1;
+  margin-right: 3%;
 `;
 
 const NavLink = styled.a`
