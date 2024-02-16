@@ -71,6 +71,14 @@ const Navbar = () => {
         >
           수업관리
         </NavLink>
+
+        <NavLink
+          href="#"
+          onClick={() => moveTo("/section")}
+          isactive={isactive("/section").toString()}
+        >
+          분반관리
+        </NavLink>
         <LogoutButton onClick={onLogOutClick}>로그아웃</LogoutButton>
       </MenuList>
     </NavbarContainer>

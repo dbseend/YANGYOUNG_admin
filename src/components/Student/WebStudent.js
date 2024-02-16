@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import StudentList from "./WebStudentList";
 import { viewStudent } from "../../api/StudentApi";
-import AddStudentModal from "./AddStudentModal";
+import { Title } from "../Attendance/WebAttendance";
 import { GlobalStyle } from "../../Globalstyle";
 
 const WebStudent = () => {
@@ -17,7 +17,6 @@ const WebStudent = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [sectionList, setSectionList] = useState([]);
   const [gradeList, setGradeList] = useState([]);
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
 
   useEffect(() => {
     viewAllStudent();
@@ -41,17 +40,6 @@ const WebStudent = () => {
     }
   };
 
-  const openAddModal = () => {
-    setAddModalOpen(true);
-  };
-
-  const closeAddModal = () => {
-    setAddModalOpen(false);
-  };
-
-  const handleAddStudent = (response) => {
-    console.log("새 학생 정보: ", response);
-  };
   const search = () => {
     const filteredData = studentList.filter((item) => {
       const nameMatch =
@@ -110,95 +98,88 @@ const WebStudent = () => {
   };
 
   return (
-    <>
+    <Div>
       <GlobalStyle />
-        <Title>학생 검색</Title>
-        <SearchDiv>
-          <OptionSelectDiv>
-            <Label>학생 이름</Label>
-            <PostInput
-              value={searchTerm}
-              onChange={getValue}
-              onKeyDown={handleKeyPress}
-              placeholder="학생 이름으로 검색"
-            />
+      <Title>학생 검색</Title>
+      <SearchDiv>
+        <OptionSelectDiv>
+          <Label className="first-child">학생 이름</Label>
+          <PostInput
+            value={searchTerm}
+            onChange={getValue}
+            onKeyDown={handleKeyPress}
+            placeholder="학생 이름으로 검색"
+          />
 
-            <Label>반</Label>
-            <OptionSelect
-              onChange={(e) => handleDropdownChange(e, "section")}
-              value={selectedSection || ""}
-            >
-              <option disabled value="">
-                반 선택
+          <Label className="second-child">반</Label>
+          <OptionSelect
+            onChange={(e) => handleDropdownChange(e, "section")}
+            value={selectedSection || ""}
+          >
+            <option disabled value="">
+              반 선택
+            </option>
+            {sectionList.map((banOption) => (
+              <option key={banOption} value={banOption}>
+                {banOption}
               </option>
-              {sectionList.map((banOption) => (
-                <option key={banOption} value={banOption}>
-                  {banOption}
-                </option>
-              ))}
-            </OptionSelect>
+            ))}
+          </OptionSelect>
 
-            <Label>학교</Label>
-            <PostInput
-              type="text"
-              value={selectedSchool}
-              onChange={handleSchoolChange}
-              onKeyDown={handleKeyPress}
-              placeholder="학교 이름으로 검색"
-            />
+          <Label className="third-child">학교</Label>
+          <PostInput
+            type="text"
+            value={selectedSchool}
+            onChange={handleSchoolChange}
+            onKeyDown={handleKeyPress}
+            placeholder="학교 이름으로 검색"
+          />
 
-            <Label>학년</Label>
-            <OptionSelect
-              onChange={(e) => handleDropdownChange(e, "grade")}
-              value={selectedGrade || ""}
-            >
-              <option disabled value="">
-                학년 선택
+          <Label className="fourth-child">학년</Label>
+          <OptionSelect
+            onChange={(e) => handleDropdownChange(e, "grade")}
+            value={selectedGrade || ""}
+          >
+            <option disabled value="">
+              학년 선택
+            </option>
+            {gradeList.map((banOption) => (
+              <option key={banOption} value={banOption}>
+                {banOption}
               </option>
-              {gradeList.map((banOption) => (
-                <option key={banOption} value={banOption}>
-                  {banOption}
-                </option>
-              ))}
-            </OptionSelect>
-          </OptionSelectDiv>
+            ))}
+          </OptionSelect>
+        </OptionSelectDiv>
 
-          <SearchButtonDiv>
-            <Button onClick={handleReset}>초기화</Button>
-            <Button onClick={search} onKeyPress={handleKeyPress}>
-              검색
-            </Button>
-          </SearchButtonDiv>
-        </SearchDiv>
+        <SearchButtonDiv>
+          <Button onClick={handleReset}>초기화</Button>
+          <Button onClick={search} onKeyPress={handleKeyPress}>
+            검색
+          </Button>
+        </SearchButtonDiv>
+      </SearchDiv>
 
-        <Title>학생 목록</Title>
-        <TableContainer>
-          {filteredData && <StudentList filteredData={filteredData} />}
-        </TableContainer>
-
-    </>
+      <Title>학생 목록</Title>
+      <TableContainer>
+        {filteredData && <StudentList filteredData={filteredData} />}
+      </TableContainer>
+    </Div>
   );
 };
 
-/* const Div = styled.div`
+const Div = styled.div`
   justify-content: center;
   display: flex;
   flex-direction: column;
   overflow: auto;
   margin-top: 100px;
-  margin-left: 12.5%;
-  margin-right: 12.5%;
-`; */
-
-const Title = styled.div`
-  color: #000;
-  font-family: Poppins;
-  font-size: 40px;
-  font-weight: 700;
-  margin-bottom: 10px;
+  margin-left: 5%;
+  margin-right: 5%;
+  align-items: flex-start;
 `;
 
 const TableContainer = styled.div`
+width: 69%;
   margin-bottom: 200px;
 `;
 
@@ -213,7 +194,23 @@ const Label = styled.label`
   font-family: Poppins;
   font-size: 20px;
   line-height: 40px;
+  text-align: left;
   margin-right: 10px;
+  &.first-child {
+    min-width: 75px;
+  }
+
+  &.second-child {
+    min-width: 20px;
+  }
+
+  &.third-child {
+    min-width: 35px;
+  }
+
+  &.fourth-child {
+    min-width: 35px;
+  }
 `;
 
 const PostInput = styled.input`
@@ -272,5 +269,5 @@ const Button = styled.button`
   border: none;
 `;
 
-
+export { Button };
 export default WebStudent;

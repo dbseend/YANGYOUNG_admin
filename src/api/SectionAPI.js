@@ -6,6 +6,7 @@ export const viewSection = async () => {
         process.env.REACT_APP_URL + `section`
       );
       console.log(response.data);
+      return response;
     } catch (error) {
       console.error(error);
     }

@@ -78,7 +78,6 @@ const AtTable = (props) => {
       <Button onClick={postAttendance}>저장</Button>
 
       <StyledTable>
-
         <thead>
           <tr>
             {columns.map((column) => (
@@ -154,17 +153,16 @@ const AtTable = (props) => {
               </tr>
             ))}
         </tbody>
-
       </StyledTable>
-      </Div>
+    </Div>
   );
 };
 
 const Div = styled.div`
-display: flex;
-flex-direction: column;
-align-items: flex-end;
-overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  overflow: auto;
 `;
 
 const StyledTable = styled.table`
@@ -178,6 +176,8 @@ const StyledTable = styled.table`
 `;
 
 const StyledTh = styled.th`
+  //표 길어질 경우 th 고정 - 아직 test 안해봄
+  position: sticky;
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
@@ -185,7 +185,7 @@ const StyledTh = styled.th`
   @media screen and (min-width: 768px) {
     width: auto;
   }
-  min-width: 50px;
+  min-width: 45px;
 `;
 
 const StyledTd = styled.td`
