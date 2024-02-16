@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {
   getSectionAttendanceInfo,
   postAttendanceBySection,
-} from "../api/AttendanceApi";
+} from "../../api/AttendanceApi";
 
 const AtTable = (props) => {
   const [studentInfo, setStudentInfo] = useState([]);
@@ -17,28 +17,29 @@ const AtTable = (props) => {
     { key: "note", label: "비고" },
   ];
 
-  
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const data = await getSectionAttendanceInfo(sectionId, date);
-      if (data && data.ssAttendanceGetOneResponseList) {
-        const sortedStudentInfo = data.ssAttendanceGetOneResponseList.sort((a, b) => {
-          if (a.studentResponse.name < b.studentResponse.name) return -1;
-          if (a.studentResponse.name > b.studentResponse.name) return 1;
-          return 0;
-        });
-        setStudentInfo(sortedStudentInfo);
-      } else {
-        alert("반 정보가 없습니다.");
-        setStudentInfo([]); // 반 정보가 없는 경우 빈 배열로 설정
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getSectionAttendanceInfo(sectionId, date);
+        if (data && data.ssAttendanceGetOneResponseList) {
+          const sortedStudentInfo = data.ssAttendanceGetOneResponseList.sort(
+            (a, b) => {
+              if (a.studentResponse.name < b.studentResponse.name) return -1;
+              if (a.studentResponse.name > b.studentResponse.name) return 1;
+              return 0;
+            }
+          );
+          setStudentInfo(sortedStudentInfo);
+        } else {
+          alert("반 정보가 없습니다.");
+          setStudentInfo([]); // 반 정보가 없는 경우 빈 배열로 설정
+        }
+      } catch (error) {
+        console.log("반 정보를 불러오는 도중 에러 발생:", error);
       }
-    } catch (error) {
-      console.log("반 정보를 불러오는 도중 에러 발생:", error);
-    }
-  };
-  fetchData();
-}, [sectionId, date]);
+    };
+    fetchData();
+  }, [sectionId, date]);
 
   const handleRadioChange = (index, value) => {
     setStudentInfo((prevStudentInfo) => {
@@ -73,10 +74,11 @@ useEffect(() => {
   };
 
   return (
-    <>
+    <Div>
       <Button onClick={postAttendance}>저장</Button>
 
       <StyledTable>
+
         <thead>
           <tr>
             {columns.map((column) => (
@@ -84,6 +86,7 @@ useEffect(() => {
             ))}
           </tr>
         </thead>
+
         <tbody>
           {studentInfo &&
             studentInfo.map((data, index) => (
@@ -94,7 +97,7 @@ useEffect(() => {
                       index + 1
                     ) : column.key === "attendance" ? (
                       <AttendanceLabel>
-                        <label>
+                        <Label>
                           <input
                             type="radio"
                             value="ATTENDANCE"
@@ -106,8 +109,8 @@ useEffect(() => {
                             }
                           />
                           출석
-                        </label>
-                        <label>
+                        </Label>
+                        <Label>
                           <input
                             type="radio"
                             value="LATENESS"
@@ -119,8 +122,8 @@ useEffect(() => {
                             }
                           />
                           지각
-                        </label>
-                        <label>
+                        </Label>
+                        <Label>
                           <input
                             type="radio"
                             value="ABSENCE"
@@ -130,11 +133,10 @@ useEffect(() => {
                             onChange={() => handleRadioChange(index, "ABSENCE")}
                           />
                           결석
-                        </label>
+                        </Label>
                       </AttendanceLabel>
                     ) : column.key === "note" ? (
                       <InputNote
-                        type="text"
                         value={data.note}
                         onChange={(e) =>
                           handleNoteChange(index, e.target.value)
@@ -152,10 +154,18 @@ useEffect(() => {
               </tr>
             ))}
         </tbody>
+
       </StyledTable>
-    </>
+      </Div>
   );
 };
+
+const Div = styled.div`
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+overflow: auto;
+`;
 
 const StyledTable = styled.table`
   width: 100%;
@@ -175,6 +185,7 @@ const StyledTh = styled.th`
   @media screen and (min-width: 768px) {
     width: auto;
   }
+  min-width: 50px;
 `;
 
 const StyledTd = styled.td`
@@ -187,12 +198,12 @@ const StyledTd = styled.td`
   }
 `;
 
-const InputNote = styled.input`
+const InputNote = styled.textarea`
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
-  border: 1px solid;
-  border-color: lightgray;
+  resize: none;
+  border: transparent;
 `;
 
 const AttendanceLabel = styled.label`
@@ -202,10 +213,13 @@ const AttendanceLabel = styled.label`
   input {
     cursor: pointer;
   }
-  /* 라디오 버튼과 텍스트 간격 조절 */
   label {
-    padding: 0 8px; /* 좌우 패딩을 조정하여 간격을 조절합니다. */
+    padding: 0 8px;
   }
+`;
+
+const Label = styled.label`
+  min-width: 55px;
 `;
 
 const Button = styled.button`

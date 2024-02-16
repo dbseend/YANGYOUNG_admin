@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "./App.css";
 import Main from "./pages/Main";
 import Attendance from "./pages/Attendance";
 import Student from "./pages/Student";

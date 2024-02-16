@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { getStudentInfo, editStudentInfo } from "../api/StudentApi";
+import { getStudentInfo, editStudentInfo } from "../../api/StudentApi";
 
 const WebStudentDetail = () => {
   const { id } = useParams();

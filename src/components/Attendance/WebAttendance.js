@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 import AtTable from "./WebAtTable";
-import { viewStudent } from "../api/StudentApi";
-
+import { viewStudent } from "../../api/StudentApi";
+import { GlobalStyle } from "../../Globalstyle";
 const Attendance = () => {
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-CA");
@@ -56,82 +56,60 @@ const Attendance = () => {
   return (
     <>
       <GlobalStyle />
+
       <AttendanceContainer>
         <AttendanceContent>
           <Title>출결관리</Title>
-
-          <Box>
-            <Guide>1. 날짜를 선택해주세요.</Guide>
-            <DatePicker type="date" value={date} onChange={changeDate} />
-          </Box>
-
-          <div>
-            <Guide>2. 반을 선택해주세요.</Guide>
-            <Select
-              onChange={(e) => handleDropdownChange(e, "section")}
-              value={selectedSection}
-            >
-              {sectionList.map((banOption) => (
-                <option key={banOption} value={banOption}>
-                  {banOption}
-                </option>
-              ))}
-            </Select>
-          </div>
+          <Guide>1. 날짜를 선택해주세요.</Guide>
+          <DatePicker type="date" value={date} onChange={changeDate} />
+          <Guide>2. 반을 선택해주세요.</Guide>
+          <Select
+            onChange={(e) => handleDropdownChange(e, "section")}
+            value={selectedSection}
+          >
+            {sectionList.map((banOption) => (
+              <option key={banOption} value={banOption}>
+                {banOption}
+              </option>
+            ))}
+          </Select>
         </AttendanceContent>
 
         <StyledTableContainer>
-          <StyledTable>
-            {selectedSection && (
-              <AtTable date={date} sectionId={sectionId} />
-            )}
-          </StyledTable>
+          {selectedSection && <AtTable date={date} sectionId={sectionId} />}
         </StyledTableContainer>
       </AttendanceContainer>
     </>
   );
 };
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-  }
-`;
-
 const AttendanceContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 10%;
-  /* justify-content: space-between; */
+  justify-content: space-around;
   margin-top: 120px;
+  gap: 10%;
 `;
 
 const AttendanceContent = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 20%;
   margin-bottom: 90px;
+  align-items: flex-start;
 `;
 
 const StyledTableContainer = styled.div`
-  margin-right: 200px;
-  margin-top: 39px;
+margin-top: 49px;
   margin-bottom: 90px;
 `;
 
 const Title = styled.div`
   color: #000;
   font-family: Poppins;
-  font-size: 40px;
+  font-size: 30px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-bottom: 20px;
-`;
-
-const Box = styled.div`
-  margin-bottom: 13px;
 `;
 
 const Guide = styled.div`
@@ -142,6 +120,7 @@ const Guide = styled.div`
   font-weight: 400;
   line-height: normal;
   margin-bottom: 10px;
+  margin-top: 30px;
 `;
 
 const Select = styled.select`
@@ -160,7 +139,5 @@ const DatePicker = styled.input`
   width: 320px;
   margin-bottom: 10px;
 `;
-
-const StyledTable = styled.div``;
 
 export default Attendance;

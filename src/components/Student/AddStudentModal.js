@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { addStudent } from "../api/StudentApi";
+import { addStudent } from "../../api/StudentApi";
 
 const AddStudentModal = ({ onClose, onAdd }) => {
   const [newStudent, setNewStudent] = useState({
