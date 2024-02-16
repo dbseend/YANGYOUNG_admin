@@ -78,6 +78,7 @@ const AtTable = (props) => {
       <Button onClick={postAttendance}>저장</Button>
 
       <StyledTable>
+
         <thead>
           <tr>
             {columns.map((column) => (
@@ -153,6 +154,7 @@ const AtTable = (props) => {
               </tr>
             ))}
         </tbody>
+
       </StyledTable>
     </Div>
   );
