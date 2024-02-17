@@ -10,11 +10,13 @@ const WebStudentDetail = () => {
     useState({});
   const [lectureInfo, setLectureInfo] = useState([]);
   const [lectureCount, setLectureCount] = useState(0);
+  const [taskInfo, setTaskInfo] = useState([]);
+  const [taskCount, setTaskCount] = useState(0);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedSection, setSelectedSection] = useState(0);
   const [selectedGrade, setSelectedGrade] = useState("");
   const [grades, setGrades] = useState(["중3", "고1", "고2", "고3"]);
-  const [sections, setSections] = useState(["W","I","N","T","E","R"]); // API로부터 섹션 정보를 가져와야 함
+  const [sections, setSections] = useState(["A","I","N","T","E","R"]); // API로부터 섹션 정보를 가져와야 함
 
   useEffect(() => {
     const fetchStudentDetail = async () => {
@@ -25,7 +27,11 @@ const WebStudentDetail = () => {
         setLectureInfo(
           response.lectureGetAllResponse.lectureGetOneResponseList
         );
+        setTaskInfo(
+          response.lectureGetAllResponse.lectureGetOneResponseList
+        );
         setLectureCount(response.lectureGetAllResponse.count);
+        setTaskCount(response.lectureGetAllResponse.count);
       } catch (error) {
         console.log("학생 상세 정보 가져오는 중 오류 발생: ", error);
       }
@@ -71,6 +77,10 @@ const WebStudentDetail = () => {
 
   const handleSectionChange = (e) => {
     setSelectedSection(e.target.value);
+  };
+
+  const handleGradeChange = (e) => {
+    setSelectedGrade(e.target.value);
   };
 
   return (
@@ -135,7 +145,7 @@ const WebStudentDetail = () => {
                 <select
                   name="grade"
                   value={studentPersonalInfo.grade}
-                  onChange={handleInputChange}
+                  onChange={handleGradeChange}
                 >
                   {grades.map((grade) => (
                     <option key={grade} value={grade}>
@@ -183,6 +193,7 @@ const WebStudentDetail = () => {
           </tr>
         </tbody>
       </Table>
+
       <Guide2>수강 정보</Guide2>
       <p>{studentPersonalInfo.name} 학생은 총 {lectureCount} 개의 수업을 수강 중입니다.</p>
       <Table>
@@ -201,6 +212,23 @@ const WebStudentDetail = () => {
               <td>{lecture.day}</td>
               <td>{lecture.time}</td>
               <td>{lecture.room}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
+      <Guide2>과제 정보</Guide2>
+      <p>{studentPersonalInfo.name} 학생은 총 {taskCount} 개의 할 일이 있습니다.</p>
+      <Table>
+        <thead>
+          <th>과제명</th>
+          <th>상태</th>
+        </thead>
+        <tbody>
+          {taskInfo.map((task) => (
+            <tr key={task.id}>
+              <td>{task.taskName}</td>
+              <td>{task.taskProgress}</td>
             </tr>
           ))}
         </tbody>
