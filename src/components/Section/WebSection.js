@@ -8,26 +8,19 @@ const Section = () => {
   const [sectionCount, setSectionCount] = useState(0);
 
   useEffect(() => {
-    viewAllSection();
-  }, []);
-
-  const viewAllSection = async () => {
-    try {
-        const { sectionResponseList, size } = await viewSection();
+    async function fetchData() {
+      try {
+        const response = await viewSection();
+        const { sectionResponseList, size } = response.data;
         setSectionList(sectionResponseList);
         setSectionCount(size);
       } catch (error) {
         console.error("Error fetching lecture data:", error);
       }
-    // try {
-    //   const response = await viewSection();
-    //   console.log(response);
-    //   setSectionList(response && response.sectionResponseList);
-    //   setSectionCount(response && response.size);
-    // } catch (error) {
-    //   console.error("분반 데이터를 가져오는 중 오류 발생:", error);
-    // }
-  };
+    }
+    fetchData();
+  }, []);
+
   return (
     <>
       <GlobalStyle />
@@ -35,8 +28,7 @@ const Section = () => {
         <TableContainer>
           <h1>분반 정보</h1>
           <p> 개설 분반 수: {sectionCount}</p>
-
-          {/* <StyledTable>
+          <StyledTable>
             <StyledThead>
               <tr>
                 <StyledTh>ID</StyledTh>
@@ -53,7 +45,7 @@ const Section = () => {
                 </HoverTr>
               ))}
             </tbody>
-          </StyledTable> */}
+          </StyledTable> 
         </TableContainer>
       </Div>
     </>
