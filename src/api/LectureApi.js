@@ -23,3 +23,15 @@ export const addLecture = async (data) => {
     throw error;
   }
 };
+
+export const getOneLecture = async (id) => {
+  try {
+    const response = await axios.patch(
+      process.env.REACT_APP_URL + `lecture/${id}`
+    );
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
