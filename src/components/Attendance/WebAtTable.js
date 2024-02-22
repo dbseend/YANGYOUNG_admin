@@ -238,4 +238,5 @@ const Button = styled.button`
     background-color: #2c3e50;
   }
 `;
+export {Button};
 export default AtTable;
