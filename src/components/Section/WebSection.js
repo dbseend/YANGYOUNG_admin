@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { viewSection } from "../../api/SectionAPI";
+import AddSectionModal from "./AddSectionModal";
+import { Button } from "../Attendance/WebAtTable";
+
 
 const Section = () => {
   const [sectionList, setSectionList] = useState([]);
   const [sectionCount, setSectionCount] = useState(0);
+  const [selectedStudents, setSelectedStudents] = useState([]);
+  const [isAddModalOpen, setAddModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -21,13 +26,30 @@ const Section = () => {
     fetchData();
   }, []);
 
+  const openAddModal = () => {
+    setAddModalOpen(true);
+  };
+
+  const closeAddModal = () => {
+    setAddModalOpen(false);
+  };
+
+  const handleAddSection = (response) => {
+    console.log("새 분반 정보: ", response);
+  };
   return (
     <>
       <GlobalStyle />
       <Div>
+        
         <TableContainer>
+        
           <h1>분반 정보</h1>
           <p> 개설 분반 수: {sectionCount}</p>
+          <Button onClick={openAddModal}>등록</Button>
+        {isAddModalOpen && (
+          <AddSectionModal onClose={closeAddModal} onAdd={handleAddSection} />
+        )}
           <StyledTable>
             <StyledThead>
               <tr>
@@ -67,7 +89,7 @@ const Div = styled.div`
 `;
 
 const TableContainer = styled.div`
-  margin: 20px;
+margin: 20px;
 `;
 
 const StyledTable = styled.table`
