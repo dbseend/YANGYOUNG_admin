@@ -53,6 +53,7 @@ const StudentList = ({ filteredData }) => {
       alert("선택한 학생이 삭제되었습니다.");
       // 삭제 후 학생 목록 갱신
       // await viewAllStudent();
+      window.location.reload(true); // Reload the page
     } catch (error) {
       console.error("학생 삭제 중 오류 발생:", error);
     }
@@ -75,7 +76,6 @@ const StudentList = ({ filteredData }) => {
       <StyledTable>
         <thead>
           <tr>
-            <th></th>
             {columns.map((column) => (
               <StyledTh key={column.key}>{column.label}</StyledTh>
             ))}
@@ -84,13 +84,6 @@ const StudentList = ({ filteredData }) => {
         <tbody>
           {filteredData.map((student, index) => (
             <StyledTr key={index}>
-              <StyledTd>
-                <input
-                  type="checkbox"
-                  checked={selectedStudents.includes(student.id)}
-                  onChange={() => handleCheckboxChange(student.id)}
-                />
-              </StyledTd>
               {columns.map((column) => (
                 <StyledTd
                   onClick={() => moveToStudentDetail(student.id)}
@@ -99,6 +92,13 @@ const StudentList = ({ filteredData }) => {
                   {column.key === "index" ? index + 1 : student[column.key]}
                 </StyledTd>
               ))}
+              <StyledTd>
+                <input
+                  type="checkbox"
+                  checked={selectedStudents.includes(student.id)}
+                  onChange={() => handleCheckboxChange(student.id)}
+                />
+              </StyledTd>
             </StyledTr>
           ))}
         </tbody>
@@ -126,6 +126,7 @@ const StyledTd = styled.td`
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
+  align-items: center;
 
   @media screen and (min-width: 768px) {
     width: 75vw;

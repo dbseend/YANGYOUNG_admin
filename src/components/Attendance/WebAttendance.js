@@ -86,8 +86,10 @@ const Attendance = () => {
 const AttendanceContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
+  /* align-items: flex-start; */
   margin-top: 120px;
+  /* margin-left: 5%; */
   gap: 10%;
 `;
 
@@ -99,7 +101,7 @@ const AttendanceContent = styled.div`
 `;
 
 const StyledTableContainer = styled.div`
-margin-top: 49px;
+  margin-top: 49px;
   margin-bottom: 90px;
 `;
 
@@ -139,5 +141,5 @@ const DatePicker = styled.input`
   width: 320px;
   margin-bottom: 10px;
 `;
-
+export { Title };
 export default Attendance;
