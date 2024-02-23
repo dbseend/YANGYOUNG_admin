@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { viewSection } from "../../api/SectionAPI";
+import AddSectionModal from "./AddSectionModal";
+import { Button } from "../Attendance/WebAtTable";
+
 
 const Section = () => {
   const [sectionList, setSectionList] = useState([]);
   const [sectionCount, setSectionCount] = useState(0);
-
+  const [selectedStudents, setSelectedStudents] = useState([]);
+  const [isAddModalOpen, setAddModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const handleRowClick = (sectionId) => {
+    moveToSectionDetail(sectionId);
+  };
+  const moveToSectionDetail = (sectionId) => {
+    navigate(`/section/${sectionId}`);
+  }
   useEffect(() => {
     async function fetchData() {
       try {
@@ -21,31 +33,48 @@ const Section = () => {
     fetchData();
   }, []);
 
+  const openAddModal = () => {
+    setAddModalOpen(true);
+  };
+
+  const closeAddModal = () => {
+    setAddModalOpen(false);
+  };
+
+  const handleAddSection = (response) => {
+    console.log("새 분반 정보: ", response);
+  };
   return (
     <>
       <GlobalStyle />
       <Div>
+        
         <TableContainer>
+        
           <h1>분반 정보</h1>
           <p> 개설 분반 수: {sectionCount}</p>
+          <Button onClick={openAddModal}>등록</Button>
+        {isAddModalOpen && (
+          <AddSectionModal onClose={closeAddModal} onAdd={handleAddSection} />
+        )}
           <StyledTable>
-            <StyledThead>
-              <tr>
-                <StyledTh>ID</StyledTh>
-                <StyledTh>반 이름</StyledTh>
-                <StyledTh>담임</StyledTh>
-              </tr>
-            </StyledThead>
-            <tbody>
-              {sectionList.map((section) => (
-                <HoverTr key={section.id}>
-                  <StyledTd>{section.id}</StyledTd>
-                  <StyledTd>{section.name}</StyledTd>
-                  <StyledTd>{section.teacher}</StyledTd>
-                </HoverTr>
-              ))}
-            </tbody>
-          </StyledTable> 
+        <StyledThead>
+          <tr>
+            <StyledTh>ID</StyledTh>
+            <StyledTh>반 이름</StyledTh>
+            <StyledTh>담임</StyledTh>
+          </tr>
+        </StyledThead>
+        <tbody>
+          {sectionList.map((section) => (
+            <HoverTr key={section.id} onClick={() => handleRowClick(section.id)}>
+              <StyledTd>{section.id}</StyledTd>
+              <StyledTd>{section.name}</StyledTd>
+              <StyledTd>{section.teacher}</StyledTd>
+            </HoverTr>
+          ))}
+        </tbody>
+      </StyledTable>
         </TableContainer>
       </Div>
     </>
@@ -67,7 +96,7 @@ const Div = styled.div`
 `;
 
 const TableContainer = styled.div`
-  margin: 20px;
+margin: 20px;
 `;
 
 const StyledTable = styled.table`

@@ -3,6 +3,7 @@ import axios from "axios";
 export const viewLecture = async () => {
   try {
     const response = await axios.get(process.env.REACT_APP_URL + `lecture`);
+    console.log (response.data);
     return response.data;
   } catch (error) {
     console.error(error);

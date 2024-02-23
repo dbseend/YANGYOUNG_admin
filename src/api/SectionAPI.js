@@ -12,10 +12,10 @@ export const viewSection = async () => {
     }
   };
 
-export const addSection = async (name, teacher) => {
+export const addSection = async (sectionData) => {
   const data = {
-    name: name,
-    teacher: teacher
+    name: sectionData.name,
+    teacher: sectionData.teacher
   };
   try {
     const response = await axios.post(
@@ -28,13 +28,13 @@ export const addSection = async (name, teacher) => {
   }
 };
 
-export const getOneSection = async (id) => {
+export const getOneSection = async (sectionId) => {
   try {
     const response = await axios.get (
-      process.env.REACT_APP_URL + `section/${id}`
-    )
+      process.env.REACT_APP_URL + `section/lecture/${sectionId}`
+    );
     return response;
   } catch (error) {
-    console.error(error);
+    console.error (error);
   }
 };
