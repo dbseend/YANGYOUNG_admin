@@ -6,6 +6,7 @@ import { getOneSection } from "../../api/SectionAPI";
 const WebSectionDetail = () => {
   const { id } = useParams();
   const [sectionOneInfo, setSectionOneInfo] = useState([]);
+  const [sectionLectureCount, setSectionLectureCount] = useState(0);
   const {sectionLectureInfo, setSectionLectureInfo} = useState({});
   const [studentPersonalInfo, setStudentPersonalInfo] = useState({});
   const [originalStudentPersonalInfo, setOriginalStudentPersonalInfo] =
@@ -26,7 +27,7 @@ const WebSectionDetail = () => {
         const response = await getOneSection(id);
         console.log (response.data);
         setSectionOneInfo(response.data.sectionResponse);
-        setSectionLectureInfo(response.data.lectureGetAllResponse);
+        // setSectionLectureInfo(response.data.lectureGetAllResponse);
       } catch (error) {
         console.log("학생 상세 정보 가져오는 중 오류 발생: ", error);
       }
@@ -139,7 +140,7 @@ const WebSectionDetail = () => {
       </Table>
 
       <Guide2>수강 정보</Guide2>
-      <p>{sectionOneInfo.name} 분반에는 총 개의 수업이 배정되어 있습니다.</p>
+      <p>{sectionOneInfo.name} 분반에는 총 {sectionLectureCount}개의 수업이 배정되어 있습니다.</p>
       <Table>
         <thead>
           <tr>

@@ -3,56 +3,6 @@ import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { viewLecture, addLecture } from "../../api/LectureApi";
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-  }
-`;
-
-const Div = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  overflow: auto;
-`;
-
-const TableContainer = styled.div`
-  margin: 20px;
-`;
-
-const StyledTable = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 20px;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledThead = styled.thead`
-  background-color: #f2f2f2;
-`;
-
-const StyledTh = styled.th`
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-`;
-
-const StyledTd = styled.td`
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-`;
-
-const HoverTr = styled.tr`
-  &:hover {
-    background-color: #f5f5f5;
-  }
-`;
 
 const Lecture = () => {
   const [lectureList, setLectureList] = useState([]);
@@ -67,18 +17,19 @@ const Lecture = () => {
   const [lectureTeacher, setLectureTeacher] = useState("");
 
   useEffect(() => {
-    viewAllLecture();
-  }, []);
-
-  const viewAllLecture = async () => {
-    try {
-      const { lectureGetOneResponseList, count } = await viewLecture();
-      setLectureList(lectureGetOneResponseList);
-      setTotalCount(count);
-    } catch (error) {
-      console.error("Error fetching lecture data:", error);
+    async function fetchData() {
+      try {
+        const response = await viewLecture();
+        console.log (response.data);
+        const { lectureGetOneResponseList, count } = response.data;
+        setLectureList(lectureGetOneResponseList);
+        setTotalCount(count);
+      } catch (error) {
+        console.error("Error fetching lecture data:", error);
+      }
     }
-  };
+    fetchData();
+  }, []);
 
   const postLecture = async (e) => {
     e.preventDefault();
@@ -292,4 +243,55 @@ const Lecture = () => {
   );
 };
 
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+  }
+`;
+
+const Div = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  overflow: auto;
+`;
+
+const TableContainer = styled.div`
+  margin: 20px;
+`;
+
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const StyledThead = styled.thead`
+  background-color: #f2f2f2;
+`;
+
+const StyledTh = styled.th`
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+`;
+
+const StyledTd = styled.td`
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+`;
+
+const HoverTr = styled.tr`
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
 export default Lecture;

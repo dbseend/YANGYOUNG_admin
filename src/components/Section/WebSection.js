@@ -13,7 +13,9 @@ const Section = () => {
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const navigate = useNavigate();
-
+  const handleRowClick = (sectionId) => {
+    moveToSectionDetail(sectionId);
+  };
   const moveToSectionDetail = (sectionId) => {
     navigate(`/section/${sectionId}`);
   }
@@ -56,23 +58,23 @@ const Section = () => {
           <AddSectionModal onClose={closeAddModal} onAdd={handleAddSection} />
         )}
           <StyledTable>
-            <StyledThead>
-              <tr>
-                <StyledTh>ID</StyledTh>
-                <StyledTh>반 이름</StyledTh>
-                <StyledTh>담임</StyledTh>
-              </tr>
-            </StyledThead>
-            <tbody>
-              {sectionList.map((section) => (
-                <HoverTr onClick={moveToSectionDetail(section.id)} key={section.id}>
-                  <StyledTd >{section.id}</StyledTd>
-                  <StyledTd>{section.name}</StyledTd>
-                  <StyledTd>{section.teacher}</StyledTd>
-                </HoverTr>
-              ))}
-            </tbody>
-          </StyledTable> 
+        <StyledThead>
+          <tr>
+            <StyledTh>ID</StyledTh>
+            <StyledTh>반 이름</StyledTh>
+            <StyledTh>담임</StyledTh>
+          </tr>
+        </StyledThead>
+        <tbody>
+          {sectionList.map((section) => (
+            <HoverTr key={section.id} onClick={() => handleRowClick(section.id)}>
+              <StyledTd>{section.id}</StyledTd>
+              <StyledTd>{section.name}</StyledTd>
+              <StyledTd>{section.teacher}</StyledTd>
+            </HoverTr>
+          ))}
+        </tbody>
+      </StyledTable>
         </TableContainer>
       </Div>
     </>
