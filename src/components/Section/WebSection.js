@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { viewSection } from "../../api/SectionAPI";
@@ -11,7 +12,11 @@ const Section = () => {
   const [sectionCount, setSectionCount] = useState(0);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
+  const navigate = useNavigate();
 
+  const moveToSectionDetail = (sectionId) => {
+    navigate(`/section/${sectionId}`);
+  }
   useEffect(() => {
     async function fetchData() {
       try {
@@ -60,8 +65,8 @@ const Section = () => {
             </StyledThead>
             <tbody>
               {sectionList.map((section) => (
-                <HoverTr key={section.id}>
-                  <StyledTd>{section.id}</StyledTd>
+                <HoverTr onClick={moveToSectionDetail(section.id)} key={section.id}>
+                  <StyledTd >{section.id}</StyledTd>
                   <StyledTd>{section.name}</StyledTd>
                   <StyledTd>{section.teacher}</StyledTd>
                 </HoverTr>

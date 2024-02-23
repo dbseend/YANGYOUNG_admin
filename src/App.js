@@ -7,6 +7,7 @@ import Student from "./pages/Student";
 import Lecture from "./pages/Lecture";
 import StudentDetail from "./pages/StudentDetail";
 import Section from "./pages/Section";
+import SectionDetail from "./pages/SectionDetail";
 
 function App() {
   if (process.env.NODE_ENV === "production") {
@@ -26,6 +27,8 @@ function App() {
         <Route path="/lecture" element={<Lecture />} />
         <Route path="/student/:id" element={<StudentDetail />} />
         <Route path="/section" element={<Section />} />
+        <Route path="/section/:id" element={<SectionDetail />} />
+
       </Routes>
     </Router>
   );

@@ -1,6 +1,14 @@
 import axios from "axios";
 
-export const addStudent = async (data) => {
+export const addStudent = async (studentData) => {
+  const data = {
+    id: studentData.id,
+    name: studentData.name,
+    school: studentData.school,
+    grade: studentData.grade,
+    phoneNumber: studentData.phoneNumber,
+    sectionId: studentData.sectionId
+  };
   try {
     const response = await axios.post(
       process.env.REACT_APP_URL + `student`,
