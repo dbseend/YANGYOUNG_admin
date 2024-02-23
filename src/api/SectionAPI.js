@@ -28,27 +28,13 @@ export const addSection = async (sectionData) => {
   }
 };
 
-export const getOneSection = async (id) => {
+export const getOneSection = async (sectionId) => {
   try {
-    const responseA = await axios.get (
-      process.env.REACT_APP_URL + `section/${id}`
-    )
-    const responseB = await axios.get (
-      process.env.REACT_APP_URL + `section/lecture/${id}`
-    )
-    return [responseA, responseB];
+    const response = await axios.get (
+      process.env.REACT_APP_URL + `section/lecture/${sectionId}`
+    );
+    return response;
   } catch (error) {
-    console.error(error);
+    console.error (error);
   }
 };
-
-// export const getOneSectionLecture = async (id) => {
-//   try {
-//     const response = await axios.get (
-//       process.env.REACT_APP_URL + `section/lecture/${id}`
-//     )
-//     return response;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
