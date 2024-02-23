@@ -56,12 +56,12 @@ const AddSectionModal = ({ onClose, onAdd }) => {
       <ModalWrapper>
         <ModalContent>
           <ModalHeader>
-            <h2>학생 등록</h2>
+            <h2>분반 등록</h2>
             <CloseButton onClick={onClose}>닫기</CloseButton>
           </ModalHeader>
           <Form>
             <FormGroup>
-              <Label>이름</Label>
+              <Label>분반명</Label>
               <Input
                 type="text"
                 name="name"

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { getStudentInfo, editStudentInfo } from "../../api/StudentApi";
+import {
+  getStudentInfo,
+  editStudentInfo,
+  viewStudent,
+} from "../../api/StudentApi";
 
 const WebStudentDetail = () => {
   const { id } = useParams();
@@ -13,10 +17,23 @@ const WebStudentDetail = () => {
   const [taskInfo, setTaskInfo] = useState([]);
   const [taskCount, setTaskCount] = useState(0);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [selectedSection, setSelectedSection] = useState(0);
   const [selectedGrade, setSelectedGrade] = useState("");
   const [grades, setGrades] = useState(["중3", "고1", "고2", "고3"]);
-  const [sections, setSections] = useState(["A","I","N","T","E","R"]); // API로부터 섹션 정보를 가져와야 함
+  const [selectedSection, setSelectedSection] = useState(""); // 초기값을 빈 문자열로 설정
+  const [sectionId, setSectionId] = useState(0);
+  const [sectionList, setSection] = useState([]);
+
+  const viewAllStudent = async () => {
+    try {
+      const response = await viewStudent();
+
+      setSection(response.sectionList);
+
+      console.log(response);
+    } catch (error) {
+      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchStudentDetail = async () => {
@@ -27,9 +44,7 @@ const WebStudentDetail = () => {
         setLectureInfo(
           response.lectureGetAllResponse.lectureGetOneResponseList
         );
-        setTaskInfo(
-          response.lectureGetAllResponse.lectureGetOneResponseList
-        );
+        setTaskInfo(response.lectureGetAllResponse.lectureGetOneResponseList);
         setLectureCount(response.lectureGetAllResponse.count);
         setTaskCount(response.lectureGetAllResponse.count);
       } catch (error) {
@@ -37,8 +52,18 @@ const WebStudentDetail = () => {
       }
     };
     fetchStudentDetail();
+    viewAllStudent();
   }, [id]);
 
+  const handleDropdownChange = (e, type) => {
+    const selectedValue = e.target.value;
+
+    if (type === "section") {
+      setSelectedSection(selectedValue);
+      const sectionId = sectionList.indexOf(selectedValue) + 1;
+      setSectionId(sectionId);
+    }
+  };
   const handleToggleEditMode = () => {
     setIsEditMode(!isEditMode);
     // 수정 모드가 종료되면 원래의 정보로 복원
@@ -65,7 +90,6 @@ const WebStudentDetail = () => {
       // 에러 처리
     }
   };
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -87,12 +111,10 @@ const WebStudentDetail = () => {
     <Div>
       <Title>상세 정보</Title>
       <Container>
-      <Button onClick={handleToggleEditMode}>
-        {isEditMode ? "취소" : "수정"}
-      </Button>
-      {isEditMode && (
-        <Button onClick={handleSaveChanges}>저장</Button>
-      )}
+        <Button onClick={handleToggleEditMode}>
+          {isEditMode ? "취소" : "수정"}
+        </Button>
+        {isEditMode && <Button onClick={handleSaveChanges}>저장</Button>}
       </Container>
       <Guide1>학생 인적 사항</Guide1>
       <Table>
@@ -173,7 +195,25 @@ const WebStudentDetail = () => {
               )}
             </td>
             <th>반</th>
+
             <td>
+              {isEditMode ? (
+                <select
+                  onChange={(e) => handleDropdownChange(e, "section")}
+                  value={selectedSection}
+                >
+                  {sectionList.map((banOption) => (
+                    <option key={banOption} value={banOption}>
+                      {banOption}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                studentPersonalInfo.sectionName
+              )}
+            </td>
+
+            {/* <td>
               {isEditMode ? (
                 <select
                   name="sectionId"
@@ -189,13 +229,16 @@ const WebStudentDetail = () => {
               ) : (
                 studentPersonalInfo.sectionName
               )}
-            </td>
+            </td> */}
           </tr>
         </tbody>
       </Table>
 
       <Guide2>수강 정보</Guide2>
-      <p>{studentPersonalInfo.name} 학생은 총 {lectureCount} 개의 수업을 수강 중입니다.</p>
+      <p>
+        {studentPersonalInfo.name} 학생은 총 {lectureCount} 개의 수업을 수강
+        중입니다.
+      </p>
       <Table>
         <thead>
           <tr>
@@ -218,7 +261,9 @@ const WebStudentDetail = () => {
       </Table>
 
       <Guide2>과제 정보</Guide2>
-      <p>{studentPersonalInfo.name} 학생은 총 {taskCount} 개의 할 일이 있습니다.</p>
+      <p>
+        {studentPersonalInfo.name} 학생은 총 {taskCount} 개의 할 일이 있습니다.
+      </p>
       <Table>
         <thead>
           <th>과제명</th>
@@ -248,10 +293,10 @@ const Div = styled.div`
 `;
 
 const Container = styled.div`
-display: flex;
-flex-direction: row;
-gap: 23px;
-`
+  display: flex;
+  flex-direction: row;
+  gap: 23px;
+`;
 const Title = styled.div`
   color: #000;
   font-family: Poppins;
@@ -301,5 +346,4 @@ const Button = styled.button`
   border: none;
   margin-right: 10px;
 `;
-
 export default WebStudentDetail;
