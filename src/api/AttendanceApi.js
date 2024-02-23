@@ -5,11 +5,11 @@ export const getSectionAttendanceInfo = async (id, date) => {
   console.log("date: ", date);
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_URL}section/attendance/${id}`,
+      process.env.REACT_APP_URL + `attendance/section/${id}`,
       {
         params: {
           sectionId: id,
-          date: date,
+          selectedDay: date,
         },
       }
     );
