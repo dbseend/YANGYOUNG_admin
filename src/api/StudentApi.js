@@ -7,7 +7,7 @@ export const addStudent = async (studentData) => {
     school: studentData.school,
     grade: studentData.grade,
     phoneNumber: studentData.phoneNumber,
-    sectionId: studentData.sectionId
+    sectionId: studentData.sectionId,
   };
   try {
     const response = await axios.post(
@@ -44,18 +44,19 @@ export const getStudentInfo = async (id) => {
     throw error;
   }
 };
-export const editStudentInfo = async (data) => {
-  console.log(data);
+
+export const editStudentInfo = async (studentData) => {
+  const data = {
+    studentId: studentData.id,
+    school: studentData.school,
+    grade: studentData.grade,
+    phoneNumber: studentData.phoneNumber,
+    sectionId: studentData.sectionId,
+  };
   try {
     const response = await axios.patch(
-      process.env.REACT_APP_URL + `student`, // 요청 URL
-      data, // 요청 본문 데이터
-      {
-        headers: {
-          "Content-Type": "application/json", // 요청 본문의 Content-Type 설정
-          Accept: "application/json", // 서버로부터 JSON 형식의 응답을 받기 위한 Accept 헤더 설정
-        },
-      }
+      process.env.REACT_APP_URL + `student`,
+      data
     );
     return response.data; // 응답 데이터 반환
   } catch (error) {
@@ -66,10 +67,7 @@ export const editStudentInfo = async (data) => {
 
 export const deleteStudent = async (id) => {
   try {
-    await axios.delete(
-      process.env.REACT_APP_URL + `student/${id}`,
-      id
-    );
+    await axios.delete(process.env.REACT_APP_URL + `student/${id}`, id);
   } catch (error) {
     console.error("학생 삭제 중 오류 발생:", error);
     throw error;
