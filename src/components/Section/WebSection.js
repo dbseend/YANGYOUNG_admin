@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { viewSection, deleteSection } from "../../api/SectionAPI";
-import { viewSection, deleteSection } from "../../api/SectionAPI";
 import AddSectionModal from "./AddSectionModal";
-import { Button,StyledButtonContainer } from "../Student/WebStudentList";
+import { Button, StyledButtonContainer } from "../Student/WebStudentList";
 
 const columns = [
   { key: "index", label: "순번" },
@@ -20,10 +19,7 @@ const Section = () => {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [selectedSections, setSelectedSections] = useState([]);
 
-  const [selectedSections, setSelectedSections] = useState([]);
-
   const navigate = useNavigate();
-
 
   const handleRowClick = (sectionId) => {
     moveToSectionDetail(sectionId);
@@ -57,7 +53,7 @@ const Section = () => {
   };
   const handleDeleteSelectedSections = async () => {
     console.log("Delete selected sections:", selectedSections);
-    try {      
+    try {
       // Promise.all로 여러개의 section을 삭제
       selectedSections.map(async (sectionId) => {
         console.log("Delete sectionId: ", sectionId);
@@ -93,16 +89,15 @@ const Section = () => {
           <h1>분반 정보</h1>
           <p> 개설 분반 수: {sectionCount}</p>
           <StyledButtonContainer>
-          <Button onClick={openAddModal}>등록</Button>
+            <Button onClick={openAddModal}>등록</Button>
             {isAddModalOpen && (
-              <AddSectionModal onClose={closeAddModal} onAdd={handleAddSection} />
+              <AddSectionModal
+                onClose={closeAddModal}
+                onAdd={handleAddSection}
+              />
             )}
-          {/* 삭제 버튼 추가 */}
-          <Button onClick={handleDeleteSelectedSections}>
-            선택한 분반 삭제
-          </Button>
 
-          <Button onClick={handleDeleteSelectedSections}>삭제</Button>
+            <Button onClick={handleDeleteSelectedSections}>삭제</Button>
           </StyledButtonContainer>
           <StyledTable>
             <thead>

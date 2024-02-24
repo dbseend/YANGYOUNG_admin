@@ -32,10 +32,10 @@ const WebSectionDetail = () => {
           <tr>
             <th>분반명</th>
             <td>{sectionOneInfo.name}</td>
-            <th>id</th>
-            <td>{sectionOneInfo.id}</td>
             <th>담임</th>
             <td>{sectionOneInfo.teacher}</td>
+            <th>id</th>
+            <td>{sectionOneInfo.id}</td>
           </tr>
         </tbody>
       </Table>
