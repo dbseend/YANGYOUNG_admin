@@ -51,18 +51,22 @@ const Section = () => {
       }
     });
   };
-  const handleDeleteSelectedSections = async (sectionId) => {
-    try {
-      for (const secitonId of selectedSections) {
+  const handleDeleteSelectedSections = async () => {
+    console.log("Delete selected sections:", selectedSections);
+    try {      
+      // Promise.all로 여러개의 section을 삭제
+      selectedSections.map(async (sectionId) => {
+        console.log("Delete sectionId: ", sectionId);
+        console.log(typeof sectionId);
         await deleteSection(sectionId);
-      }
+      });
+
       setSelectedSections([]);
-      alert("선택한 학생이 삭제되었습니다.");
-      // window.location.reload(true);
+      alert("선택한 분반이 삭제되었습니다.");
+      window.location.reload(true);
     } catch (error) {
       console.error("분반 삭제 중 오류 발생", error);
     }
-    deleteSection(sectionId);
     console.log("Delete selected lectures:", selectedSections);
   };
 
