@@ -4,13 +4,13 @@ import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { viewSection, deleteSection } from "../../api/SectionAPI";
 import AddSectionModal from "./AddSectionModal";
-import { Button } from "../Attendance/WebAtTable";
+import { Button,StyledButtonContainer } from "../Student/WebStudentList";
 
 const columns = [
-  { key: "index", label: "#" },
-  { key: "id", label: "ID" },
+  { key: "index", label: "순번" },
   { key: "name", label: "반 이름" },
   { key: "teacher", label: "담임" },
+  { key: "id", label: "분반코드" },
 ];
 
 const Section = () => {
@@ -84,15 +84,13 @@ const Section = () => {
         <TableContainer>
           <h1>분반 정보</h1>
           <p> 개설 분반 수: {sectionCount}</p>
+          <StyledButtonContainer>
           <Button onClick={openAddModal}>등록</Button>
           {isAddModalOpen && (
             <AddSectionModal onClose={closeAddModal} onAdd={handleAddSection} />
           )}
-          {/* 삭제 버튼 추가 */}
-          <Button onClick={handleDeleteSelectedSections}>
-            선택한 분반 삭제
-          </Button>
-
+          <Button onClick={handleDeleteSelectedSections}>삭제</Button>
+          </StyledButtonContainer>
           <StyledTable>
             <thead>
               <tr>
@@ -139,12 +137,17 @@ const GlobalStyle = createGlobalStyle`
 const Div = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0;
   overflow: auto;
+  margin-top: 60px;
+  margin-left: 5%;
+  margin-right: 5%;
+  /* align-items: flex-start; */
 `;
 
 const TableContainer = styled.div`
   margin: 20px;
+  width: 49%;
+  margin-bottom: 200px;
 `;
 const StyledTable = styled.table`
   border-collapse: collapse;
