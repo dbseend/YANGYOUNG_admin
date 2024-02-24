@@ -31,10 +31,21 @@ export const addSection = async (sectionData) => {
 export const getOneSection = async (sectionId) => {
   try {
     const response = await axios.get (
-      process.env.REACT_APP_URL + `section/lecture/${sectionId}`
+      process.env.REACT_APP_URL + `section/${sectionId}`
     );
     return response;
   } catch (error) {
     console.error (error);
+  }
+};
+
+export const deleteSection = async (sectionId) => {
+  try {
+    const response = await axios.delete(
+      process.env.REACT_APP_URL + `section/${sectionId}`
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
   }
 };
