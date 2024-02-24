@@ -5,13 +5,13 @@ import { deleteStudent } from "../../api/StudentApi";
 import AddStudentModal from "./AddStudentModal";
 
 const columns = [
-  { key: "index", label: "#" },
+  { key: "index", label: "순번" },
   { key: "name", label: "이름" },
   { key: "school", label: "학교" },
   { key: "grade", label: "학년" },
   { key: "sectionName", label: "반" },
   { key: "phoneNumber", label: "연락처" },
-  { key: "id", label: "아이디" },
+  { key: "id", label: "학번" },
 ];
 
 const StudentList = ({ filteredData }) => {
@@ -161,5 +161,5 @@ const Button = styled.button`
   cursor: pointer;
   border: none;
 `;
-
+export {Button, StyledButtonContainer};
 export default StudentList;

@@ -1,4 +1,3 @@
-import { type } from "@testing-library/user-event/dist/type";
 import axios from "axios";
 
 export const viewSection = async () => {
@@ -38,12 +37,10 @@ export const getOneSection = async (sectionId) => {
   }
 };
 
-// 분반 삭제
 export const deleteSection = async (sectionId) => {
   try {
     const response = await axios.delete(
       process.env.REACT_APP_URL + `section/${sectionId}`
-      // `http://localhost:8080/api/v0/section/${sectionId}`
     );
     return response;
   } catch (error) {
