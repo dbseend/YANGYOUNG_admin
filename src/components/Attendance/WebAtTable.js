@@ -17,15 +17,17 @@ const AtTable = (props) => {
     { key: "note", label: "비고" },
   ];
 
+  const formattedDate = date + "T03:03:17";
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getSectionAttendanceInfo(sectionId, date);
-        if (data && data.ssAttendanceGetOneResponseList) {
-          const sortedStudentInfo = data.ssAttendanceGetOneResponseList.sort(
+        const data = await getSectionAttendanceInfo(sectionId, formattedDate);
+        if (data && data.attendanceList) {
+          const sortedStudentInfo = data.attendanceList.sort(
             (a, b) => {
-              if (a.studentResponse.name < b.studentResponse.name) return -1;
-              if (a.studentResponse.name > b.studentResponse.name) return 1;
+              if (a.studentName < b.studentName) return -1;
+              if (a.studentName > b.studentName) return 1;
               return 0;
             }
           );
@@ -143,9 +145,9 @@ const AtTable = (props) => {
                         }
                       />
                     ) : column.key === "name" ? (
-                      data.studentResponse.name
+                      data.studentName
                     ) : column.key === "phoneNumber" ? (
-                      data.studentResponse.phoneNumber
+                      data.sectionName
                     ) : (
                       ""
                     )}
