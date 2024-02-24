@@ -2,23 +2,31 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
-import { viewSection } from "../../api/SectionAPI";
+import { viewSection, deleteSection } from "../../api/SectionAPI";
 import AddSectionModal from "./AddSectionModal";
 import { Button } from "../Attendance/WebAtTable";
 
+const columns = [
+  { key: "index", label: "#" },
+  { key: "id", label: "ID" },
+  { key: "sectionName", label: "반 이름" },
+  { key: "teacher", label: "담임" },
+];
 
 const Section = () => {
   const [sectionList, setSectionList] = useState([]);
   const [sectionCount, setSectionCount] = useState(0);
-  const [selectedStudents, setSelectedStudents] = useState([]);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
+  const [selectedSections, setSelectedSections] = useState([]);
+
   const navigate = useNavigate();
+
   const handleRowClick = (sectionId) => {
     moveToSectionDetail(sectionId);
   };
   const moveToSectionDetail = (sectionId) => {
     navigate(`/section/${sectionId}`);
-  }
+  };
   useEffect(() => {
     async function fetchData() {
       try {
@@ -32,6 +40,31 @@ const Section = () => {
     }
     fetchData();
   }, []);
+
+  const handleCheckboxChange = (sectionId) => {
+    // Toggle the selection state of the lecture
+    setSelectedSections((prevSelectedSections) => {
+      if (prevSelectedSections.includes(sectionId)) {
+        return prevSelectedSections.filter((id) => id !== sectionId);
+      } else {
+        return [...prevSelectedSections, sectionId];
+      }
+    });
+  };
+  const handleDeleteSelectedSections = async (sectionId) => {
+    try {
+      for (const secitonId of selectedSections) {
+        await deleteSection(sectionId);
+      }
+      setSelectedSections([]);
+      alert("선택한 학생이 삭제되었습니다.");
+      // window.location.reload(true);
+    } catch (error) {
+      console.error("분반 삭제 중 오류 발생", error);
+    }
+    deleteSection(sectionId);
+    console.log("Delete selected lectures:", selectedSections);
+  };
 
   const openAddModal = () => {
     setAddModalOpen(true);
@@ -48,33 +81,48 @@ const Section = () => {
     <>
       <GlobalStyle />
       <Div>
-        
         <TableContainer>
-        
           <h1>분반 정보</h1>
           <p> 개설 분반 수: {sectionCount}</p>
           <Button onClick={openAddModal}>등록</Button>
-        {isAddModalOpen && (
-          <AddSectionModal onClose={closeAddModal} onAdd={handleAddSection} />
-        )}
+          {isAddModalOpen && (
+            <AddSectionModal onClose={closeAddModal} onAdd={handleAddSection} />
+          )}
+          {/* 삭제 버튼 추가 */}
+          <Button onClick={handleDeleteSelectedSections}>
+            선택한 분반 삭제
+          </Button>
+
           <StyledTable>
-        <StyledThead>
-          <tr>
-            <StyledTh>ID</StyledTh>
-            <StyledTh>반 이름</StyledTh>
-            <StyledTh>담임</StyledTh>
-          </tr>
-        </StyledThead>
-        <tbody>
-          {sectionList.map((section) => (
-            <HoverTr key={section.id} onClick={() => handleRowClick(section.id)}>
-              <StyledTd>{section.id}</StyledTd>
-              <StyledTd>{section.name}</StyledTd>
-              <StyledTd>{section.teacher}</StyledTd>
-            </HoverTr>
-          ))}
-        </tbody>
-      </StyledTable>
+            <thead>
+              <tr>
+                {columns.map((column) => (
+                  <StyledTh key={column.key}>{column.label}</StyledTh>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {sectionList.map((section, index) => (
+                <StyledTr key={index}>
+                  {columns.map((column) => (
+                    <StyledTd
+                      onClick={() => moveToSectionDetail(section.id)}
+                      key={column.key}
+                    >
+                      {column.key === "index" ? index + 1 : section[column.key]}
+                    </StyledTd>
+                  ))}
+                  <StyledTd>
+                    <input
+                      type="checkbox"
+                      checked={selectedSections.includes(section.id)}
+                      onChange={() => handleCheckboxChange(section.id)}
+                    />
+                  </StyledTd>
+                </StyledTr>
+              ))}
+            </tbody>
+          </StyledTable>
         </TableContainer>
       </Div>
     </>
@@ -96,7 +144,7 @@ const Div = styled.div`
 `;
 
 const TableContainer = styled.div`
-margin: 20px;
+  margin: 20px;
 `;
 
 const StyledTable = styled.table`
@@ -131,5 +179,11 @@ const HoverTr = styled.tr`
     background-color: #f5f5f5;
   }
 `;
+const StyledTr = styled.tr`
+  cursor: pointer;
 
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
 export default Section;
