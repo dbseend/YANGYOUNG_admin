@@ -4,11 +4,16 @@ import {
   getSectionAttendanceInfo,
   postAttendanceBySection,
 } from "../../api/AttendanceApi";
+import {formatDate} from "../../util/DateFormat";
 
 const AtTable = (props) => {
   const [studentInfo, setStudentInfo] = useState([]);
   const sectionId = props.sectionId;
   const date = props.date;
+  const formattedDate = new Date(`${date}T00:00:00`);
+  const formattedDateString = formattedDate.toISOString().slice(0, 19);
+  const formattedDateForUpdate = formatDate(formattedDate);
+
   const columns = [
     { key: "num", label: "" },
     { key: "name", label: "이름" },
@@ -17,12 +22,12 @@ const AtTable = (props) => {
     { key: "note", label: "비고" },
   ];
 
-  const formattedDate = date + "T03:03:17";
+  // const formattedDate = date + "T03:03:17";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getSectionAttendanceInfo(sectionId, formattedDate);
+        const data = await getSectionAttendanceInfo(sectionId, formattedDateString);
         if (data && data.attendanceList) {
           const sortedStudentInfo = data.attendanceList.sort(
             (a, b) => {
@@ -62,9 +67,9 @@ const AtTable = (props) => {
   const postAttendance = () => {
     const data = {
       sectionId: sectionId,
-      selectedDay: date,
-      attendancePostRequestList: studentInfo.map((info) => ({
-        studentId: info.studentResponse.id,
+      attendanceUpdateRequestList: studentInfo.map((info) => ({
+        attendedDateTime: formattedDateString,
+        studentId: info.studentId,
         attendanceType: info.attendanceType,
         note: info.note,
       })),
