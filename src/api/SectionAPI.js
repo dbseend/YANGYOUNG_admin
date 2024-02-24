@@ -40,10 +40,11 @@ export const getOneSection = async (sectionId) => {
 };
 
 export const deleteSection = async (sectionId) => {
-  try{
-    const response = await axios.delete (
+  try {
+    const response = await axios.delete(
       process.env.REACT_APP_URL + `section/${sectionId}`
     );
+    return response;
   } catch (error) {
     console.error(error);
   }

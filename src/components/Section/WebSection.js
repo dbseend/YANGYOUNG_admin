@@ -9,7 +9,7 @@ import { Button } from "../Attendance/WebAtTable";
 const columns = [
   { key: "index", label: "#" },
   { key: "id", label: "ID" },
-  { key: "sectionName", label: "반 이름" },
+  { key: "name", label: "반 이름" },
   { key: "teacher", label: "담임" },
 ];
 
@@ -146,39 +146,32 @@ const Div = styled.div`
 const TableContainer = styled.div`
   margin: 20px;
 `;
-
 const StyledTable = styled.table`
   border-collapse: collapse;
-  width: 100%;
   margin-top: 20px;
 `;
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledThead = styled.thead`
-  background-color: #f2f2f2;
-`;
-
 const StyledTh = styled.th`
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  background-color: #dfdfdf;
+  @media screen and (min-width: 768px) {
+    width: 75vw;
+  }
 `;
 
 const StyledTd = styled.td`
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-`;
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  align-items: center;
 
-const HoverTr = styled.tr`
-  &:hover {
-    background-color: #f5f5f5;
+  @media screen and (min-width: 768px) {
+    width: 75vw;
   }
 `;
+
 const StyledTr = styled.tr`
   cursor: pointer;
 
