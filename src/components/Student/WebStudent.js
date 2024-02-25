@@ -121,7 +121,7 @@ const WebStudent = () => {
             </option>
             {sectionList.map((banOption) => (
               <option key={banOption} value={banOption}>
-                {banOption}
+                {banOption.name}
               </option>
             ))}
           </OptionSelect>

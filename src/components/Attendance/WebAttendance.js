@@ -28,7 +28,7 @@ const Attendance = () => {
     setDate(e.target.value);
   };
 
-  const handleDropdownChange = (e, type) => {
+  const handleDropdownChange = (e) => {
     if (!date) {
       alert("날짜를 먼저 선택하세요.");
       return;
