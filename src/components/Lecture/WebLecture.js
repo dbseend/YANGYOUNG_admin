@@ -12,6 +12,7 @@ const columns = [
   { key: "day", label: "요일" },
   { key: "time", label: "시간" },
   { key: "room", label: "강의실" },
+  { key: "teacher", label: "선생님" },
   { key: "id", label: "분반코드" },
 ];
 

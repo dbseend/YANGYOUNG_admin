@@ -1,16 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import styled from "styled-components";
 import { addLecture } from "../../api/LectureApi";
+import { OptionSelect } from "../Student/WebStudent";
+import { viewStudent } from "../../api/StudentApi";
 
 const AddLectureModal = ({ onClose, onAdd }) => {
-    const [newLecture, setNewLecture] = useState( {
-        name: "",
-        teacher: "",
-        day: "MONDAY",
-        time: "T1",
-        room: "R1"
-    });
+  const [newLecture, setNewLecture] = useState({
+    name: "",
+    teacher: "",
+    day: "MONDAY",
+    time: "T1",
+    room: "R1",
+    sectionId: 0,
+  });
+  const [selectedSection, setSelectedSection] = useState("");
+//   const [sectionList, setSectionList] = useState([]);
+  const [sectionId, setSectionId] = useState(0);
+  const [sectionList, setSection] = useState([]);
 
+  useEffect(() => {
+    viewAllStudent();
+  }, []);
+
+  const viewAllStudent = async () => {
+    try {
+      const response = await viewStudent();
+
+      setSection(response.sectionList);
+
+      console.log(response);
+    } catch (error) {
+      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
+    }
+  };
   const handleNameChange = (e) => {
     setNewLecture((prevLecture) => ({
       ...prevLecture,
@@ -44,8 +66,22 @@ const AddLectureModal = ({ onClose, onAdd }) => {
       room: e.target.value,
     }));
   };
-  
+  const handleSectionIdChange = (e) => {
+    setNewLecture((prevLecture) => ({
+      ...prevLecture,
+      room: e.target.value,
+    }));
+  };
 
+  const handleDropdownChange = (e, type) => {
+    const selectedValue = e.target.value;
+
+    if (type === "section") {
+      setSelectedSection(selectedValue);
+      const sectionId = sectionList.indexOf(selectedValue) + 1;
+      setSectionId(sectionId);
+    }
+  };
   const handleAddLecture = async (e) => {
     try {
       e.preventDefault();
@@ -60,6 +96,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
         day: newLecture.day,
         time: newLecture.time,
         room: newLecture.room,
+        sectionId: newLecture.sectionId,
       };
 
       console.log("전송 데이터:", lectureData);
@@ -72,7 +109,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
       // 실제 추가된 학생 정보를 사용하여 onAdd 호출
       onAdd(response);
       onClose();
-    //   window.location.reload(true); // Reload the page
+      //   window.location.reload(true); // Reload the page
     } catch (error) {
       alert("에러 발생: " + error.message);
       console.error("Error adding lecture:", error);
@@ -114,7 +151,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
                 type="text"
                 name="day"
                 // value={newLecture.day}
-                value = "MONDAY"
+                value="MONDAY"
                 onChange={handleDayChange}
               />
             </FormGroup>
@@ -134,9 +171,21 @@ const AddLectureModal = ({ onClose, onAdd }) => {
                 type="text"
                 name="room"
                 // value={newLecture.room}
-                value ="R1"
+                value="R1"
                 onChange={handleRoomChange}
               />
+            </FormGroup>
+            <FormGroup>
+            <Select
+            onChange={(e) => handleDropdownChange(e, "section")}
+            value={selectedSection}
+          >
+            {sectionList.map((banOption) => (
+              <option key={banOption} value={banOption}>
+                {banOption}
+              </option>
+            ))}
+          </Select>
             </FormGroup>
 
             <AddButton onClick={handleAddLecture}>등록</AddButton>
@@ -152,7 +201,7 @@ const ModalOverlay = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 50%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;

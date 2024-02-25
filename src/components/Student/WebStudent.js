@@ -269,5 +269,5 @@ const Button = styled.button`
   border: none;
 `;
 
-export { Button };
+export { Button, OptionSelect };
 export default WebStudent;
