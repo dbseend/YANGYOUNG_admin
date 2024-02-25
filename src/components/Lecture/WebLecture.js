@@ -8,10 +8,11 @@ import { Button, StyledButtonContainer } from "../Student/WebStudentList";
 
 const columns = [
   { key: "index", label: "순번" },
-  { key: "name", label: "수업명" },
+  { key: "name", label: "반 이름" },
   { key: "day", label: "요일" },
   { key: "time", label: "시간" },
   { key: "room", label: "강의실" },
+  { key: "id", label: "분반코드" },
 ];
 
 const Lecture = () => {
@@ -24,8 +25,8 @@ const Lecture = () => {
     async function fetchData() {
       try {
         const response = await viewLecture();
-        const { lectureGetOneResponseList, count } = response;
-        setLectureList(lectureGetOneResponseList);
+        const { lectureResponseList, count } = response;
+        setLectureList(lectureResponseList);
         setLectureCount(count);
       } catch (error) {
         console.error("Error fetching lecture data:", error);
@@ -81,7 +82,7 @@ const Lecture = () => {
   };
 
   const handleAddLecture = (response) => {
-    console.log("새 분반 정보: ", response);
+    console.log("새 수업 정보: ", response);
   };
 
   return (
@@ -102,18 +103,19 @@ const Lecture = () => {
 
             <Button onClick={handleDeleteSelectedLectures}>삭제</Button>
           </StyledButtonContainer>
+
           <StyledTable>
             <thead>
               <tr>
-                {columns.map((column) => (
+                {columns && columns.map((column) => (
                   <StyledTh key={column.key}>{column.label}</StyledTh>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {lectureList.map((lecture, index) => (
+              {lectureList && lectureList.map((lecture, index) => (
                 <StyledTr key={index}>
-                  {columns.map((column) => (
+                  {columns && columns.map((column) => (
                     <StyledTd
                       onClick={() => moveToLectureDetail(lecture.id)}
                       key={column.key}
@@ -157,7 +159,7 @@ const Div = styled.div`
 
 const TableContainer = styled.div`
   margin: 20px;
-  width: 49%;
+  width: 59%;
   margin-bottom: 200px;
 `;
 const StyledTable = styled.table`
