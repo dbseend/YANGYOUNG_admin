@@ -8,6 +8,7 @@ const lectures = [
   { key: "name", label: "강의명" },
   { key: "day", label: "요일" },
   { key: "time", label: "시간" },
+  {key: "teacher", label: "선생님"},
   { key: "room", label: "강의실" },
 ];
 

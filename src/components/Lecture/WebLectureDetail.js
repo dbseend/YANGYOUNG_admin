@@ -28,9 +28,10 @@ const WebLectureDetail = () => {
       <Table>
         <tbody>
           <tr>
-            <th colSpan="1">수업명</th>
-
-            <td colSpan="4">{lectureOneInfo.name}</td>
+            <th>수업명</th>
+            <td>{lectureOneInfo.name}</td>
+            <th>선생님</th>
+            <td>{lectureOneInfo.teacher}</td>
           </tr>
           <tr>
             <th>요일</th>
