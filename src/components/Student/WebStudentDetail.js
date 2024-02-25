@@ -41,12 +41,10 @@ const WebStudentDetail = () => {
         const response = await getStudentInfo(id);
         setStudentPersonalInfo(response.studentResponse);
         setOriginalStudentPersonalInfo(response.studentResponse);
-        setLectureInfo(
-          response.lectureGetAllResponse.lectureGetOneResponseList
-        );
-        setTaskInfo(response.lectureGetAllResponse.lectureGetOneResponseList);
-        setLectureCount(response.lectureGetAllResponse.count);
-        setTaskCount(response.lectureGetAllResponse.count);
+        setLectureInfo(response.lectureAllResponse.lectureResponseList);
+        setTaskInfo(response.taskGetAllResponse.taskResponseList);
+        setLectureCount(response.lectureAllResponse.count);
+        setTaskCount(response.taskGetAllResponse.size);
       } catch (error) {
         console.log("학생 상세 정보 가져오는 중 오류 발생: ", error);
       }
@@ -204,7 +202,7 @@ const WebStudentDetail = () => {
                 >
                   {sectionList.map((banOption) => (
                     <option key={banOption} value={banOption}>
-                      {banOption}
+                      {banOption.name}
                     </option>
                   ))}
                 </select>
@@ -212,57 +210,43 @@ const WebStudentDetail = () => {
                 studentPersonalInfo.sectionName
               )}
             </td>
-
-            {/* <td>
-              {isEditMode ? (
-                <select
-                  name="sectionId"
-                  // value={studentPersonalInfo.sectionId}
-                  onChange={handleSectionChange}
-                >
-                  {sections.map((section) => (
-                    <option key={section} value={section}>
-                      {section}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                studentPersonalInfo.sectionName
-              )}
-            </td> */}
           </tr>
         </tbody>
       </Table>
 
       <Guide2>수강 정보</Guide2>
       <p>
-        {studentPersonalInfo.name} 학생은 총 {lectureCount} 개의 수업을 수강
+        {studentPersonalInfo.name} 학생은 총 {lectureCount}개의 수업을 수강
         중입니다.
       </p>
       <Table>
         <thead>
           <tr>
             <th>강의명</th>
+            <th>선생님</th>
             <th>요일</th>
             <th>시간</th>
             <th>강의실</th>
           </tr>
         </thead>
         <tbody>
-          {lectureInfo.map((lecture) => (
-            <tr key={lecture.id}>
-              <td>{lecture.name}</td>
-              <td>{lecture.day}</td>
-              <td>{lecture.time}</td>
-              <td>{lecture.room}</td>
-            </tr>
-          ))}
+          {lectureInfo &&
+            lectureInfo.map((lecture) => (
+              <tr key={lecture.id}>
+                <td>{lecture.name}</td>
+                <td>{lecture.teacher}</td>
+                <td>{lecture.day}</td>
+                <td>{lecture.time}</td>
+                <td>{lecture.room}</td>
+              </tr>
+            ))}
         </tbody>
       </Table>
 
       <Guide2>과제 정보</Guide2>
       <p>
-        {studentPersonalInfo.name} 학생은 총 {taskCount} 개의 할 일이 있습니다.
+        {studentPersonalInfo.name} 학생은 총 {taskCount && taskCount}개의 할
+        일이 있습니다.
       </p>
       <Table>
         <thead>
@@ -270,12 +254,13 @@ const WebStudentDetail = () => {
           <th>상태</th>
         </thead>
         <tbody>
-          {taskInfo.map((task) => (
-            <tr key={task.id}>
-              <td>{task.taskName}</td>
-              <td>{task.taskProgress}</td>
-            </tr>
-          ))}
+          {taskInfo &&
+            taskInfo.map((task) => (
+              <tr key={task.id}>
+                <td>{task.taskName}</td>
+                <td>{task.taskProgress}</td>
+              </tr>
+            ))}
         </tbody>
       </Table>
     </Div>
