@@ -179,7 +179,7 @@ const Div = styled.div`
 `;
 
 const TableContainer = styled.div`
-width: 69%;
+  width: 69%;
   margin-bottom: 200px;
 `;
 
@@ -192,7 +192,7 @@ const SearchDiv = styled.div`
 
 const Label = styled.label`
   font-family: Poppins;
-  font-size: 20px;
+  font-size: 17px;
   line-height: 40px;
   text-align: left;
   margin-right: 10px;
@@ -214,9 +214,9 @@ const Label = styled.label`
 `;
 
 const PostInput = styled.input`
-  width: 188px;
-  height: 21px;
-  font-size: 16px;
+  width: 150px;
+  height: 10px;
+  font-size: 13px;
   color: #000;
   font-family: Poppins;
   font-weight: 400;
@@ -227,14 +227,14 @@ const PostInput = styled.input`
 `;
 
 const OptionSelect = styled.select`
-  width: 188px;
-  height: 40px;
-  font-size: 16px;
+  width: 168px;
+  height: 28px;
+  font-size: 13px;
   color: #000;
   font-family: Poppins;
   font-weight: 400;
   margin-right: 40px;
-  padding: 8px;
+  padding: 3px;
   border: 0.5px solid #d0d5dd;
   border-radius: 6px;
 `;
@@ -245,6 +245,7 @@ const OptionSelectDiv = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
   position: relative;
+  align-items: center;
 `;
 
 const SearchButtonDiv = styled.div`

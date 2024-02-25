@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { addStudent } from "../../api/StudentApi";
-
+import { viewStudent } from "../../api/StudentApi";
 const AddStudentModal = ({ onClose, onAdd }) => {
   const [newStudent, setNewStudent] = useState({
     id: 0,
@@ -11,6 +11,23 @@ const AddStudentModal = ({ onClose, onAdd }) => {
     phoneNumber: "",
     sectionId: 0,
   });
+  const [sectionList, setSectionList] = useState([]);
+  const [selectedSection, setSelectedSection] = useState(0);
+  const [sectionId, setSectionId] = useState(0);
+
+  useEffect(() => {
+    viewAllStudent();
+  }, []);
+
+  const viewAllStudent = async () => {
+    try {
+      const response = await viewStudent();
+      setSectionList(response.sectionList);
+    } catch (error) {
+      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
+    }
+  };
+
   const formatPhoneNumber = (value) => {
     // Basic phone number formatting: 010-0000-0000
     const phoneNumberRegex = /^(\d{3})(\d{4})(\d{4})$/;
@@ -21,6 +38,19 @@ const AddStudentModal = ({ onClose, onAdd }) => {
     }
 
     return value;
+  };
+  const setNewStudentSectionId = (newSectionId) => {
+    setNewStudent((prevStudent) => ({
+      ...prevStudent,
+      sectionId: newSectionId,
+    }));
+  };
+
+  const handleDropdownChange = (e) => {
+    const selectedValue = e.target.value;
+    setSelectedSection(selectedValue);
+    setNewStudentSectionId(selectedValue);
+    console.log(selectedValue);
   };
 
   const handleInputChange = (e) => {
@@ -77,7 +107,7 @@ const AddStudentModal = ({ onClose, onAdd }) => {
       // 실제 추가된 학생 정보를 사용하여 onAdd 호출
       onAdd(response);
       onClose();
-      // window.location.reload(true); // Reload the page
+      window.location.reload(true); // Reload the page
     } catch (error) {
       alert("에러 발생: " + error.message);
       console.error("Error adding student:", error);
@@ -132,18 +162,17 @@ const AddStudentModal = ({ onClose, onAdd }) => {
             <FormGroup>
               <Label>반</Label>
               <Select
-                name="sectionId"
-                value={newStudent.sectionId}
-                onChange={handleInputChange}
+                onChange={handleDropdownChange}
+                value={selectedSection || ""}
               >
-                <option value="">반 선택</option>
-                <option value="1">W</option>
-                <option value="2">I</option>
-                <option value="3">N</option>
-                <option value="4">T</option>
-                <option value="5">E</option>
-                <option value="6">R</option>
-                {/* 다른 학년 옵션들 추가 */}
+                <option disabled value="">
+                  반 선택
+                </option>
+                {sectionList.map((banOption) => (
+                  <option key={banOption.id} value={banOption.id}>
+                    {banOption.name}
+                  </option>
+                ))}
               </Select>
             </FormGroup>
 
