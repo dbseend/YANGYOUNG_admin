@@ -19,7 +19,8 @@ const Attendance = () => {
     // sectionList가 업데이트될 때 첫 번째 항목을 선택
     if (sectionList.length > 0) {
       setSelectedSection(sectionList[0]);
-      setSectionId(1); // 첫 번째 항목 선택에 따른 sectionId 설정
+      console.log(sectionList[0]);
+      setSectionId(sectionList[0].id); // 첫 번째 항목 선택에 따른 sectionId 설정
     }
   }, [sectionList]);
 
@@ -33,12 +34,8 @@ const Attendance = () => {
       return;
     }
     const selectedValue = e.target.value;
-
-    if (type === "section") {
-      setSelectedSection(selectedValue);
-      const sectionId = sectionList.indexOf(selectedValue) + 1;
-      setSectionId(sectionId);
-    }
+    setSelectedSection(selectedValue);
+    setSectionId(sectionList[selectedValue].id);
   };
 
   const viewAllStudent = async () => {
@@ -64,14 +61,19 @@ const Attendance = () => {
           <DatePicker type="date" value={date} onChange={changeDate} />
           <Guide>2. 반을 선택해주세요.</Guide>
           <Select
-            onChange={(e) => handleDropdownChange(e, "section")}
+            onChange={(e) => handleDropdownChange(e)}
             value={selectedSection}
           >
-            {sectionList.map((banOption) => (
-              <option key={banOption} value={banOption}>
-                {banOption}
-              </option>
-            ))}
+            {sectionList.map(
+              (
+                banOption,
+                index // index 매개변수 추가
+              ) => (
+                <option key={index} value={index}>
+                  {banOption.name}
+                </option>
+              )
+            )}
           </Select>
         </AttendanceContent>
 

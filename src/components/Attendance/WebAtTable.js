@@ -4,7 +4,6 @@ import {
   getSectionAttendanceInfo,
   postAttendanceBySection,
 } from "../../api/AttendanceApi";
-import {formatDate} from "../../util/DateFormat";
 
 const AtTable = (props) => {
   const [studentInfo, setStudentInfo] = useState([]);
@@ -12,7 +11,6 @@ const AtTable = (props) => {
   const date = props.date;
   const formattedDate = new Date(`${date}T00:00:00`);
   const formattedDateString = formattedDate.toISOString().slice(0, 19);
-  const formattedDateForUpdate = formatDate(formattedDate);
 
   const columns = [
     { key: "num", label: "" },
@@ -21,8 +19,6 @@ const AtTable = (props) => {
     { key: "attendance", label: "출결" },
     { key: "note", label: "비고" },
   ];
-
-  // const formattedDate = date + "T03:03:17";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +32,7 @@ const AtTable = (props) => {
               return 0;
             }
           );
+          console.log(sortedStudentInfo);
           setStudentInfo(sortedStudentInfo);
         } else {
           alert("반 정보가 없습니다.");
