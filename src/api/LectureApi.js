@@ -17,7 +17,7 @@ export const addLecture = async (data) => {
       process.env.REACT_APP_URL + `lecture`,
       data
     );
-    console.log(response.data);
+    console.log(response);
     alert("강의가 개설되었습니다.");
   } catch (error) {
     console.error(error);
@@ -25,12 +25,13 @@ export const addLecture = async (data) => {
   }
 };
 
-export const getOneLecture = async (id) => {
+export const getOneLecture = async (lectureId) => {
   try {
-    const response = await axios.patch(
-      process.env.REACT_APP_URL + `lecture/${id}`
+    const response = await axios.get(
+      process.env.REACT_APP_URL + `lecture/${lectureId}`
     );
-    console.log(response.data);
+    console.log(response);
+    return (response);
   } catch (error) {
     console.error(error);
     throw error;

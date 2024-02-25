@@ -5,6 +5,7 @@ import Main from "./pages/Main";
 import Attendance from "./pages/Attendance";
 import Student from "./pages/Student";
 import Lecture from "./pages/Lecture";
+import LectureDetail from "./pages/LectureDetail";
 import StudentDetail from "./pages/StudentDetail";
 import Section from "./pages/Section";
 import SectionDetail from "./pages/SectionDetail";
@@ -23,8 +24,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/attendance" element={<Attendance />} />
-        <Route path="/student" element={<Student />} />
         <Route path="/lecture" element={<Lecture />} />
+        <Route path="/lecture/:id" element={<LectureDetail />} />
+        <Route path="/student" element={<Student />} />
         <Route path="/student/:id" element={<StudentDetail />} />
         <Route path="/section" element={<Section />} />
         <Route path="/section/:id" element={<SectionDetail />} />

@@ -23,7 +23,7 @@ const WebSectionDetail = () => {
     const fetchStudentDetail = async () => {
       try {
         const response = await getOneSection(id);
-        console.log(response.data);
+        console.log(response);
 
         // 첫 번째 상태 업데이트
         setSectionOneInfo(response.data.sectionResponse);
