@@ -13,7 +13,7 @@ const columns = [
   { key: "time", label: "시간" },
   { key: "room", label: "강의실" },
   { key: "teacher", label: "선생님" },
-  { key: "id", label: "분반코드" },
+  { key: "id", label: "수업코드" },
 ];
 
 const Lecture = () => {

@@ -7,15 +7,40 @@ const AddLectureModal = ({ onClose, onAdd }) => {
   const [newLecture, setNewLecture] = useState({
     name: "",
     teacher: "",
-    day: "MONDAY",
-    time: "T1",
-    room: "R1",
+    day: "",
+    time: "",
+    room: "",
     sectionId: 0,
   });
   const [selectedSection, setSelectedSection] = useState("");
   //   const [sectionList, setSectionList] = useState([]);
   const [sectionId, setSectionId] = useState(0);
   const [sectionList, setSection] = useState([]);
+  const [selectedDays, setSelectedDays] = useState([]);
+
+  const daysOfWeek = [
+    { id: 1, label: "월" },
+    { id: 2, label: "화" },
+    { id: 3, label: "수" },
+    { id: 4, label: "목" },
+    { id: 5, label: "금" },
+    { id: 6, label: "토" },
+    { id: 7, label: "일" },
+  ];
+
+  const handleDayChange = (dayId) => {
+    const isSelected = selectedDays.includes(dayId);
+
+    if (isSelected) {
+      // 이미 선택된 요일이면 제거
+      setSelectedDays((prevDays) =>
+        prevDays.filter((day) => day !== dayId)
+      );
+    } else {
+      // 선택되지 않은 요일이면 추가
+      setSelectedDays((prevDays) => [...prevDays, dayId]);
+    }
+  };
 
   useEffect(() => {
     viewAllStudent();
@@ -47,12 +72,12 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     }));
   };
 
-  const handleDayChange = (e) => {
-    setNewLecture((prevLecture) => ({
-      ...prevLecture,
-      day: e.target.value,
-    }));
-  };
+  //   const handleDayChange = (e) => {
+  //     setNewLecture((prevLecture) => ({
+  //       ...prevLecture,
+  //       day: e.target.value,
+  //     }));
+  //   };
 
   const handleTimeChange = (e) => {
     setNewLecture((prevLecture) => ({
@@ -90,7 +115,10 @@ const AddLectureModal = ({ onClose, onAdd }) => {
   const handleDropdownChange = (e) => {
     const selectedValue = e.target.value;
     console.log("selectedValue: ", selectedValue);
-    console.log("sectionList[selectedValue].id: ", sectionList[selectedValue].id);
+    console.log(
+      "sectionList[selectedValue].id: ",
+      sectionList[selectedValue].id
+    );
     setSelectedSection(selectedValue);
     setSectionId(sectionList[selectedValue].id);
   };
@@ -161,21 +189,38 @@ const AddLectureModal = ({ onClose, onAdd }) => {
 
             <FormGroup>
               <Label>요일</Label>
-              <Input
+              <div style={{ display: "flex" }}>
+                {daysOfWeek.map((day) => (
+                  <div
+                    key={day.id}
+                    style={{
+                      border: "1px solid #ccc",
+                      padding: "8px",
+                      margin: "4px",
+                      cursor: "pointer",
+                      background: selectedDays.includes(day.id)
+                        ? "#eee"
+                        : "white",
+                    }}
+                    onClick={() => handleDayChange(day.id)}
+                  >
+                    {day.label}
+                  </div>
+                ))}
+              </div>
+              {/* <Input
                 type="text"
                 name="day"
-                // value={newLecture.day}
-                value="MONDAY"
+                value={newLecture.day}
                 onChange={handleDayChange}
-              />
+              /> */}
             </FormGroup>
             <FormGroup>
               <Label>시간</Label>
               <Input
                 type="text"
                 name="time"
-                // value={newLecture.time}
-                value="T1"
+                value={newLecture.time}
                 onChange={handleTimeChange}
               />
             </FormGroup>
@@ -184,12 +229,12 @@ const AddLectureModal = ({ onClose, onAdd }) => {
               <Input
                 type="text"
                 name="room"
-                // value={newLecture.room}
-                value="R1"
+                value={newLecture.room}
                 onChange={handleRoomChange}
               />
             </FormGroup>
             <FormGroup>
+              <Label>분반</Label>
               <Select
                 onChange={(e) => handleDropdownChange(e)}
                 value={selectedSection}
