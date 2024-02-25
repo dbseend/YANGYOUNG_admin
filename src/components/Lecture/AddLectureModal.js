@@ -1,7 +1,6 @@
-import React, { useState, useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { addLecture } from "../../api/LectureApi";
-import { OptionSelect } from "../Student/WebStudent";
 import { viewStudent } from "../../api/StudentApi";
 
 const AddLectureModal = ({ onClose, onAdd }) => {
@@ -14,7 +13,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     sectionId: 0,
   });
   const [selectedSection, setSelectedSection] = useState("");
-//   const [sectionList, setSectionList] = useState([]);
+  //   const [sectionList, setSectionList] = useState([]);
   const [sectionId, setSectionId] = useState(0);
   const [sectionList, setSection] = useState([]);
 
@@ -27,6 +26,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
       const response = await viewStudent();
 
       setSection(response.sectionList);
+      setSectionId(response.sectionList[0].id);
 
       console.log(response);
     } catch (error) {
@@ -60,12 +60,14 @@ const AddLectureModal = ({ onClose, onAdd }) => {
       time: e.target.value,
     }));
   };
+
   const handleRoomChange = (e) => {
     setNewLecture((prevLecture) => ({
       ...prevLecture,
       room: e.target.value,
     }));
   };
+
   const handleSectionIdChange = (e) => {
     setNewLecture((prevLecture) => ({
       ...prevLecture,
@@ -73,16 +75,28 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     }));
   };
 
-  const handleDropdownChange = (e, type) => {
-    const selectedValue = e.target.value;
+  // const handleDropdownChange = (e, type) => {
+  //   const selectedValue = e.target.value;
+  //   setSelectedSection(selectedValue);
+  //   console.log("selectedValue: ", e.target.value);
+  //   // setSectionId(sectionList[selectedValue].id);
+  //   console.log("sectionId: ", sectionList[selectedValue].id);
 
-    if (type === "section") {
-      setSelectedSection(selectedValue);
-      const sectionId = sectionList.indexOf(selectedValue) + 1;
-      setSectionId(sectionId);
-    }
+  //   if (type === "section") {
+  //     // 여기서 selectedValue는 이미 인덱스이므로 직접 사용 가능
+  //     // setSectionId(sectionList[selectedValue].id);
+  //   }
+  // };
+  const handleDropdownChange = (e) => {
+    const selectedValue = e.target.value;
+    console.log("selectedValue: ", selectedValue);
+    console.log("sectionList[selectedValue].id: ", sectionList[selectedValue].id);
+    setSelectedSection(selectedValue);
+    setSectionId(sectionList[selectedValue].id);
   };
+
   const handleAddLecture = async (e) => {
+    console.log("sectionId: ", sectionId);
     try {
       e.preventDefault();
       if (newLecture.name.trim() === "" || newLecture.teacher.trim() === "") {
@@ -96,7 +110,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
         day: newLecture.day,
         time: newLecture.time,
         room: newLecture.room,
-        sectionId: newLecture.sectionId,
+        sectionId: sectionId,
       };
 
       console.log("전송 데이터:", lectureData);
@@ -176,16 +190,21 @@ const AddLectureModal = ({ onClose, onAdd }) => {
               />
             </FormGroup>
             <FormGroup>
-            <Select
-            onChange={(e) => handleDropdownChange(e, "section")}
-            value={selectedSection}
-          >
-            {sectionList.map((banOption) => (
-              <option key={banOption} value={banOption}>
-                {banOption}
-              </option>
-            ))}
-          </Select>
+              <Select
+                onChange={(e) => handleDropdownChange(e)}
+                value={selectedSection}
+              >
+                {sectionList.map(
+                  (
+                    banOption,
+                    index // index 매개변수 추가
+                  ) => (
+                    <option key={index} value={index}>
+                      {banOption.name}
+                    </option>
+                  )
+                )}
+              </Select>
             </FormGroup>
 
             <AddButton onClick={handleAddLecture}>등록</AddButton>

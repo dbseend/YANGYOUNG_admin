@@ -18,7 +18,7 @@ export const addLecture = async (data) => {
       data
     );
     console.log(response);
-    alert("강의가 개설되었습니다.");
+    // alert("강의가 개설되었습니다.");
   } catch (error) {
     console.error(error);
     throw error;
