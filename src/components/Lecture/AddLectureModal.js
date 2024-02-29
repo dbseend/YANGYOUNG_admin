@@ -7,17 +7,14 @@ const AddLectureModal = ({ onClose, onAdd }) => {
   const [newLecture, setNewLecture] = useState({
     name: "",
     teacher: "",
-    day: "",
-    time: "",
+    dayList: [],
+    startTime: { hour: 0, minute: 0, second: 0, nano: 0 },
+    endTime: { hour: 0, minute: 0, second: 0, nano: 0 },
     room: "",
     sectionId: 0,
   });
-  const [selectedSection, setSelectedSection] = useState("");
-  //   const [sectionList, setSectionList] = useState([]);
-  const [sectionId, setSectionId] = useState(0);
-  const [sectionList, setSection] = useState([]);
+  const [sectionList, setSectionList] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
-
   const daysOfWeek = [
     { id: 1, label: "월" },
     { id: 2, label: "화" },
@@ -28,20 +25,6 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     { id: 7, label: "일" },
   ];
 
-  const handleDayChange = (dayId) => {
-    const isSelected = selectedDays.includes(dayId);
-
-    if (isSelected) {
-      // 이미 선택된 요일이면 제거
-      setSelectedDays((prevDays) =>
-        prevDays.filter((day) => day !== dayId)
-      );
-    } else {
-      // 선택되지 않은 요일이면 추가
-      setSelectedDays((prevDays) => [...prevDays, dayId]);
-    }
-  };
-
   useEffect(() => {
     viewAllStudent();
   }, []);
@@ -49,15 +32,16 @@ const AddLectureModal = ({ onClose, onAdd }) => {
   const viewAllStudent = async () => {
     try {
       const response = await viewStudent();
-
-      setSection(response.sectionList);
-      setSectionId(response.sectionList[0].id);
-
-      console.log(response);
+      setSectionList(response.sectionList);
+      setNewLecture((prevLecture) => ({
+        ...prevLecture,
+        sectionId: response.sectionList.length > 0 ? response.sectionList[0].id : 0,
+      }));
     } catch (error) {
       console.log("학생 데이터를 가져오는 중 오류 발생:", error);
     }
   };
+
   const handleNameChange = (e) => {
     setNewLecture((prevLecture) => ({
       ...prevLecture,
@@ -72,17 +56,26 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     }));
   };
 
-  //   const handleDayChange = (e) => {
-  //     setNewLecture((prevLecture) => ({
-  //       ...prevLecture,
-  //       day: e.target.value,
-  //     }));
-  //   };
+  const handleDayChange = (dayId) => {
+    const isSelected = selectedDays.includes(dayId);
+    setSelectedDays((prevDays) =>
+      isSelected ? prevDays.filter((day) => day !== dayId) : [...prevDays, dayId]
+    );
+  };
 
-  const handleTimeChange = (e) => {
+  const handleStartTimeChange = (e) => {
+    const time = e.target.value.split(":");
     setNewLecture((prevLecture) => ({
       ...prevLecture,
-      time: e.target.value,
+      startTime: { hour: parseInt(time[0]), minute: parseInt(time[1]), second: 0, nano: 0 },
+    }));
+  };
+
+  const handleEndTimeChange = (e) => {
+    const time = e.target.value.split(":");
+    setNewLecture((prevLecture) => ({
+      ...prevLecture,
+      endTime: { hour: parseInt(time[0]), minute: parseInt(time[1]), second: 0, nano: 0 },
     }));
   };
 
@@ -96,38 +89,20 @@ const AddLectureModal = ({ onClose, onAdd }) => {
   const handleSectionIdChange = (e) => {
     setNewLecture((prevLecture) => ({
       ...prevLecture,
-      room: e.target.value,
+      sectionId: parseInt(e.target.value),
     }));
   };
 
-  // const handleDropdownChange = (e, type) => {
-  //   const selectedValue = e.target.value;
-  //   setSelectedSection(selectedValue);
-  //   console.log("selectedValue: ", e.target.value);
-  //   // setSectionId(sectionList[selectedValue].id);
-  //   console.log("sectionId: ", sectionList[selectedValue].id);
-
-  //   if (type === "section") {
-  //     // 여기서 selectedValue는 이미 인덱스이므로 직접 사용 가능
-  //     // setSectionId(sectionList[selectedValue].id);
-  //   }
-  // };
-  const handleDropdownChange = (e) => {
-    const selectedValue = e.target.value;
-    console.log("selectedValue: ", selectedValue);
-    console.log(
-      "sectionList[selectedValue].id: ",
-      sectionList[selectedValue].id
-    );
-    setSelectedSection(selectedValue);
-    setSectionId(sectionList[selectedValue].id);
-  };
-
   const handleAddLecture = async (e) => {
-    console.log("sectionId: ", sectionId);
+    e.preventDefault();
     try {
-      e.preventDefault();
-      if (newLecture.name.trim() === "" || newLecture.teacher.trim() === "") {
+      if (
+        newLecture.name.trim() === "" ||
+        newLecture.teacher.trim() === "" ||
+        newLecture.room.trim() === "" ||
+        selectedDays.length === 0 ||
+        newLecture.sectionId === 0
+      ) {
         alert("모든 필수 항목을 입력하세요.");
         return;
       }
@@ -135,26 +110,23 @@ const AddLectureModal = ({ onClose, onAdd }) => {
       const lectureData = {
         name: newLecture.name,
         teacher: newLecture.teacher,
-        day: newLecture.day,
-        time: newLecture.time,
+        dayList: selectedDays.map((dayId) => daysOfWeek.find((day) => day.id === dayId).label),
+        startTime: newLecture.startTime,
+        endTime: newLecture.endTime,
         room: newLecture.room,
-        sectionId: sectionId,
+        sectionId: newLecture.sectionId,
       };
 
       console.log("전송 데이터:", lectureData);
 
       const response = await addLecture(lectureData);
 
-      // 서버에서 데이터 추가 완료 후에 처리
-      alert("수업 정보가 추가 되었습니다");
-
-      // 실제 추가된 학생 정보를 사용하여 onAdd 호출
+      alert("수업 정보가 추가되었습니다.");
       onAdd(response);
       onClose();
-      //   window.location.reload(true); // Reload the page
     } catch (error) {
-      alert("에러 발생: " + error.message);
       console.error("Error adding lecture:", error);
+      alert("수업 추가 중 오류가 발생했습니다.");
     }
   };
 
@@ -166,27 +138,15 @@ const AddLectureModal = ({ onClose, onAdd }) => {
             <h2>수업 등록</h2>
             <CloseButton onClick={onClose}>닫기</CloseButton>
           </ModalHeader>
-          <Form>
+          <Form onSubmit={handleAddLecture}>
             <FormGroup>
               <Label>수업명</Label>
-              <Input
-                type="text"
-                name="name"
-                value={newLecture.name}
-                onChange={handleNameChange}
-              />
+              <Input type="text" name="name" value={newLecture.name} onChange={handleNameChange} />
             </FormGroup>
-
             <FormGroup>
               <Label>강사</Label>
-              <Input
-                type="text"
-                name="teacher"
-                value={newLecture.teacher}
-                onChange={handleTeacherChange}
-              />
+              <Input type="text" name="teacher" value={newLecture.teacher} onChange={handleTeacherChange} />
             </FormGroup>
-
             <FormGroup>
               <Label>요일</Label>
               <div style={{ display: "flex" }}>
@@ -198,9 +158,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
                       padding: "8px",
                       margin: "4px",
                       cursor: "pointer",
-                      background: selectedDays.includes(day.id)
-                        ? "#eee"
-                        : "white",
+                      background: selectedDays.includes(day.id) ? "#eee" : "white",
                     }}
                     onClick={() => handleDayChange(day.id)}
                   >
@@ -208,51 +166,30 @@ const AddLectureModal = ({ onClose, onAdd }) => {
                   </div>
                 ))}
               </div>
-              {/* <Input
-                type="text"
-                name="day"
-                value={newLecture.day}
-                onChange={handleDayChange}
-              /> */}
             </FormGroup>
             <FormGroup>
-              <Label>시간</Label>
-              <Input
-                type="text"
-                name="time"
-                value={newLecture.time}
-                onChange={handleTimeChange}
-              />
+              <Label>시작 시간</Label>
+              <Input type="time" value={formatTime(newLecture.startTime)} onChange={handleStartTimeChange} />
+            </FormGroup>
+            <FormGroup>
+              <Label>마치는 시간</Label>
+              <Input type="time" value={formatTime(newLecture.endTime)} onChange={handleEndTimeChange} />
             </FormGroup>
             <FormGroup>
               <Label>강의실</Label>
-              <Input
-                type="text"
-                name="room"
-                value={newLecture.room}
-                onChange={handleRoomChange}
-              />
+              <Input type="text" name="room" value={newLecture.room} onChange={handleRoomChange} />
             </FormGroup>
             <FormGroup>
               <Label>분반</Label>
-              <Select
-                onChange={(e) => handleDropdownChange(e)}
-                value={selectedSection}
-              >
-                {sectionList.map(
-                  (
-                    banOption,
-                    index // index 매개변수 추가
-                  ) => (
-                    <option key={index} value={index}>
-                      {banOption.name}
-                    </option>
-                  )
-                )}
+              <Select onChange={handleSectionIdChange} value={newLecture.sectionId}>
+                {sectionList.map((section) => (
+                  <option key={section.id} value={section.id}>
+                    {section.name}
+                  </option>
+                ))}
               </Select>
             </FormGroup>
-
-            <AddButton onClick={handleAddLecture}>등록</AddButton>
+            <AddButton type="submit">등록</AddButton>
           </Form>
         </ModalContent>
       </ModalWrapper>
@@ -350,5 +287,12 @@ const AddButton = styled.button`
   display: flex;
   justify-content: center;
 `;
+
+// 함수: 시간을 'hh:mm' 형식으로 포맷하는 함수
+const formatTime = (time) => {
+  const hour = time.hour.toString().padStart(2, '0');
+  const minute = time.minute.toString().padStart(2, '0');
+  return `${hour}:${minute}`;
+};
 
 export default AddLectureModal;
