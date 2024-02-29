@@ -10,20 +10,15 @@ export const viewLecture = async () => {
   }
 };
 
-export const addLecture = async (data) => {
-  console.log(data);
+export const addLecture = async (lectureData) => {
   try {
-    const response = await axios.post(
-      process.env.REACT_APP_URL + `lecture`,
-      data
-    );
-    console.log(response);
-    // alert("강의가 개설되었습니다.");
+    const response = await axios.post(process.env.REACT_APP_URL + `lecture`, lectureData);
+    return response.data;
   } catch (error) {
-    console.error(error);
     throw error;
   }
 };
+
 
 export const getOneLecture = async (lectureId) => {
   try {
