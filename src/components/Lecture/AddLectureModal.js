@@ -96,17 +96,23 @@ const AddLectureModal = ({ onClose, onAdd }) => {
   const handleAddLecture = async (e) => {
     e.preventDefault();
     try {
+      // 필수 입력 사항 확인
       if (
         newLecture.name.trim() === "" ||
         newLecture.teacher.trim() === "" ||
         newLecture.room.trim() === "" ||
         selectedDays.length === 0 ||
-        newLecture.sectionId === 0
+        newLecture.sectionId === 0 ||
+        newLecture.startTime.hour === 0 || // 시작 시간이 0시인 경우
+        newLecture.startTime.minute === 0 || // 시작 분이 0분인 경우
+        newLecture.endTime.hour === 0 || // 종료 시간이 0시인 경우
+        newLecture.endTime.minute === 0 // 종료 분이 0분인 경우
       ) {
         alert("모든 필수 항목을 입력하세요.");
         return;
       }
-
+  
+      // lectureData 객체 구성
       const lectureData = {
         name: newLecture.name,
         teacher: newLecture.teacher,
@@ -116,11 +122,12 @@ const AddLectureModal = ({ onClose, onAdd }) => {
         room: newLecture.room,
         sectionId: newLecture.sectionId,
       };
-
+  
       console.log("전송 데이터:", lectureData);
-
+  
+      // addLecture 함수 호출
       const response = await addLecture(lectureData);
-
+  
       alert("수업 정보가 추가되었습니다.");
       onAdd(response);
       onClose();
@@ -129,6 +136,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
       alert("수업 추가 중 오류가 발생했습니다.");
     }
   };
+  
 
   return (
     <ModalOverlay>
