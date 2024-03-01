@@ -116,7 +116,6 @@ const WebStudentDetail = () => {
 
   // 학년, 분반 정보 수정 - dropdown
   const handleDropdownChange = (e, type) => {
-    console.log(e.target.value);
 
     if (type === "section") {
       setSelectedSection(e.target.value);
@@ -128,18 +127,14 @@ const WebStudentDetail = () => {
 
   // 학생 정보 수정 - input
   const handleInputChange = (e, type) => {
-    console.log(e.target.value);
 
     if (type === "id") {
-      console.log("id");
       setSelectedId(e.target.value);
     }
     if (type === "school") {
-      console.log("school");
       setSelectedSchool(e.target.value);
     }
     if (type === "phoneNumber") {
-      console.log("phoneNumber");
       setSelectedPhoneNumber(e.target.value);
     }
   };
