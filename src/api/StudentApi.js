@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// 학생 정보 등록 API 호출
 export const addStudent = async (studentData) => {
   const data = {
     id: studentData.id,
@@ -22,6 +23,7 @@ export const addStudent = async (studentData) => {
   }
 };
 
+// 학생 정보 조회 API 호출
 export const viewStudent = async () => {
   try {
     const response = await axios.get(process.env.REACT_APP_URL + `student`);
@@ -31,6 +33,7 @@ export const viewStudent = async () => {
   }
 };
 
+// 학생 정보 수정 API 호출
 export const getStudentInfo = async (id) => {
   console.log(id);
   try {
@@ -44,26 +47,21 @@ export const getStudentInfo = async (id) => {
   }
 };
 
+// 학생 정보 수정 API 호출
 export const editStudentInfo = async (studentData) => {
-  const data = {
-    studentId: studentData.id,
-    school: studentData.school,
-    grade: studentData.grade,
-    phoneNumber: studentData.phoneNumber,
-    sectionId: studentData.sectionId,
-  };
   try {
     const response = await axios.patch(
       process.env.REACT_APP_URL + `student`,
-      data
+      studentData
     );
-    return response.data; // 응답 데이터 반환
+    return response.data;
   } catch (error) {
     console.error("학생 정보 수정 중 오류 발생: ", error);
-    throw error; // 에러 던지기
+    throw error;
   }
 };
 
+// 학생 정보 삭제 API 호출
 export const deleteStudent = async (id) => {
   try {
     await axios.delete(process.env.REACT_APP_URL + `student/${id}`, id);

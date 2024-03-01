@@ -6,114 +6,138 @@ import {
   editStudentInfo,
   viewStudent,
 } from "../../api/StudentApi";
-
-const columns = [
-  { key: "name", label: "수업명" },
-  { key: "dayList", label: "요일" },
-  { key: "time", label: "시간" },
-  { key: "room", label: "강의실" },
-  { key: "teacher", label: "선생님" },
-];
+import { gradeTypeConvert } from "../../util/Util";
 
 const WebStudentDetail = () => {
+  const columns = [
+    { key: "name", label: "수업명" },
+    { key: "dayList", label: "요일" },
+    { key: "time", label: "시간" },
+    { key: "room", label: "강의실" },
+    { key: "teacher", label: "선생님" },
+  ];
+  
+  // 학생 인적사항
   const { id } = useParams();
-  const [studentPersonalInfo, setStudentPersonalInfo] = useState({});
-  const [originalStudentPersonalInfo, setOriginalStudentPersonalInfo] =
-    useState({});
-  const [taskInfo, setTaskInfo] = useState([]);
-  const [taskCount, setTaskCount] = useState(0);
-  const [isEditMode, setIsEditMode] = useState(false);
-  // const [selectedGrade, setSelectedGrade] = useState("");
-  // const [grades, setGrades] = useState(["중3", "고1", "고2", "고3"]);
-  // const [grades, setGrades] = useState(["M3", "H1", "H2", "H3"]);
-  const [selectedSection, setSelectedSection] = useState(""); // 초기값을 빈 문자열로 설정
-  const [sectionId, setSectionId] = useState(0);
-  const [sectionList, setSection] = useState([]);
+  const [studentInfo, setstudentInfo] = useState({});
+
+  // 수업 정보
   const [lectureList, setLectureList] = useState([]);
   const [lectureCount, setLectureCount] = useState(0);
 
-  const viewAllStudent = async () => {
-    try {
-      const response = await viewStudent();
+  // 과제 정보
+  const [taskInfo, setTaskInfo] = useState([]);
+  const [taskCount, setTaskCount] = useState(0);
+  
+  // 검색 옵션(학년, 반) 리스트
+  const [gradeList, setGradeList] = useState(["중3", "고1", "고2", "고3"]);
+  const [sectionList, setSectionList] = useState([]);
+  
+  // 수정된 학생 정보
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedSchool, setSelectedSchool] = useState("");
+  const [selectedSection, setSelectedSection] = useState("");
+  const [selectedPhoneNumber, setSelectedPhoneNumber] = useState("");
+  const [selectedGrade, setSelectedGrade] = useState("");
+  
+  // 수정 모드 상태
+  const [isEditMode, setIsEditMode] = useState(false);
 
-      setSection(response.sectionList);
-
-      console.log(response);
-    } catch (error) {
-      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
-    }
-  };
-
+  // 화면 렌더링 시 학생 정보를 가져오는 함수
   useEffect(() => {
-    const fetchStudentDetail = async () => {
-      try {
-        const response = await getStudentInfo(id);
-        setStudentPersonalInfo(response.studentResponse);
-        setOriginalStudentPersonalInfo(response.studentResponse);
-        setLectureList(response.lectureAllResponse.lectureResponseList);
-        setTaskInfo(response.studentTaskAllResponse.studentTaskResponseList);
-        setLectureCount(response.lectureAllResponse.count);
-        setTaskCount(response.studentTaskAllResponse.studentTaskSize);
-      } catch (error) {
-        console.log("학생 상세 정보 가져오는 중 오류 발생: ", error);
-      }
-    };
     fetchStudentDetail();
     viewAllStudent();
-  }, [id]);
+  }, []);
 
-  const handleDropdownChange = (e, type) => {
-    const selectedValue = e.target.value;
+  // 학생 정보를 가져오는 함수
+  const fetchStudentDetail = async () => {
+    getStudentInfo(id).then((data) => {
+      console.log("학생 상세 정보: ", data);
 
-    if (type === "section") {
-      setSelectedSection(selectedValue);
-      const sectionId = sectionList.indexOf(selectedValue) + 1;
-      setSectionId(sectionId);
-    }
-  };
-  const handleToggleEditMode = () => {
-    setIsEditMode(!isEditMode);
-    // 수정 모드가 종료되면 원래의 정보로 복원
-    if (!isEditMode) {
-      setStudentPersonalInfo(originalStudentPersonalInfo);
-    }
-  };
+      // 학생 정보 저장
+      setstudentInfo(data.studentResponse);
+      setSelectedId(data.studentResponse.id);
+      setSelectedSchool(data.studentResponse.school);
+      setSelectedSection(data.studentResponse.sectionId);
+      setSelectedPhoneNumber(data.studentResponse.phoneNumber);
+      setSelectedGrade(data.studentResponse.grade);
 
-  const handleSaveChanges = async () => {
-    try {
-      console.log("수정 전 학생 정보:", studentPersonalInfo);
-      await editStudentInfo({
-        studentId: studentPersonalInfo.id,
-        school: studentPersonalInfo.school,
-        grade: studentPersonalInfo.grade,
-        phoneNumber: studentPersonalInfo.phoneNumber,
-        sectionId: studentPersonalInfo.sectionId,
-        // sectionId: parseInt(selectedSection),
-      });
-      // 학생 정보가 성공적으로 업데이트되면 편집 모드를 해제합니다.
-      setIsEditMode(false);
-      console.log("수정 후 학생 정보:", studentPersonalInfo);
-    } catch (error) {
-      console.error("학생 정보 수정 중 오류 발생: ", error);
-      // 에러 처리
-    }
-  };
+      // 수업 정보 저장
+      setLectureList(data.lectureAllResponse.lectureResponseList);
+      setLectureCount(data.lectureAllResponse.count);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setStudentPersonalInfo({
-      ...studentPersonalInfo,
-      [name]: value,
+      // 과제 정보 저장
+      setTaskInfo(data.studentTaskAllResponse.studentTaskResponseList);
+      setTaskCount(data.studentTaskAllResponse.studentTaskSize);
     });
   };
 
-  const handleSectionChange = (e) => {
-    setSelectedSection(e.target.value);
+  // 검색 옵션을 가져오는 함수(반, 학년)
+  const viewAllStudent = async () => {
+    viewStudent().then((data) => {
+      // console.log("학생 정보: ", data);
+      // setGradeList(data.gradeList);
+      setSectionList(data.sectionList);
+    });
   };
 
-  // const handleGradeChange = (e) => {
-  //   setSelectedGrade(e.target.value);
-  // };
+  // 수정 모드를 토글하는 함수
+  const handleToggleEditMode = () => {
+    setIsEditMode(!isEditMode);
+
+    if(isEditMode === false){
+      setSelectedId(studentInfo.id);
+      setSelectedSchool(studentInfo.school);
+      setSelectedSection(studentInfo.sectionId);
+      setSelectedPhoneNumber(studentInfo.phoneNumber);
+      setSelectedGrade(studentInfo.grade);
+    }
+  };
+
+  // 수정된 학생 정보를 저장하는 함수
+  const handleSaveChanges = async () => {
+    const data = {
+      studentId: studentInfo.id,
+      school: selectedSchool,
+      grade: gradeTypeConvert(selectedGrade),
+      phoneNumber: selectedPhoneNumber,
+      sectionId: selectedSection,
+    };
+
+    try {
+      console.log("수정된 학생 정보: ", data);
+      await editStudentInfo(data);
+      setIsEditMode(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("학생 정보 수정 중 오류 발생: ", error);
+    }
+  };
+
+  // 학년, 분반 정보 수정 - dropdown
+  const handleDropdownChange = (e, type) => {
+
+    if (type === "section") {
+      setSelectedSection(e.target.value);
+    }
+    if (type === "grade") {
+      setSelectedGrade(e.target.value);
+    }
+  };
+
+  // 학생 정보 수정 - input
+  const handleInputChange = (e, type) => {
+
+    if (type === "id") {
+      setSelectedId(e.target.value);
+    }
+    if (type === "school") {
+      setSelectedSchool(e.target.value);
+    }
+    if (type === "phoneNumber") {
+      setSelectedPhoneNumber(e.target.value);
+    }
+  };
 
   return (
     <Div>
@@ -129,18 +153,18 @@ const WebStudentDetail = () => {
         <tbody>
           <tr>
             <th>이름</th>
-            <td>{studentPersonalInfo.name}</td>
+            <td>{studentInfo.name}</td>
             <th>학번</th>
             <td>
               {isEditMode ? (
                 <input
                   type="text"
                   name="id"
-                  value={studentPersonalInfo.id}
-                  onChange={handleInputChange}
+                  value={selectedId}
+                  onChange={(e) => handleInputChange(e, "id")}
                 />
               ) : (
-                studentPersonalInfo.id
+                studentInfo.id
               )}
             </td>
           </tr>
@@ -151,31 +175,30 @@ const WebStudentDetail = () => {
                 <input
                   type="text"
                   name="school"
-                  value={studentPersonalInfo.school}
-                  onChange={handleInputChange}
+                  value={selectedSchool}
+                  onChange={(e) => handleInputChange(e, "school")}
                 />
               ) : (
-                studentPersonalInfo.school
+                studentInfo.school
               )}
             </td>
-            {/* <th>학년</th>
+            <th>학년</th>
             <td>
               {isEditMode ? (
                 <select
-                  name="grade"
-                  value={studentPersonalInfo.grade}
-                  onChange={handleGradeChange}
+                  value={selectedGrade}
+                  onChange={(e) => handleDropdownChange(e, "grade")}
                 >
-                  {grades.map((grade) => (
+                  {gradeList.map((grade) => (
                     <option key={grade} value={grade}>
                       {grade}
                     </option>
                   ))}
                 </select>
               ) : (
-                studentPersonalInfo.grade
+                studentInfo.grade
               )}
-            </td> */}
+            </td>
           </tr>
           <tr>
             <th>연락처</th>
@@ -184,11 +207,11 @@ const WebStudentDetail = () => {
                 <input
                   type="text"
                   name="phoneNumber"
-                  value={studentPersonalInfo.phoneNumber}
-                  onChange={handleInputChange}
+                  value={selectedPhoneNumber}
+                  onChange={(e) => handleInputChange(e, "phoneNumber")}
                 />
               ) : (
-                studentPersonalInfo.phoneNumber
+                studentInfo.phoneNumber
               )}
             </td>
             <th>반</th>
@@ -199,13 +222,13 @@ const WebStudentDetail = () => {
                   value={selectedSection}
                 >
                   {sectionList.map((banOption) => (
-                    <option key={banOption} value={banOption}>
+                    <option key={banOption.name} value={banOption.id}>
                       {banOption.name}
                     </option>
                   ))}
                 </select>
               ) : (
-                studentPersonalInfo.sectionName
+                studentInfo.sectionName
               )}
             </td>
           </tr>
@@ -214,8 +237,7 @@ const WebStudentDetail = () => {
 
       <Guide2>수강 정보</Guide2>
       <p>
-        {studentPersonalInfo.name} 학생은 총 {lectureCount}개의 수업을 수강
-        중입니다.
+        {studentInfo.name} 학생은 총 {lectureCount}개의 수업을 수강 중입니다.
       </p>
       <Table>
         <thead>
@@ -250,8 +272,8 @@ const WebStudentDetail = () => {
 
       <Guide2>과제 정보</Guide2>
       <p>
-        {studentPersonalInfo.name} 학생은 총 {taskCount && taskCount}개의 할
-        일이 있습니다.
+        {studentInfo.name} 학생은 총 {taskCount && taskCount}개의 할 일이
+        있습니다.
       </p>
       <Table>
         <thead>
