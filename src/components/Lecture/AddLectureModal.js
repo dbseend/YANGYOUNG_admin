@@ -15,15 +15,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
   });
   const [sectionList, setSectionList] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
-  const daysOfWeek = [
-    { id: 1, label: "월" },
-    { id: 2, label: "화" },
-    { id: 3, label: "수" },
-    { id: 4, label: "목" },
-    { id: 5, label: "금" },
-    { id: 6, label: "토" },
-    { id: 7, label: "일" },
-  ];
+  const daysOfWeek = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
 
   useEffect(() => {
     viewAllStudent();
@@ -35,7 +27,8 @@ const AddLectureModal = ({ onClose, onAdd }) => {
       setSectionList(response.sectionList);
       setNewLecture((prevLecture) => ({
         ...prevLecture,
-        sectionId: response.sectionList.length > 0 ? response.sectionList[0].id : 0,
+        sectionId:
+          response.sectionList.length > 0 ? response.sectionList[0].id : 0,
       }));
     } catch (error) {
       console.log("학생 데이터를 가져오는 중 오류 발생:", error);
@@ -56,18 +49,32 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     }));
   };
 
-  const handleDayChange = (dayId) => {
-    const isSelected = selectedDays.includes(dayId);
+  // const handleDayChange = (dayId) => {
+  //   const isSelected = selectedDays.includes(dayId);
+  //   setSelectedDays((prevDays) =>
+  //     isSelected ? prevDays.filter((day) => day !== dayId) : [...prevDays, dayId]
+  //   );
+  // };
+  const handleDayChange = (day) => {
+    const isSelected = selectedDays.includes(day);
     setSelectedDays((prevDays) =>
-      isSelected ? prevDays.filter((day) => day !== dayId) : [...prevDays, dayId]
+      isSelected
+        ? prevDays.filter((prevDay) => prevDay !== day)
+        : [...prevDays, day]
     );
+    console.log(selectedDays);
   };
 
   const handleStartTimeChange = (e) => {
     const time = e.target.value.split(":");
     setNewLecture((prevLecture) => ({
       ...prevLecture,
-      startTime: { hour: parseInt(time[0]), minute: parseInt(time[1]), second: 0, nano: 0 },
+      startTime: {
+        hour: parseInt(time[0]),
+        minute: parseInt(time[1]),
+        second: 0,
+        nano: 0,
+      },
     }));
   };
 
@@ -75,7 +82,12 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     const time = e.target.value.split(":");
     setNewLecture((prevLecture) => ({
       ...prevLecture,
-      endTime: { hour: parseInt(time[0]), minute: parseInt(time[1]), second: 0, nano: 0 },
+      endTime: {
+        hour: parseInt(time[0]),
+        minute: parseInt(time[1]),
+        second: 0,
+        nano: 0,
+      },
     }));
   };
 
@@ -111,23 +123,33 @@ const AddLectureModal = ({ onClose, onAdd }) => {
         alert("모든 필수 항목을 입력하세요.");
         return;
       }
-  
+
       // lectureData 객체 구성
-      const lectureData = {
-        name: newLecture.name,
-        teacher: newLecture.teacher,
-        dayList: selectedDays.map((dayId) => daysOfWeek.find((day) => day.id === dayId).label),
-        startTime: newLecture.startTime,
-        endTime: newLecture.endTime,
-        room: newLecture.room,
-        sectionId: newLecture.sectionId,
-      };
-  
+      // const lectureData = {
+      //   name: newLecture.name,
+      //   teacher: newLecture.teacher,
+      //   dayList: selectedDays.map((day) => day),
+      //   startTime: newLecture.startTime,
+      //   endTime: newLecture.endTime,
+      //   room: newLecture.room,
+      //   sectionId: newLecture.sectionId,
+      // };
+// lectureData 객체 구성
+const lectureData = {
+  name: newLecture.name,
+  teacher: newLecture.teacher,
+  dayList: selectedDays, // 수정된 부분
+  startTime: formatTime(newLecture.startTime), // 시간 형식에 맞게 변환
+  endTime: formatTime(newLecture.endTime), // 시간 형식에 맞게 변환
+  room: newLecture.room,
+  sectionId: newLecture.sectionId,
+};
+
       console.log("전송 데이터:", lectureData);
-  
+
       // addLecture 함수 호출
       const response = await addLecture(lectureData);
-  
+
       alert("수업 정보가 추가되었습니다.");
       onAdd(response);
       onClose();
@@ -136,7 +158,6 @@ const AddLectureModal = ({ onClose, onAdd }) => {
       alert("수업 추가 중 오류가 발생했습니다.");
     }
   };
-  
 
   return (
     <ModalOverlay>
@@ -149,47 +170,73 @@ const AddLectureModal = ({ onClose, onAdd }) => {
           <Form onSubmit={handleAddLecture}>
             <FormGroup>
               <Label>수업명</Label>
-              <Input type="text" name="name" value={newLecture.name} onChange={handleNameChange} />
+              <Input
+                type="text"
+                name="name"
+                value={newLecture.name}
+                onChange={handleNameChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label>강사</Label>
-              <Input type="text" name="teacher" value={newLecture.teacher} onChange={handleTeacherChange} />
+              <Input
+                type="text"
+                name="teacher"
+                value={newLecture.teacher}
+                onChange={handleTeacherChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label>요일</Label>
               <div style={{ display: "flex" }}>
                 {daysOfWeek.map((day) => (
                   <div
-                    key={day.id}
+                    key={day}
                     style={{
                       border: "1px solid #ccc",
                       padding: "8px",
                       margin: "4px",
                       cursor: "pointer",
-                      background: selectedDays.includes(day.id) ? "#eee" : "white",
+                      background: selectedDays.includes(day) ? "#eee" : "white",
                     }}
-                    onClick={() => handleDayChange(day.id)}
+                    onClick={() => handleDayChange(day)}
                   >
-                    {day.label}
+                    {day}
                   </div>
                 ))}
               </div>
             </FormGroup>
             <FormGroup>
               <Label>시작 시간</Label>
-              <Input type="time" value={formatTime(newLecture.startTime)} onChange={handleStartTimeChange} />
+              <Input
+                type="time"
+                value={formatTime(newLecture.startTime)}
+                onChange={handleStartTimeChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label>마치는 시간</Label>
-              <Input type="time" value={formatTime(newLecture.endTime)} onChange={handleEndTimeChange} />
+              <Input
+                type="time"
+                value={formatTime(newLecture.endTime)}
+                onChange={handleEndTimeChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label>강의실</Label>
-              <Input type="text" name="room" value={newLecture.room} onChange={handleRoomChange} />
+              <Input
+                type="text"
+                name="room"
+                value={newLecture.room}
+                onChange={handleRoomChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label>분반</Label>
-              <Select onChange={handleSectionIdChange} value={newLecture.sectionId}>
+              <Select
+                onChange={handleSectionIdChange}
+                value={newLecture.sectionId}
+              >
                 {sectionList.map((section) => (
                   <option key={section.id} value={section.id}>
                     {section.name}
@@ -298,8 +345,8 @@ const AddButton = styled.button`
 
 // 함수: 시간을 'hh:mm' 형식으로 포맷하는 함수
 const formatTime = (time) => {
-  const hour = time.hour.toString().padStart(2, '0');
-  const minute = time.minute.toString().padStart(2, '0');
+  const hour = time.hour.toString().padStart(2, "0");
+  const minute = time.minute.toString().padStart(2, "0");
   return `${hour}:${minute}`;
 };
 

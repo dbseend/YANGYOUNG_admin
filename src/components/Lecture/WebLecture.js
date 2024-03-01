@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { viewLecture, deleteLecture } from "../../api/LectureApi";
 import AddLectureModal from "./AddLectureModal";
 import { Button, StyledButtonContainer } from "../Student/WebStudentList";
@@ -10,8 +9,7 @@ const columns = [
   { key: "index", label: "순번" },
   { key: "name", label: "반 이름" },
   { key: "dayList", label: "요일" },
-  { key: "startTime", label: "시작 시간" },
-  { key: "endTime", label: "마치는 시간" },
+  { key: "time", label: "시간" }, // 시작 시간과 마치는 시간 합쳐서 표시
   { key: "room", label: "강의실" },
   { key: "teacher", label: "선생님" },
   { key: "id", label: "수업코드" },
@@ -109,31 +107,40 @@ const Lecture = () => {
           <StyledTable>
             <thead>
               <tr>
-                {columns && columns.map((column) => (
-                  <StyledTh key={column.key}>{column.label}</StyledTh>
-                ))}
+                {columns &&
+                  columns.map((column) => (
+                    <StyledTh key={column.key}>{column.label}</StyledTh>
+                  ))}
               </tr>
             </thead>
             <tbody>
-              {lectureList && lectureList.map((lecture, index) => (
-                <StyledTr key={index}>
-                  {columns && columns.map((column) => (
-                    <StyledTd
-                      onClick={() => moveToLectureDetail(lecture.id)}
-                      key={column.key}
-                    >
-                      {column.key === "index" ? index + 1 : lecture[column.key]}
+              {lectureList &&
+                lectureList.map((lecture, index) => (
+                  <StyledTr key={index}>
+                    {columns &&
+                      columns.map((column) => (
+                        <StyledTd
+                          onClick={() => moveToLectureDetail(lecture.id)}
+                          key={column.key}
+                        >
+                          {column.key === "index"
+                            ? index + 1
+                            : column.key === "dayList"
+                            ? lecture.dayList.join(", ")
+                            : column.key === "time"
+                            ? `${lecture.startTime}-${lecture.endTime}`
+                            : lecture[column.key]}
+                        </StyledTd>
+                      ))}
+                    <StyledTd>
+                      <input
+                        type="checkbox"
+                        checked={selectedLectures.includes(lecture.id)}
+                        onChange={() => handleCheckboxChange(lecture.id)}
+                      />
                     </StyledTd>
-                  ))}
-                  <StyledTd>
-                    <input
-                      type="checkbox"
-                      checked={selectedLectures.includes(lecture.id)}
-                      onChange={() => handleCheckboxChange(lecture.id)}
-                    />
-                  </StyledTd>
-                </StyledTr>
-              ))}
+                  </StyledTr>
+                ))}
             </tbody>
           </StyledTable>
         </TableContainer>
@@ -156,7 +163,6 @@ const Div = styled.div`
   margin-top: 60px;
   margin-left: 5%;
   margin-right: 5%;
-  /* align-items: flex-start; */
 `;
 
 const TableContainer = styled.div`
@@ -174,9 +180,6 @@ const StyledTh = styled.th`
   padding: 10px;
   text-align: center;
   background-color: #dfdfdf;
-  @media screen and (min-width: 768px) {
-    width: 75vw;
-  }
 `;
 
 const StyledTd = styled.td`
@@ -184,10 +187,6 @@ const StyledTd = styled.td`
   padding: 10px;
   text-align: center;
   align-items: center;
-
-  @media screen and (min-width: 768px) {
-    width: 75vw;
-  }
 `;
 
 const StyledTr = styled.tr`
