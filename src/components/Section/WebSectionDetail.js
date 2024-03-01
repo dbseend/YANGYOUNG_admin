@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { getOneSection } from "../../api/SectionAPI";
+import { Button } from "../Student/WebStudentList";
+import AddSectionTaskModal from "./AddSectionTaskModal";
 
 const lectures = [
   { key: "name", label: "강의명" },
@@ -11,15 +13,13 @@ const lectures = [
   { key: "room", label: "강의실" },
 ];
 
-const taskColumns = [
-  { key: "assignment", label: "과제명" }
-];
+const taskColumns = [{ key: "assignment", label: "과제명" }];
 
 const students = [
-  {key: "name", label: "이름"},
-  {key: "school", label: "학교"},
-  {key: "grade", label: "학년"},
-]
+  { key: "name", label: "이름" },
+  { key: "school", label: "학교" },
+  { key: "grade", label: "학년" },
+];
 
 const WebSectionDetail = () => {
   const { id } = useParams();
@@ -31,6 +31,7 @@ const WebSectionDetail = () => {
   const [sectionInfo, setSectionInfo] = useState([]);
   const [taskCount, setTaskCount] = useState(0);
   const [taskList, setTaskList] = useState([]);
+  const [isAddModalOpen, setAddModalOpen] = useState(false);
 
   // 분반 정보 불러오기
   useEffect(() => {
@@ -52,6 +53,17 @@ const WebSectionDetail = () => {
 
     fetchData();
   }, [id]);
+  const openAddModal = () => {
+    setAddModalOpen(true);
+  };
+
+  const closeAddModal = () => {
+    setAddModalOpen(false);
+  };
+
+  const handleAddSection = (response) => {
+    console.log("새 분반 정보: ", response);
+  };
 
   return (
     <Div>
@@ -112,6 +124,10 @@ const WebSectionDetail = () => {
 
       {/* 할일 정보 */}
       <Guide2>할일</Guide2>
+      <Button onClick={openAddModal}>등록</Button>
+      {isAddModalOpen && (
+        <AddSectionTaskModal onClose={closeAddModal} onAdd={handleAddSection} />
+      )}
       <p>
         {sectionInfo.name} 분반에는 총 {taskCount}개의 할일이 배정되어 있습니다.
       </p>
@@ -119,9 +135,7 @@ const WebSectionDetail = () => {
         <thead>
           <tr>
             {taskColumns &&
-              taskColumns.map((task) => (
-                <th key={task.key}>{task.label}</th>
-              ))}
+              taskColumns.map((task) => <th key={task.key}>{task.label}</th>)}
           </tr>
         </thead>
         <tbody>
@@ -129,9 +143,7 @@ const WebSectionDetail = () => {
             taskList.map((task, index) => (
               <tr key={index}>
                 {taskColumns.map((col) => (
-                  <td key={col.key}>
-                    {task[col.key]}
-                  </td>
+                  <td key={col.key}>{task[col.key]}</td>
                 ))}
               </tr>
             ))}
@@ -141,7 +153,8 @@ const WebSectionDetail = () => {
       {/*학생 정보 */}
       <Guide2>학생</Guide2>
       <p>
-        {sectionInfo.name} 분반에는 총 {studentCount}명의 학생이 배정되어 있습니다.
+        {sectionInfo.name} 분반에는 총 {studentCount}명의 학생이 배정되어
+        있습니다.
       </p>
       <Table>
         <thead>
@@ -157,19 +170,15 @@ const WebSectionDetail = () => {
             studentList.map((student, index) => (
               <tr key={index}>
                 {students.map((col) => (
-                  <td key={col.key}>
-                    {student[col.key]}
-                  </td>
+                  <td key={col.key}>{student[col.key]}</td>
                 ))}
               </tr>
             ))}
         </tbody>
       </Table>
-      
     </Div>
   );
 };
-
 
 const Div = styled.div`
   justify-content: center;

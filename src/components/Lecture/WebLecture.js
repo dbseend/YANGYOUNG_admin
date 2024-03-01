@@ -171,7 +171,7 @@ const Div = styled.div`
 
 const TableContainer = styled.div`
   margin: 20px;
-  width: 59%;
+  width:80%;
   margin-bottom: 200px;
 `;
 const StyledTable = styled.table`
