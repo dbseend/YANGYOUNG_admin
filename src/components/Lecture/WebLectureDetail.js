@@ -3,9 +3,18 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { getOneLecture } from "../../api/LectureApi";
 
+const lectures = [
+  { key: "name", label: "수업명" },
+  { key: "teacher", label: "선생님" },
+  { key: "dayList", label: "요일" },
+  { key: "time", label: "시간" },
+  { key: "room", label: "강의실" },
+  { key: "id", label: "수업코드" },
+];
+
 const WebLectureDetail = () => {
   const { id } = useParams();
-  const [lectureOneInfo, setLectureOneInfo] = useState([]);
+  const [lectureOneInfo, setLectureOneInfo] = useState(null); // Changed [] to null
 
   useEffect(() => {
     const fetchLectureDetail = async () => {
@@ -13,7 +22,6 @@ const WebLectureDetail = () => {
         const response = await getOneLecture(id);
         console.log(response);
         setLectureOneInfo(response.data);
-        console.log(lectureOneInfo);
       } catch (error) {
         console.log("분반 상세 정보 가져오는 중 오류 발생: ", error);
       }
@@ -28,25 +36,40 @@ const WebLectureDetail = () => {
       <Table>
         <tbody>
           <tr>
-            <th>수업명</th>
-            <td>{lectureOneInfo.name}</td>
-            <th>선생님</th>
-            <td>{lectureOneInfo.teacher}</td>
+            <th>{lectures[0].label}</th>
+            <td>{lectureOneInfo ? lectureOneInfo[lectures[0].key] : "-"}</td>
+            <th>{lectures[1].label}</th>
+            <td>{lectureOneInfo ? lectureOneInfo[lectures[1].key] : "-"}</td>
           </tr>
           <tr>
-            <th>요일</th>
-            <td>{lectureOneInfo.day}</td>
-            <th>시간</th>
-            <td>{lectureOneInfo.time}</td>
+            <th>{lectures[2].label}</th>
+            <td colSpan="3">
+              {lectureOneInfo
+                ? lectureOneInfo[lectures[2].key].join(", ")
+                : "-"}
+            </td>
           </tr>
           <tr>
-            <th>강의실</th>
-            <td>{lectureOneInfo.room}</td>
-            <th>수업코드</th>
-            <td>{lectureOneInfo.id}</td>
+            <th>{lectures[3].label}</th>
+            <td colSpan="3">
+              {lectureOneInfo
+                ? `${lectureOneInfo.startTime.slice(
+                    0,
+                    5
+                  )}-${lectureOneInfo.endTime.slice(0, 5)}`
+                : "-"}
+            </td>
+          </tr>
+          <tr>
+            <th>{lectures[4].label}</th>
+            <td>{lectureOneInfo ? lectureOneInfo[lectures[4].key] : "-"}</td>
+            <th>{lectures[5].label}</th>
+            <td>{lectureOneInfo ? lectureOneInfo[lectures[5].key] : "-"}</td>
           </tr>
         </tbody>
       </Table>
+
+      {/* </Table> */}
     </Div>
   );
 };
@@ -71,10 +94,6 @@ const Title = styled.div`
 
 const Guide1 = styled.h3`
   margin-top: 20px;
-`;
-
-const Guide2 = styled.h3`
-  margin-top: 40px;
 `;
 
 const Table = styled.table`
