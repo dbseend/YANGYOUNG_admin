@@ -7,21 +7,30 @@ import {
   viewStudent,
 } from "../../api/StudentApi";
 
+const columns = [
+  { key: "name", label: "수업명" },
+  { key: "dayList", label: "요일" },
+  { key: "time", label: "시간" },
+  { key: "room", label: "강의실" },
+  { key: "teacher", label: "선생님" },
+];
+
 const WebStudentDetail = () => {
   const { id } = useParams();
   const [studentPersonalInfo, setStudentPersonalInfo] = useState({});
   const [originalStudentPersonalInfo, setOriginalStudentPersonalInfo] =
     useState({});
-  const [lectureInfo, setLectureInfo] = useState([]);
-  const [lectureCount, setLectureCount] = useState(0);
   const [taskInfo, setTaskInfo] = useState([]);
   const [taskCount, setTaskCount] = useState(0);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [selectedGrade, setSelectedGrade] = useState("");
-  const [grades, setGrades] = useState(["중3", "고1", "고2", "고3"]);
+  // const [selectedGrade, setSelectedGrade] = useState("");
+  // const [grades, setGrades] = useState(["중3", "고1", "고2", "고3"]);
+  // const [grades, setGrades] = useState(["M3", "H1", "H2", "H3"]);
   const [selectedSection, setSelectedSection] = useState(""); // 초기값을 빈 문자열로 설정
   const [sectionId, setSectionId] = useState(0);
   const [sectionList, setSection] = useState([]);
+  const [lectureList, setLectureList] = useState([]);
+  const [lectureCount, setLectureCount] = useState(0);
 
   const viewAllStudent = async () => {
     try {
@@ -41,10 +50,10 @@ const WebStudentDetail = () => {
         const response = await getStudentInfo(id);
         setStudentPersonalInfo(response.studentResponse);
         setOriginalStudentPersonalInfo(response.studentResponse);
-        setLectureInfo(response.lectureAllResponse.lectureResponseList);
-        setTaskInfo(response.taskGetAllResponse.taskResponseList);
+        setLectureList(response.lectureAllResponse.lectureResponseList);
+        setTaskInfo(response.studentTaskAllResponse.studentTaskResponseList);
         setLectureCount(response.lectureAllResponse.count);
-        setTaskCount(response.taskGetAllResponse.size);
+        setTaskCount(response.studentTaskAllResponse.studentTaskSize);
       } catch (error) {
         console.log("학생 상세 정보 가져오는 중 오류 발생: ", error);
       }
@@ -76,9 +85,10 @@ const WebStudentDetail = () => {
       await editStudentInfo({
         studentId: studentPersonalInfo.id,
         school: studentPersonalInfo.school,
-        grade: "M3",
+        grade: studentPersonalInfo.grade,
         phoneNumber: studentPersonalInfo.phoneNumber,
-        sectionId: parseInt(selectedSection),
+        sectionId: studentPersonalInfo.sectionId,
+        // sectionId: parseInt(selectedSection),
       });
       // 학생 정보가 성공적으로 업데이트되면 편집 모드를 해제합니다.
       setIsEditMode(false);
@@ -101,9 +111,9 @@ const WebStudentDetail = () => {
     setSelectedSection(e.target.value);
   };
 
-  const handleGradeChange = (e) => {
-    setSelectedGrade(e.target.value);
-  };
+  // const handleGradeChange = (e) => {
+  //   setSelectedGrade(e.target.value);
+  // };
 
   return (
     <Div>
@@ -119,18 +129,7 @@ const WebStudentDetail = () => {
         <tbody>
           <tr>
             <th>이름</th>
-            <td>
-              {isEditMode ? (
-                <input
-                  type="text"
-                  name="name"
-                  value={studentPersonalInfo.name}
-                  onChange={handleInputChange}
-                />
-              ) : (
-                studentPersonalInfo.name
-              )}
-            </td>
+            <td>{studentPersonalInfo.name}</td>
             <th>학번</th>
             <td>
               {isEditMode ? (
@@ -159,7 +158,7 @@ const WebStudentDetail = () => {
                 studentPersonalInfo.school
               )}
             </td>
-            <th>학년</th>
+            {/* <th>학년</th>
             <td>
               {isEditMode ? (
                 <select
@@ -176,7 +175,7 @@ const WebStudentDetail = () => {
               ) : (
                 studentPersonalInfo.grade
               )}
-            </td>
+            </td> */}
           </tr>
           <tr>
             <th>연락처</th>
@@ -193,7 +192,6 @@ const WebStudentDetail = () => {
               )}
             </td>
             <th>반</th>
-
             <td>
               {isEditMode ? (
                 <select
@@ -222,22 +220,29 @@ const WebStudentDetail = () => {
       <Table>
         <thead>
           <tr>
-            <th>강의명</th>
-            <th>선생님</th>
-            <th>요일</th>
-            <th>시간</th>
-            <th>강의실</th>
+            {columns &&
+              columns.map((column) => <th key={column.key}>{column.label}</th>)}
           </tr>
         </thead>
         <tbody>
-          {lectureInfo &&
-            lectureInfo.map((lecture) => (
-              <tr key={lecture.id}>
-                <td>{lecture.name}</td>
-                <td>{lecture.teacher}</td>
-                <td>{lecture.day}</td>
-                <td>{lecture.time}</td>
-                <td>{lecture.room}</td>
+          {lectureList &&
+            lectureList.map((lecture, index) => (
+              <tr key={index}>
+                {columns &&
+                  columns.map((column) => (
+                    <td key={column.key}>
+                      {column.key === "index"
+                        ? index + 1
+                        : column.key === "dayList"
+                        ? lecture.dayList.join(", ")
+                        : column.key === "time"
+                        ? `${lecture.startTime.slice(
+                            0,
+                            5
+                          )}-${lecture.endTime.slice(0, 5)}`
+                        : lecture[column.key]}
+                    </td>
+                  ))}
               </tr>
             ))}
         </tbody>
@@ -275,6 +280,7 @@ const Div = styled.div`
   margin-top: 100px;
   margin-left: 12.5%;
   margin-right: 12.5%;
+  margin-bottom: 200px;
 `;
 
 const Container = styled.div`

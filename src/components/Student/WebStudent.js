@@ -175,6 +175,7 @@ const Div = styled.div`
   margin-top: 100px;
   margin-left: 5%;
   margin-right: 5%;
+  margin-bottom: 200px;
   align-items: flex-start;
 `;
 

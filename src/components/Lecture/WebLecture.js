@@ -9,7 +9,7 @@ const columns = [
   { key: "index", label: "순번" },
   { key: "name", label: "반 이름" },
   { key: "dayList", label: "요일" },
-  { key: "time", label: "시간" }, // 시작 시간과 마치는 시간 합쳐서 표시
+  { key: "time", label: "시간" },
   { key: "room", label: "강의실" },
   { key: "teacher", label: "선생님" },
   { key: "id", label: "수업코드" },
@@ -128,10 +128,14 @@ const Lecture = () => {
                             : column.key === "dayList"
                             ? lecture.dayList.join(", ")
                             : column.key === "time"
-                            ? `${lecture.startTime}-${lecture.endTime}`
+                            ? `${lecture.startTime.slice(
+                                0,
+                                5
+                              )}-${lecture.endTime.slice(0, 5)}`
                             : lecture[column.key]}
                         </StyledTd>
                       ))}
+
                     <StyledTd>
                       <input
                         type="checkbox"
