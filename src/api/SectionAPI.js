@@ -31,7 +31,7 @@ export const getOneSection = async (sectionId) => {
     const response = await axios.get(
       process.env.REACT_APP_URL + `section/${sectionId}`
     );
-    return response;
+    return response.data;
   } catch (error) {
     console.error(error);
   }
