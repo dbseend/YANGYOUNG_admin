@@ -7,8 +7,10 @@ import {
   viewStudent,
 } from "../../api/StudentApi";
 import { gradeTypeConvert } from "../../util/Util";
+import AddPersonalTaskModal from "./AddPersonalTaskModal";
 
 const WebStudentDetail = () => {
+  const [isAddModalOpen, setAddModalOpen] = useState(false);
   const columns = [
     { key: "name", label: "수업명" },
     { key: "dayList", label: "요일" },
@@ -48,6 +50,15 @@ const WebStudentDetail = () => {
     fetchStudentDetail();
     viewAllStudent();
   }, []);
+
+  const openAddModal = () => {
+    setAddModalOpen(true);
+  };
+
+  const closeAddModal = () => {
+    setAddModalOpen(false);
+  };
+
 
   // 학생 정보를 가져오는 함수
   const fetchStudentDetail = async () => {
@@ -275,6 +286,10 @@ const WebStudentDetail = () => {
         {studentInfo.name} 학생은 총 {taskCount && taskCount}개의 할 일이
         있습니다.
       </p>
+      {/* <Button onClick={openAddModal}>등록</Button>
+      {isAddModalOpen && (
+        <AddPersonalTaskModal onClose={closeAddModal} onAdd={AddPersonalTask} />
+      )} */}
       <Table>
         <thead>
           <th>과제명</th>
