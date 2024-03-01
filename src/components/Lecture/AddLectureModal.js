@@ -15,8 +15,16 @@ const AddLectureModal = ({ onClose, onAdd }) => {
   });
   const [sectionList, setSectionList] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
-  const daysOfWeek = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
-
+  const daysOfWeek = [
+    { key: "월요일", label: "월" },
+    { key: "화요일", label: "화" },
+    { key: "수요일", label: "수" },
+    { key: "목요일", label: "목" },
+    { key: "금요일", label: "금" },
+    { key: "토요일", label: "토" },
+    { key: "일요일", label: "일" },
+  ];
+  
   useEffect(() => {
     viewAllStudent();
   }, []);
@@ -49,12 +57,6 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     }));
   };
 
-  // const handleDayChange = (dayId) => {
-  //   const isSelected = selectedDays.includes(dayId);
-  //   setSelectedDays((prevDays) =>
-  //     isSelected ? prevDays.filter((day) => day !== dayId) : [...prevDays, dayId]
-  //   );
-  // };
   const handleDayChange = (day) => {
     const isSelected = selectedDays.includes(day);
     setSelectedDays((prevDays) =>
@@ -62,7 +64,6 @@ const AddLectureModal = ({ onClose, onAdd }) => {
         ? prevDays.filter((prevDay) => prevDay !== day)
         : [...prevDays, day]
     );
-    console.log(selectedDays);
   };
 
   const handleStartTimeChange = (e) => {
@@ -124,26 +125,15 @@ const AddLectureModal = ({ onClose, onAdd }) => {
         return;
       }
 
-      // lectureData 객체 구성
-      // const lectureData = {
-      //   name: newLecture.name,
-      //   teacher: newLecture.teacher,
-      //   dayList: selectedDays.map((day) => day),
-      //   startTime: newLecture.startTime,
-      //   endTime: newLecture.endTime,
-      //   room: newLecture.room,
-      //   sectionId: newLecture.sectionId,
-      // };
-// lectureData 객체 구성
-const lectureData = {
-  name: newLecture.name,
-  teacher: newLecture.teacher,
-  dayList: selectedDays, // 수정된 부분
-  startTime: formatTime(newLecture.startTime), // 시간 형식에 맞게 변환
-  endTime: formatTime(newLecture.endTime), // 시간 형식에 맞게 변환
-  room: newLecture.room,
-  sectionId: newLecture.sectionId,
-};
+      const lectureData = {
+        name: newLecture.name,
+        teacher: newLecture.teacher,
+        dayList: selectedDays, // 수정된 부분
+        startTime: formatTime(newLecture.startTime), // 시간 형식에 맞게 변환
+        endTime: formatTime(newLecture.endTime), // 시간 형식에 맞게 변환
+        room: newLecture.room,
+        sectionId: newLecture.sectionId,
+      };
 
       console.log("전송 데이터:", lectureData);
 
@@ -151,6 +141,7 @@ const lectureData = {
       const response = await addLecture(lectureData);
 
       alert("수업 정보가 추가되었습니다.");
+      window.location.reload(true); // Reload the page
       onAdd(response);
       onClose();
     } catch (error) {
@@ -188,23 +179,17 @@ const lectureData = {
             </FormGroup>
             <FormGroup>
               <Label>요일</Label>
-              <div style={{ display: "flex" }}>
+              <DaySelection>
                 {daysOfWeek.map((day) => (
-                  <div
-                    key={day}
-                    style={{
-                      border: "1px solid #ccc",
-                      padding: "8px",
-                      margin: "4px",
-                      cursor: "pointer",
-                      background: selectedDays.includes(day) ? "#eee" : "white",
-                    }}
-                    onClick={() => handleDayChange(day)}
+                  <DayButton
+                    key={day.key}
+                    selected={selectedDays.includes(day.key)}
+                    onClick={() => handleDayChange(day.key)}
                   >
-                    {day}
-                  </div>
+                    {day.label}
+                  </DayButton>
                 ))}
-              </div>
+              </DaySelection>
             </FormGroup>
             <FormGroup>
               <Label>시작 시간</Label>
@@ -341,6 +326,18 @@ const AddButton = styled.button`
   cursor: pointer;
   display: flex;
   justify-content: center;
+`;
+
+const DaySelection = styled.div`
+  display: flex;
+`;
+
+const DayButton = styled.div`
+  border: 1px solid #ccc;
+  padding: 8px;
+  margin: 4px;
+  cursor: pointer;
+  background: ${({ selected }) => (selected ? "#eee" : "white")};
 `;
 
 // 함수: 시간을 'hh:mm' 형식으로 포맷하는 함수
