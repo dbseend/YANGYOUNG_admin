@@ -24,7 +24,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     { key: "토요일", label: "토" },
     { key: "일요일", label: "일" },
   ];
-  
+
   useEffect(() => {
     viewAllStudent();
   }, []);
@@ -116,10 +116,10 @@ const AddLectureModal = ({ onClose, onAdd }) => {
         newLecture.room.trim() === "" ||
         selectedDays.length === 0 ||
         newLecture.sectionId === 0 ||
-        newLecture.startTime.hour === 0 || // 시작 시간이 0시인 경우
-        newLecture.startTime.minute === 0 || // 시작 분이 0분인 경우
-        newLecture.endTime.hour === 0 || // 종료 시간이 0시인 경우
-        newLecture.endTime.minute === 0 // 종료 분이 0분인 경우
+        (newLecture.startTime.hour === null) | // 시작 시간이 0시인 경우
+          (newLecture.startTime.minute === null) || // 시작 분이 0분인 경우
+        newLecture.endTime.hour === null || // 종료 시간이 0시인 경우
+        newLecture.endTime.minute === null // 종료 분이 0분인 경우
       ) {
         alert("모든 필수 항목을 입력하세요.");
         return;

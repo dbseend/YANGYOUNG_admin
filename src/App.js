@@ -9,6 +9,7 @@ import LectureDetail from "./pages/LectureDetail";
 import StudentDetail from "./pages/StudentDetail";
 import Section from "./pages/Section";
 import SectionDetail from "./pages/SectionDetail";
+import NotFound from "./pages/NotFound";
 
 function App() {
   if (process.env.NODE_ENV === "production") {
@@ -30,7 +31,7 @@ function App() {
         <Route path="/student/:id" element={<StudentDetail />} />
         <Route path="/section" element={<Section />} />
         <Route path="/section/:id" element={<SectionDetail />} />
-
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </Router>
   );
