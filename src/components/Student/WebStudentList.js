@@ -118,7 +118,7 @@ const StyledTh = styled.th`
   text-align: center;
   background-color: #dfdfdf;
   @media screen and (min-width: 768px) {
-    width: 75vw;
+    width: 90vw;
   }
 `;
 
@@ -129,7 +129,7 @@ const StyledTd = styled.td`
   align-items: center;
 
   @media screen and (min-width: 768px) {
-    width: 75vw;
+    width: 90vw;
   }
 `;
 
