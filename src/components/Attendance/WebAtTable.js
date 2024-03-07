@@ -15,7 +15,7 @@ const AtTable = (props) => {
   const columns = [
     { key: "num", label: "" },
     { key: "name", label: "이름" },
-    { key: "phoneNumber", label: "연락처" },
+    { key: "phoneNumber", label: "분반" },
     { key: "attendance", label: "출결" },
     { key: "note", label: "비고" },
   ];
