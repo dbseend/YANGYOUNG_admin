@@ -15,7 +15,7 @@ const AtTable = (props) => {
   const columns = [
     { key: "num", label: "" },
     { key: "name", label: "이름" },
-    { key: "phoneNumber", label: "분반" },
+    { key: "phoneNumber", label: "연락처" },
     { key: "attendance", label: "출결" },
     { key: "note", label: "비고" },
   ];
@@ -23,15 +23,16 @@ const AtTable = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getSectionAttendanceInfo(sectionId, formattedDateString);
+        const data = await getSectionAttendanceInfo(
+          sectionId,
+          formattedDateString
+        );
         if (data && data.attendanceList) {
-          const sortedStudentInfo = data.attendanceList.sort(
-            (a, b) => {
-              if (a.studentName < b.studentName) return -1;
-              if (a.studentName > b.studentName) return 1;
-              return 0;
-            }
-          );
+          const sortedStudentInfo = data.attendanceList.sort((a, b) => {
+            if (a.studentName < b.studentName) return -1;
+            if (a.studentName > b.studentName) return 1;
+            return 0;
+          });
           console.log(sortedStudentInfo);
           setStudentInfo(sortedStudentInfo);
         } else {
@@ -82,7 +83,6 @@ const AtTable = (props) => {
       <Button onClick={postAttendance}>저장</Button>
 
       <StyledTable>
-
         <thead>
           <tr>
             {columns.map((column) => (
@@ -149,7 +149,7 @@ const AtTable = (props) => {
                     ) : column.key === "name" ? (
                       data.studentName
                     ) : column.key === "phoneNumber" ? (
-                      data.sectionName
+                      data.phoneNumber
                     ) : (
                       ""
                     )}
@@ -158,7 +158,6 @@ const AtTable = (props) => {
               </tr>
             ))}
         </tbody>
-
       </StyledTable>
     </Div>
   );
@@ -177,7 +176,7 @@ const StyledTable = styled.table`
   margin-top: 20px;
 
   @media screen and (min-width: 768px) {
-    width: 40vw;
+    width: 60vw;
   }
 `;
 
@@ -196,7 +195,7 @@ const StyledTh = styled.th`
 
 const StyledTd = styled.td`
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 2px;
   text-align: center;
 
   @media screen and (min-width: 768px) {
@@ -229,7 +228,6 @@ const Label = styled.label`
 `;
 
 const Button = styled.button`
-margin-right: 20px;
   background-color: black;
   color: white;
   border: none;
@@ -243,5 +241,5 @@ margin-right: 20px;
     background-color: #2c3e50;
   }
 `;
-export {Button};
+export { Button };
 export default AtTable;

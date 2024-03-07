@@ -154,7 +154,7 @@ const Div = styled.div`
 
 const TableContainer = styled.div`
   margin: 20px;
-  width: 49%;
+  width: 70%;
   margin-bottom: 200px;
 `;
 const StyledTable = styled.table`
