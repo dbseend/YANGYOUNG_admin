@@ -171,17 +171,21 @@ const WebStudentDetail = () => {
           <tr>
             <Th>이름</Th>
             <Td>{studentInfo.name}</Td>
-            <Th>학번</Th>
+            <Th>반</Th>
             <Td>
               {isEditMode ? (
-                <input
-                  type="text"
-                  name="id"
-                  value={selectedId}
-                  onChange={(e) => handleInputChange(e, "id")}
-                />
+                <select
+                  onChange={(e) => handleDropdownChange(e, "section")}
+                  value={selectedSection}
+                >
+                  {sectionList.map((banOption) => (
+                    <option key={banOption.name} value={banOption.id}>
+                      {banOption.name}
+                    </option>
+                  ))}
+                </select>
               ) : (
-                studentInfo.id
+                studentInfo.sectionName
               )}
             </Td>
           </tr>
@@ -234,7 +238,7 @@ const WebStudentDetail = () => {
               )}
             </td>
             <th>
-              부모<br></br>연락처
+              부모님<br></br>연락처
             </th>
             <td>
               {isEditMode ? (
@@ -248,21 +252,19 @@ const WebStudentDetail = () => {
                 studentInfo.parentPhoneNumber
               )}
             </td>
-            <th>반</th>
-            <td>
+          </tr>
+          <tr>
+            <th>아이디</th>
+            <td colSpan={4}>
               {isEditMode ? (
-                <select
-                  onChange={(e) => handleDropdownChange(e, "section")}
-                  value={selectedSection}
-                >
-                  {sectionList.map((banOption) => (
-                    <option key={banOption.name} value={banOption.id}>
-                      {banOption.name}
-                    </option>
-                  ))}
-                </select>
+                <input
+                  type="text"
+                  name="id"
+                  value={selectedId}
+                  onChange={(e) => handleInputChange(e, "id")}
+                />
               ) : (
-                studentInfo.sectionName
+                studentInfo.id
               )}
             </td>
           </tr>
@@ -316,7 +318,7 @@ const WebStudentDetail = () => {
       <Table>
         <thead>
           <th>과제명</th>
-          <td>상태</td>
+          <th>상태</th>
         </thead>
         <tbody>
           {taskInfo &&
