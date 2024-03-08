@@ -8,12 +8,12 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const email = localStorage.getItem("email");
+    // const email = localStorage.getItem("email");
 
-    if (!email) {
-      alert("로그인 후 이용해주세요");
-      navigate("/");
-    }
+    // if (!email) {
+    //   alert("로그인 후 이용해주세요");
+    //   navigate("/");
+    // }
 
     const handleScroll = () => {
       const scrollTop = window.scrollY;
