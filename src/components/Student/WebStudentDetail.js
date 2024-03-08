@@ -18,7 +18,7 @@ const WebStudentDetail = () => {
     { key: "room", label: "강의실" },
     { key: "teacher", label: "선생님" },
   ];
-  
+
   // 학생 인적사항
   const { id } = useParams();
   const [studentInfo, setstudentInfo] = useState({});
@@ -30,18 +30,21 @@ const WebStudentDetail = () => {
   // 과제 정보
   const [taskInfo, setTaskInfo] = useState([]);
   const [taskCount, setTaskCount] = useState(0);
-  
+
   // 검색 옵션(학년, 반) 리스트
   const [gradeList, setGradeList] = useState(["중3", "고1", "고2", "고3"]);
   const [sectionList, setSectionList] = useState([]);
-  
+
   // 수정된 학생 정보
   const [selectedId, setSelectedId] = useState("");
   const [selectedSchool, setSelectedSchool] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
-  const [selectedPhoneNumber, setSelectedPhoneNumber] = useState("");
+  const [selectedStudentPhoneNumber, setSelectedStudentPhoneNumber] =
+    useState("");
+  const [selectedParentPhoneNumber, setSelectedParentPhoneNumber] =
+    useState("");
   const [selectedGrade, setSelectedGrade] = useState("");
-  
+
   // 수정 모드 상태
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -59,7 +62,6 @@ const WebStudentDetail = () => {
     setAddModalOpen(false);
   };
 
-
   // 학생 정보를 가져오는 함수
   const fetchStudentDetail = async () => {
     getStudentInfo(id).then((data) => {
@@ -70,7 +72,8 @@ const WebStudentDetail = () => {
       setSelectedId(data.studentResponse.id);
       setSelectedSchool(data.studentResponse.school);
       setSelectedSection(data.studentResponse.sectionId);
-      setSelectedPhoneNumber(data.studentResponse.phoneNumber);
+      setSelectedStudentPhoneNumber(data.studentResponse.studentPhoneNumber);
+      setSelectedParentPhoneNumber(data.studentResponse.parentPhoneNumber);
       setSelectedGrade(data.studentResponse.grade);
 
       // 수업 정보 저장
@@ -96,11 +99,12 @@ const WebStudentDetail = () => {
   const handleToggleEditMode = () => {
     setIsEditMode(!isEditMode);
 
-    if(isEditMode === false){
+    if (isEditMode === false) {
       setSelectedId(studentInfo.id);
       setSelectedSchool(studentInfo.school);
       setSelectedSection(studentInfo.sectionId);
-      setSelectedPhoneNumber(studentInfo.phoneNumber);
+      setSelectedStudentPhoneNumber(studentInfo.studentPhoneNumber);
+      setSelectedParentPhoneNumber(studentInfo.parentPhoneNumber);
       setSelectedGrade(studentInfo.grade);
     }
   };
@@ -111,7 +115,8 @@ const WebStudentDetail = () => {
       studentId: studentInfo.id,
       school: selectedSchool,
       grade: gradeTypeConvert(selectedGrade),
-      phoneNumber: selectedPhoneNumber,
+      studentPhoneNumber: selectedStudentPhoneNumber,
+      parentPhoneNumber: selectedParentPhoneNumber,
       sectionId: selectedSection,
     };
 
@@ -127,7 +132,6 @@ const WebStudentDetail = () => {
 
   // 학년, 분반 정보 수정 - dropdown
   const handleDropdownChange = (e, type) => {
-
     if (type === "section") {
       setSelectedSection(e.target.value);
     }
@@ -138,15 +142,17 @@ const WebStudentDetail = () => {
 
   // 학생 정보 수정 - input
   const handleInputChange = (e, type) => {
-
     if (type === "id") {
       setSelectedId(e.target.value);
     }
     if (type === "school") {
       setSelectedSchool(e.target.value);
     }
-    if (type === "phoneNumber") {
-      setSelectedPhoneNumber(e.target.value);
+    if (type === "studentPhoneNumber") {
+      setSelectedStudentPhoneNumber(e.target.value);
+    }
+    if (type === "parentPhoneNumber") {
+      setSelectedParentPhoneNumber(e.target.value);
     }
   };
 
@@ -163,10 +169,10 @@ const WebStudentDetail = () => {
       <Table>
         <tbody>
           <tr>
-            <th>이름</th>
-            <td>{studentInfo.name}</td>
-            <th>학번</th>
-            <td>
+            <Th>이름</Th>
+            <Td>{studentInfo.name}</Td>
+            <Th>학번</Th>
+            <Td>
               {isEditMode ? (
                 <input
                   type="text"
@@ -177,7 +183,7 @@ const WebStudentDetail = () => {
               ) : (
                 studentInfo.id
               )}
-            </td>
+            </Td>
           </tr>
           <tr>
             <th>학교</th>
@@ -212,17 +218,34 @@ const WebStudentDetail = () => {
             </td>
           </tr>
           <tr>
-            <th>연락처</th>
+            <th>
+              학생<br></br>연락처
+            </th>
             <td>
               {isEditMode ? (
                 <input
                   type="text"
-                  name="phoneNumber"
-                  value={selectedPhoneNumber}
-                  onChange={(e) => handleInputChange(e, "phoneNumber")}
+                  name="studentPhoneNumber"
+                  value={selectedStudentPhoneNumber}
+                  onChange={(e) => handleInputChange(e, "studentPhoneNumber")}
                 />
               ) : (
-                studentInfo.phoneNumber
+                studentInfo.studentPhoneNumber
+              )}
+            </td>
+            <th>
+              부모<br></br>연락처
+            </th>
+            <td>
+              {isEditMode ? (
+                <input
+                  type="text"
+                  name="parentPhoneNumber"
+                  value={selectedParentPhoneNumber}
+                  onChange={(e) => handleInputChange(e, "parentPhoneNumber")}
+                />
+              ) : (
+                studentInfo.parentPhoneNumber
               )}
             </td>
             <th>반</th>
@@ -293,7 +316,7 @@ const WebStudentDetail = () => {
       <Table>
         <thead>
           <th>과제명</th>
-          <th>상태</th>
+          <td>상태</td>
         </thead>
         <tbody>
           {taskInfo &&
@@ -373,5 +396,14 @@ const Button = styled.button`
   line-height: normal;
   border: none;
   margin-right: 10px;
+`;
+
+const Th = styled.th`
+  width: auto;
+`;
+
+const Td = styled.td`
+  width: 150px;
+  /* width: 2%; */
 `;
 export default WebStudentDetail;
