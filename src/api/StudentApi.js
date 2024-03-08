@@ -51,6 +51,7 @@ export const getStudentInfo = async (id) => {
 export const editStudentInfo = async (studentData) => {
   try {
     const response = await axios.patch(
+      // 'http://localhost:8080/api/v0/student',
       process.env.REACT_APP_URL + `student`,
       studentData
     );
