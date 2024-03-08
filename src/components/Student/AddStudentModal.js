@@ -55,7 +55,13 @@ const AddStudentModal = ({ onClose, onAdd }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === "phoneNumber") {
+    if (name === "studentPhoneNumber") {
+      setNewStudent((prevStudent) => ({
+        ...prevStudent,
+        [name]: formatPhoneNumber(value),
+      }));
+    } 
+    else if (name === "parentPhoneNumber"){
       setNewStudent((prevStudent) => ({
         ...prevStudent,
         [name]: formatPhoneNumber(value),
@@ -74,7 +80,8 @@ const AddStudentModal = ({ onClose, onAdd }) => {
         newStudent.grade === "" ||
         newStudent.sectionId === "" ||
         newStudent.school.trim() === "" ||
-        newStudent.phoneNumber.trim() === ""
+        newStudent.studentPhoneNumber.trim() === "" ||
+        newStudent.parentPhoneNumber.trim() === ""
       ) {
         alert("모든 필수 항목을 입력하세요.");
         return;
@@ -102,12 +109,12 @@ const AddStudentModal = ({ onClose, onAdd }) => {
       const response = await addStudent(studentData);
 
       // 서버에서 데이터 추가 완료 후에 처리
-      // alert("학생 정보가 추가 되었습니다");
+      alert("학생 정보가 추가 되었습니다");
 
       // 실제 추가된 학생 정보를 사용하여 onAdd 호출
       onAdd(response);
       onClose();
-      // window.location.reload(true); 
+      window.location.reload(true); 
     } catch (error) {
       alert("에러 발생: " + error.message);
       console.error("Error adding student:", error);
@@ -190,8 +197,18 @@ const AddStudentModal = ({ onClose, onAdd }) => {
               <Label>연락처</Label>
               <Input
                 type="text"
-                name="phoneNumber"
-                value={newStudent.phoneNumber}
+                name="studentPhoneNumber"
+                value={newStudent.studentPhoneNumber}
+                onChange={handleInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Label>부모님 연락처</Label>
+              <Input
+                type="text"
+                name="parentPhoneNumber"
+                value={newStudent.parentPhoneNumber}
                 onChange={handleInputChange}
               />
             </FormGroup>
