@@ -9,7 +9,7 @@ const AtTable = (props) => {
   const [studentInfo, setStudentInfo] = useState([]);
   const sectionId = props.sectionId;
   const date = props.date;
-  const formattedDate = new Date(`${date}T00:00:00`);
+  const formattedDate = new Date(`${date}T00:00:00Z`);
   const formattedDateString = formattedDate.toISOString().slice(0, 19);
 
   const columns = [
@@ -64,6 +64,7 @@ const AtTable = (props) => {
   };
 
   const postAttendance = () => {
+    console.log(formattedDateString);
     const data = {
       sectionId: sectionId,
       attendanceUpdateRequestList: studentInfo.map((info) => ({
@@ -76,7 +77,7 @@ const AtTable = (props) => {
 
     console.log(data);
 
-    postAttendanceBySection(data);
+    // postAttendanceBySection(data);
   };
 
   return (
