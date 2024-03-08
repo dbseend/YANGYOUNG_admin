@@ -150,8 +150,6 @@ const AtTable = (props) => {
                       />
                     ) : column.key === "name" ? (
                       data.studentName
-                    ) : column.key === "phoneNumber" ? (
-                      data.sectionName
                     ) : column.key === "studentPhoneNumber" ? (
                       data.studentPhoneNumber
                     ) : column.key === "parentPhoneNumber" ? (
