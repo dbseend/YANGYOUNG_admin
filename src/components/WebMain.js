@@ -22,7 +22,7 @@ const Main = () => {
         user.email === "yenny031003@gmail.com" ||
         user.email === "shyoon840@gmail.com"
       ) {
-        // localStorage.setItem("email", user.email);
+        localStorage.setItem("email", user.email);
         navigate("/attendance");
       } else {
         alert("허용되지 않은 이메일입니다");
