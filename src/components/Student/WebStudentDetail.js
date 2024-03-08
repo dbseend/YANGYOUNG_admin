@@ -365,7 +365,7 @@ const Guide2 = styled.h3`
 `;
 
 const Table = styled.table`
-  width: 50%;
+  width: 80%;
   border-collapse: collapse;
 
   th {
