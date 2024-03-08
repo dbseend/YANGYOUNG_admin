@@ -100,7 +100,8 @@ const AddStudentModal = ({ onClose, onAdd }) => {
         name: newStudent.name,
         school: newStudent.school,
         grade: newStudent.grade,
-        phoneNumber: newStudent.phoneNumber,
+        studentPhoneNumber: newStudent.studentPhoneNumber,
+        parentPhoneNumber: newStudent.parentPhoneNumber,
         sectionId: newStudent.sectionId,
       };
 
