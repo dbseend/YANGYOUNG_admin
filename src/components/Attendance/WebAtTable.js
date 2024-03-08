@@ -22,6 +22,7 @@ const AtTable = (props) => {
   ];
 
   useEffect(() => {
+    console.log("props time: ", date);
     const fetchData = async () => {
       try {
         const data = await getSectionAttendanceInfo(
@@ -77,7 +78,7 @@ const AtTable = (props) => {
 
     console.log(data);
 
-    // postAttendanceBySection(data);
+    postAttendanceBySection(data);
   };
 
   return (
