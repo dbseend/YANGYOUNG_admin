@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getOneSection } from "../../api/SectionAPI";
 import { Button } from "../Student/WebStudentList";
 import AddSectionTaskModal from "./AddSectionTaskModal";
@@ -23,6 +23,7 @@ const students = [
 
 const WebSectionDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [studentList, setStudentList] = useState([]);
   const [studentCount, setStudentCount] = useState(0);
@@ -63,6 +64,10 @@ const WebSectionDetail = () => {
 
   const handleAddSection = (response) => {
     console.log("새 분반 정보: ", response);
+  };
+
+  const moveToStudentDetail = (studentId) => {
+    navigate(`/student/${studentId}`);
   };
 
   return (
@@ -143,6 +148,7 @@ const WebSectionDetail = () => {
             taskList.map((task, index) => (
               <tr key={index}>
                 {taskColumns.map((col) => (
+                  // 학생 아이디로 이동
                   <td key={col.key}>{task[col.key]}</td>
                 ))}
               </tr>
@@ -170,7 +176,12 @@ const WebSectionDetail = () => {
             studentList.map((student, index) => (
               <tr key={index}>
                 {students.map((col) => (
-                  <td key={col.key}>{student[col.key]}</td>
+                  <Pointer
+                    onClick={() => moveToStudentDetail(student.id)}
+                    key={col.key}
+                  >
+                    {student[col.key]}
+                  </Pointer>
                 ))}
               </tr>
             ))}
@@ -224,6 +235,10 @@ const Table = styled.table`
     border: 1px solid #ddd;
     text-align: center;
   }
+`;
+
+const Pointer = styled.td`
+  cursor: pointer;
 `;
 
 export default WebSectionDetail;

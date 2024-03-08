@@ -15,7 +15,8 @@ const AtTable = (props) => {
   const columns = [
     { key: "num", label: "" },
     { key: "name", label: "이름" },
-    { key: "phoneNumber", label: "연락처" },
+    { key: "studentPhoneNumber", label: "학생 연락처" },
+    { key: "parentPhoneNumber", label: "부모님 연락처" },
     { key: "attendance", label: "출결" },
     { key: "note", label: "비고" },
   ];
@@ -149,7 +150,11 @@ const AtTable = (props) => {
                     ) : column.key === "name" ? (
                       data.studentName
                     ) : column.key === "phoneNumber" ? (
-                      data.phoneNumber
+                      data.sectionName
+                    ) : column.key === "studentPhoneNumber" ? (
+                      data.studentPhoneNumber
+                    ) : column.key === "parentPhoneNumber" ? (
+                      data.parentPhoneNumber
                     ) : (
                       ""
                     )}
@@ -228,6 +233,7 @@ const Label = styled.label`
 `;
 
 const Button = styled.button`
+  margin-right: 20px;
   background-color: black;
   color: white;
   border: none;

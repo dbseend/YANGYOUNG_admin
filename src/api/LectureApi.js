@@ -2,7 +2,10 @@ import axios from "axios";
 
 export const viewLecture = async () => {
   try {
-    const response = await axios.get(process.env.REACT_APP_URL + `lecture`);
+    const response = await axios.get(
+      // "http://localhost:8080/api/v0/lecture"
+      process.env.REACT_APP_URL + `lecture`
+    );
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -12,13 +15,15 @@ export const viewLecture = async () => {
 
 export const addLecture = async (lectureData) => {
   try {
-    const response = await axios.post(process.env.REACT_APP_URL + `lecture`, lectureData);
+    const response = await axios.post(
+      process.env.REACT_APP_URL + `lecture`,
+      lectureData
+    );
     return response.data;
   } catch (error) {
     throw error;
   }
 };
-
 
 export const getOneLecture = async (lectureId) => {
   try {
@@ -26,7 +31,7 @@ export const getOneLecture = async (lectureId) => {
       process.env.REACT_APP_URL + `lecture/${lectureId}`
     );
     console.log(response);
-    return (response);
+    return response;
   } catch (error) {
     console.error(error);
     throw error;

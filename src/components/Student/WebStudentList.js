@@ -10,7 +10,8 @@ const columns = [
   { key: "school", label: "학교" },
   { key: "grade", label: "학년" },
   { key: "sectionName", label: "반" },
-  { key: "phoneNumber", label: "연락처" },
+  { key: "studentPhoneNumber", label: "학생 연락처" },
+  { key: "parentPhoneNumber", label: "부모님 연락처" },
   { key: "id", label: "학번" },
 ];
 
@@ -18,6 +19,10 @@ const StudentList = ({ filteredData }) => {
   const navigate = useNavigate();
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
+
+  useEffect(()=>{
+    console.log(filteredData);
+  })
 
   const moveToStudentDetail = (studentId) => {
     navigate(`/student/${studentId}`);
