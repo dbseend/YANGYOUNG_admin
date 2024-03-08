@@ -90,9 +90,9 @@ const AttendanceContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   /* align-items: flex-start; */
-  margin-top: 120px;
+  margin-top: 80px;
   /* margin-left: 5%; */
-  gap: 10%;
+  gap: 5%;
 `;
 
 const AttendanceContent = styled.div`

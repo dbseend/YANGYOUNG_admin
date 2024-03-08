@@ -120,7 +120,7 @@ const WebStudent = () => {
               반 선택
             </option>
             {sectionList.map((banOption) => (
-              <option key={banOption} value={banOption}>
+              <option key={banOption} >
                 {banOption.name}
               </option>
             ))}
@@ -180,7 +180,7 @@ const Div = styled.div`
 `;
 
 const TableContainer = styled.div`
-  width: 69%;
+  width: 85%;
   margin-bottom: 200px;
 `;
 

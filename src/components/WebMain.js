@@ -16,16 +16,17 @@ const Main = () => {
       const user = auth.currentUser;
       console.log("유저 ", user);
 
-      // if ( 
-      //   user.email === "black.princeee@gmail.com" ||
-      //   user.email === "yenny031003@handong.ac.kr" ||
-      //   user.email === "yenny031003@gmail.com"
-      // ) {
-        localStorage.setItem("email", user.email);
+      if (
+        user.email === "black.princeee@gmail.com" ||
+        user.email === "yenny031003@handong.ac.kr" ||
+        user.email === "yenny031003@gmail.com" ||
+        user.email === "shyoon840@gmail.com"
+      ) {
+        // localStorage.setItem("email", user.email);
         navigate("/attendance");
-      // } else {
-      //   alert("허용되지 않은 이메일입니다");
-      // }
+      } else {
+        alert("허용되지 않은 이메일입니다");
+      }
     } catch (error) {
       console.error("Google 로그인 에러:", error);
     }
@@ -47,7 +48,7 @@ const Main = () => {
 };
 
 const Container = styled.div`
-  margin-top: 133px;
+  margin-top: 7.5%;
 `;
 const Head = styled.div`
   justify-content: center;

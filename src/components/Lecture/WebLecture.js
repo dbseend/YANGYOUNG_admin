@@ -171,12 +171,12 @@ const Div = styled.div`
 
 const TableContainer = styled.div`
   margin: 20px;
-  width:80%;
   margin-bottom: 200px;
 `;
 const StyledTable = styled.table`
   border-collapse: collapse;
   margin-top: 20px;
+  width: 80%;
 `;
 
 const StyledTh = styled.th`

@@ -181,7 +181,7 @@ const StyledTable = styled.table`
   margin-top: 20px;
 
   @media screen and (min-width: 768px) {
-    width: 40vw;
+    width: 60vw;
   }
 `;
 
@@ -200,7 +200,7 @@ const StyledTh = styled.th`
 
 const StyledTd = styled.td`
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 2px;
   text-align: center;
 
   @media screen and (min-width: 768px) {
