@@ -7,7 +7,9 @@ export const addStudent = async (studentData) => {
     name: studentData.name,
     school: studentData.school,
     grade: studentData.grade,
-    phoneNumber: studentData.phoneNumber,
+    studentPhoneNumber: studentData.studentPhoneNumber,
+    parentPhoneNumber: studentData.parentPhoneNumber,
+
     sectionId: studentData.sectionId,
   };
   try {
