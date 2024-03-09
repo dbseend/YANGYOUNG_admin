@@ -68,12 +68,14 @@ const AtTable = (props) => {
     console.log(formattedDateString);
     const data = {
       sectionId: sectionId,
-      attendanceUpdateRequestList: studentInfo.map((info) => ({
-        attendedDateTime: formattedDateString,
-        studentId: info.studentId,
-        attendanceType: info.attendanceType,
-        note: info.note,
-      })),
+      attendanceUpdateRequestList: studentInfo
+        .filter((info) => info.attendanceType !== null)
+        .map((info) => ({
+          attendedDateTime: formattedDateString,
+          studentId: info.studentId,
+          attendanceType: info.attendanceType,
+          note: info.note,
+        })),
     };
 
     console.log(data);
