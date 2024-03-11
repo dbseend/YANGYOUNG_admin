@@ -9,7 +9,7 @@ const AtTable = (props) => {
   const [studentInfo, setStudentInfo] = useState([]);
   const sectionId = props.sectionId;
   const date = props.date;
-  const formattedDate = new Date(`${date}T00:00:00Z`);
+  const formattedDate = new Date(`${date}T12:00:00Z`);
   const formattedDateString = formattedDate.toISOString().slice(0, 19);
 
   const columns = [

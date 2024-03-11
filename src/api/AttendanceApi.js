@@ -27,8 +27,8 @@ export const postAttendanceBySection = async (data) => {
 
   try {
     const response = await axios.patch(
-      `${process.env.REACT_APP_URL}attendance`,
-      // `http://localhost:8080/api/v0/attendance`,
+      // `${process.env.REACT_APP_URL}attendance`,
+      `http://localhost:8080/api/v0/attendance`,
       data
     );
     console.log(response.data);
