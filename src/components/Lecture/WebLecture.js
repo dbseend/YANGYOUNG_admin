@@ -7,7 +7,7 @@ import { Button, StyledButtonContainer } from "../Student/WebStudentList";
 
 const columns = [
   { key: "index", label: "순번" },
-  { key: "name", label: "반 이름" },
+  { key: "name", label: "수업명" },
   { key: "dayList", label: "요일" },
   { key: "time", label: "시간" },
   { key: "room", label: "강의실" },
