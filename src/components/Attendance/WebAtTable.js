@@ -9,7 +9,7 @@ const AtTable = (props) => {
   const [studentInfo, setStudentInfo] = useState([]);
   const sectionId = props.sectionId;
   const date = props.date;
-  const formattedDate = new Date(`${date}T00:00:00Z`);
+  const formattedDate = new Date(`${date}T12:00:00Z`);
   const formattedDateString = formattedDate.toISOString().slice(0, 19);
 
   const columns = [
@@ -22,6 +22,7 @@ const AtTable = (props) => {
   ];
 
   useEffect(() => {
+    console.log("props time: ", date);
     const fetchData = async () => {
       try {
         const data = await getSectionAttendanceInfo(
@@ -67,17 +68,19 @@ const AtTable = (props) => {
     console.log(formattedDateString);
     const data = {
       sectionId: sectionId,
-      attendanceUpdateRequestList: studentInfo.map((info) => ({
-        attendedDateTime: formattedDateString,
-        studentId: info.studentId,
-        attendanceType: info.attendanceType,
-        note: info.note,
-      })),
+      attendanceUpdateRequestList: studentInfo
+        .filter((info) => info.attendanceType !== null)
+        .map((info) => ({
+          attendedDateTime: formattedDateString,
+          studentId: info.studentId,
+          attendanceType: info.attendanceType,
+          note: info.note,
+        })),
     };
 
     console.log(data);
 
-    // postAttendanceBySection(data);
+    postAttendanceBySection(data);
   };
 
   return (
