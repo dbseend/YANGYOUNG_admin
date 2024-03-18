@@ -23,30 +23,31 @@ const AtTable = (props) => {
 
   useEffect(() => {
     console.log("props time: ", date);
-    const fetchData = async () => {
-      try {
-        const data = await getSectionAttendanceInfo(
-          sectionId,
-          formattedDateString
-        );
-        if (data && data.attendanceList) {
-          const sortedStudentInfo = data.attendanceList.sort((a, b) => {
-            if (a.studentName < b.studentName) return -1;
-            if (a.studentName > b.studentName) return 1;
-            return 0;
-          });
-          console.log(sortedStudentInfo);
-          setStudentInfo(sortedStudentInfo);
-        } else {
-          alert("반 정보가 없습니다.");
-          setStudentInfo([]); // 반 정보가 없는 경우 빈 배열로 설정
-        }
-      } catch (error) {
-        console.log("반 정보를 불러오는 도중 에러 발생:", error);
-      }
-    };
     fetchData();
   }, [sectionId, date]);
+
+  const fetchData = async () => {
+    try {
+      const data = await getSectionAttendanceInfo(
+        sectionId,
+        formattedDateString
+      );
+      if (data && data.attendanceList) {
+        const sortedStudentInfo = data.attendanceList.sort((a, b) => {
+          if (a.studentName < b.studentName) return -1;
+          if (a.studentName > b.studentName) return 1;
+          return 0;
+        });
+        console.log(sortedStudentInfo);
+        setStudentInfo(sortedStudentInfo);
+      } else {
+        alert("반 정보가 없습니다.");
+        setStudentInfo([]); // 반 정보가 없는 경우 빈 배열로 설정
+      }
+    } catch (error) {
+      console.log("반 정보를 불러오는 도중 에러 발생:", error);
+    }
+  };
 
   const handleRadioChange = (index, value) => {
     setStudentInfo((prevStudentInfo) => {
@@ -85,8 +86,10 @@ const AtTable = (props) => {
 
   return (
     <Div>
-      <Button onClick={postAttendance}>저장</Button>
-
+      <ButtonContainer>
+        <Button onClick={fetchData}>새로고침</Button>
+        <Button onClick={postAttendance}>저장</Button>
+      </ButtonContainer>
       <StyledTable>
         <thead>
           <tr>
@@ -177,6 +180,10 @@ const Div = styled.div`
   overflow: auto;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
