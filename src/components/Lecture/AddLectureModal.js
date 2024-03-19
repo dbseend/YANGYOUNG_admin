@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { addLecture } from "../../api/LectureApi";
-import { viewStudent } from "../../api/StudentApi";
-import { viewSection } from "../../api/SectionAPI";
 import { getSearchOption } from "../../api/UtilAPI";
 
 const AddLectureModal = ({ onClose, onAdd }) => {
@@ -28,16 +26,14 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     { key: "일요일", label: "일" },
   ];
 
-  useEffect (() => {
+  useEffect(() => {
     viewSearchOption();
-  },[]);
+  }, []);
 
-  const viewSearchOption = async() => {
+  const viewSearchOption = async () => {
     const response = await getSearchOption();
     setSectionList(response.sectionList);
-    console.log(sectionList);
-  }
-
+  };
 
   const handleNameChange = (e) => {
     setNewLecture((prevLecture) => ({
@@ -61,6 +57,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
         : [...prevDays, day]
     );
   };
+
   const handleSectionIdChange = (sectionId) => {
     const isSelected = selectedSectionIds.includes(sectionId);
     setSelectedSectionIds((prevSectionIds) =>
@@ -68,11 +65,8 @@ const AddLectureModal = ({ onClose, onAdd }) => {
         ? prevSectionIds.filter((prevSectionId) => prevSectionId !== sectionId)
         : [...prevSectionIds, sectionId]
     );
-    // setNewLecture((prevLecture) => ({
-    //   ...prevLecture,
-    //   sectionId: parseInt(e.target.value),
-    // }));
   };
+
   const handleStartTimeChange = (e) => {
     const time = e.target.value.split(":");
     setNewLecture((prevLecture) => ({
@@ -115,7 +109,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
         newLecture.teacher.trim() === "" ||
         newLecture.room.trim() === "" ||
         selectedDays.length === 0 ||
-        newLecture.sectionId === 0 ||
+        selectedSectionIds.length === 0 ||
         (newLecture.startTime.hour === null) | // 시작 시간이 0시인 경우
           (newLecture.startTime.minute === null) || // 시작 분이 0분인 경우
         newLecture.endTime.hour === null || // 종료 시간이 0시인 경우
@@ -223,34 +217,30 @@ const AddLectureModal = ({ onClose, onAdd }) => {
                 />
               </FormGroup>
             </BigForm>
-            <BigForm>
-              <FormGroup>
-                <Label>분반</Label>
-                <Select multiple
-                onChange={handleSectionIdChange}
-              >
-                {sectionList && sectionList.map((section) => (
-                  <option key={section.id} value={section.id}>
+            <Label>분반</Label>
+            <Select
+              onChange={(e) => handleSectionIdChange(e.target.value)}
+              value={selectedSectionIds}
+              multiple
+            >
+              {sectionList.map((section) => (
+                <option key={section.id} value={section.id}>
+                  {section.name}
+                </option>
+              ))}
+            </Select>
+            {/* <Select
+              onChange={handleSectionIdChange}
+              value={selectedSectionIds}
+              multiple
+            >
+              {sectionList &&
+                sectionList.map((section) => (
+                  <option selected = {selectedSectionIds.includes(section.key)} key={section.id} value={section.id}>
                     {section.name}
                   </option>
                 ))}
-              </Select>
-                {/* <select id="divisions" multiple>
-                  <option value="division1">동대전고1(1반)</option>
-                  <option value="division2">대성고1(1반)</option>
-                  <option value="division3">또봇</option>
-                </select> */}
-                {/* <Select
-                onChange={handleSectionIdChange}
-              >
-                {sectionList.map((section) => (
-                  <option key={section.id} value={section.id}>
-                    {section.name}
-                  </option>
-                ))}
-              </Select> */}
-              </FormGroup>
-            </BigForm>
+            </Select> */}
             <AddButton type="submit">등록</AddButton>
           </Form>
         </ModalContent>
@@ -341,9 +331,12 @@ const Input = styled.input`
 `;
 
 const Select = styled.select`
-  width: 100%;
+  margin-bottom: 20px;
+  margin-left: 2.3%;
+  width: 95%;
+  height: 300px;
   padding: 8px;
-  font-size: 1rem;
+  font-size: 15px;
   border: 1px solid #ddd;
   border-radius: 4px;
 `;
