@@ -14,7 +14,8 @@ export const addStudent = async (studentData) => {
   };
   try {
     const response = await axios.post(
-      process.env.REACT_APP_URL + `student`,
+      process.env.REACT_APP_DEV_URL + `student`,
+      // process.env.REACT_APP_URL + `student`,
       data
     );
     console.log(response.data);
@@ -25,10 +26,14 @@ export const addStudent = async (studentData) => {
   }
 };
 
-// 학생 정보 조회 API 호출
+// 학생 전체 조회 API 호출
 export const viewStudent = async () => {
   try {
-    const response = await axios.get(process.env.REACT_APP_URL + `student`);
+    const response = await axios.get(
+      process.env.REACT_APP_DEV_URL + `student`
+      // process.env.REACT_APP_URL + `student`
+    );
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -40,7 +45,8 @@ export const getStudentInfo = async (id) => {
   console.log(id);
   try {
     const response = await axios.get(
-      process.env.REACT_APP_URL + `student/${id}`
+      process.env.REACT_APP_DEV_URL + `student/${id}`
+      // process.env.REACT_APP_URL + `student/${id}`
     );
     return response.data;
   } catch (error) {
@@ -54,7 +60,8 @@ export const editStudentInfo = async (studentData) => {
   try {
     const response = await axios.patch(
       // 'http://localhost:8080/api/v0/student',
-      process.env.REACT_APP_URL + `student`,
+      process.env.REACT_APP_DEV_URL + `student`,
+      // process.env.REACT_APP_URL + `student`,
       studentData
     );
     return response.data;
@@ -67,7 +74,10 @@ export const editStudentInfo = async (studentData) => {
 // 학생 정보 삭제 API 호출
 export const deleteStudent = async (id) => {
   try {
-    await axios.delete(process.env.REACT_APP_URL + `student/${id}`, id);
+    await axios.delete(
+      process.env.REACT_APP_DEV_URL + `student/${id}`, 
+      // process.env.REACT_APP_URL + `student/${id}`, 
+      id);
   } catch (error) {
     console.error("학생 삭제 중 오류 발생:", error);
     throw error;

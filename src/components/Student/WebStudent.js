@@ -22,6 +22,7 @@ const WebStudent = () => {
     viewAllStudent();
   }, []);
 
+  // 학생 전체 조회
   const viewAllStudent = async () => {
     try {
       const response = await viewStudent();
@@ -40,6 +41,7 @@ const WebStudent = () => {
     }
   };
 
+  // 학생 검색
   const search = () => {
     const filteredData = studentList.filter((item) => {
       const nameMatch =
@@ -63,10 +65,12 @@ const WebStudent = () => {
     setFilteredData(filteredData);
   };
 
+  // 검색어 입력 시 상태 업데이트
   const getValue = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
   };
 
+  // 드롭다운 선택 시 상태 업데이트
   const handleDropdownChange = (e, type) => {
     const selectedValue = e.target.value;
 
@@ -79,16 +83,19 @@ const WebStudent = () => {
     }
   };
 
+  // 학교 입력 시 상태 업데이트
   const handleSchoolChange = (e) => {
     setSelectedSchool(e.target.value);
   };
 
+  // 엔터키 입력 시 검색
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       search();
     }
   };
 
+  // 초기화 버튼 클릭 시 검색 조건 초기화 
   const handleReset = () => {
     setSearchTerm("");
     setSelectedSection("");
@@ -111,7 +118,7 @@ const WebStudent = () => {
             placeholder="학생 이름으로 검색"
           />
 
-          <Label className="second-child">반</Label>
+          {/* <Label className="second-child">반</Label>
           <OptionSelect
             onChange={(e) => handleDropdownChange(e, "section")}
             value={selectedSection || ""}
@@ -124,7 +131,7 @@ const WebStudent = () => {
                 {banOption.name}
               </option>
             ))}
-          </OptionSelect>
+          </OptionSelect> */}
 
           <Label className="third-child">학교</Label>
           <PostInput

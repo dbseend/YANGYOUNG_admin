@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { addStudent } from "../../api/StudentApi";
 import { viewStudent } from "../../api/StudentApi";
+
 const AddStudentModal = ({ onClose, onAdd }) => {
   const [newStudent, setNewStudent] = useState({
     id: 0,
@@ -20,12 +21,12 @@ const AddStudentModal = ({ onClose, onAdd }) => {
   }, []);
 
   const viewAllStudent = async () => {
-    try {
-      const response = await viewStudent();
-      setSectionList(response.sectionList);
-    } catch (error) {
-      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
-    }
+    // try {
+    //   const response = await viewStudent();
+    //   setSectionList(response.sectionList);
+    // } catch (error) {
+    //   console.log("학생 데이터를 가져오는 중 오류 발생:", error);
+    // }
   };
 
   const formatPhoneNumber = (value) => {

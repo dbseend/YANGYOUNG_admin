@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import styled from "styled-components";
 import {
-  getStudentInfo,
   editStudentInfo,
+  getStudentInfo,
   viewStudent,
 } from "../../api/StudentApi";
 import { gradeTypeConvert } from "../../util/Util";
-import AddPersonalTaskModal from "./AddPersonalTaskModal";
 
 const WebStudentDetail = () => {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
@@ -81,18 +80,18 @@ const WebStudentDetail = () => {
       setLectureCount(data.lectureAllResponse.count);
 
       // 과제 정보 저장
-      setTaskInfo(data.studentTaskAllResponse.studentTaskResponseList);
-      setTaskCount(data.studentTaskAllResponse.studentTaskSize);
+      // setTaskInfo(data.studentTaskAllResponse.studentTaskResponseList);
+      // setTaskCount(data.studentTaskAllResponse.studentTaskSize);
     });
   };
 
   // 검색 옵션을 가져오는 함수(반, 학년)
   const viewAllStudent = async () => {
-    viewStudent().then((data) => {
-      // console.log("학생 정보: ", data);
-      // setGradeList(data.gradeList);
-      setSectionList(data.sectionList);
-    });
+    // viewStudent().then((data) => {
+    //   // console.log("학생 정보: ", data);
+    //   // setGradeList(data.gradeList);
+    //   setSectionList(data.sectionList);
+    // });
   };
 
   // 수정 모드를 토글하는 함수
@@ -159,39 +158,37 @@ const WebStudentDetail = () => {
   return (
     <Div>
       <Title>상세 정보</Title>
+      
       <Container>
         <Button onClick={handleToggleEditMode}>
           {isEditMode ? "취소" : "수정"}
         </Button>
         {isEditMode && <Button onClick={handleSaveChanges}>저장</Button>}
       </Container>
+
       <Guide1>학생 인적 사항</Guide1>
       <Table>
         <tbody>
           <tr>
             <Th>이름</Th>
             <Td>{studentInfo.name}</Td>
-            <Th>반</Th>
-            <Td>
+            <Th>아이디</Th>
+            <Td colSpan={4}>
               {isEditMode ? (
-                <select
-                  onChange={(e) => handleDropdownChange(e, "section")}
-                  value={selectedSection}
-                >
-                  {sectionList.map((banOption) => (
-                    <option key={banOption.name} value={banOption.id}>
-                      {banOption.name}
-                    </option>
-                  ))}
-                </select>
+                <input
+                  type="text"
+                  name="id"
+                  value={selectedId}
+                  onChange={(e) => handleInputChange(e, "id")}
+                />
               ) : (
-                studentInfo.sectionName
+                studentInfo.id
               )}
             </Td>
           </tr>
           <tr>
-            <th>학교</th>
-            <td>
+            <Th>학교</Th>
+            <Td>
               {isEditMode ? (
                 <input
                   type="text"
@@ -202,9 +199,9 @@ const WebStudentDetail = () => {
               ) : (
                 studentInfo.school
               )}
-            </td>
-            <th>학년</th>
-            <td>
+            </Td>
+            <Th>학년</Th>
+            <Td>
               {isEditMode ? (
                 <select
                   value={selectedGrade}
@@ -219,13 +216,13 @@ const WebStudentDetail = () => {
               ) : (
                 studentInfo.grade
               )}
-            </td>
+            </Td>
           </tr>
           <tr>
-            <th>
+            <Th>
               학생<br></br>연락처
-            </th>
-            <td>
+            </Th>
+            <Td>
               {isEditMode ? (
                 <input
                   type="text"
@@ -236,11 +233,11 @@ const WebStudentDetail = () => {
               ) : (
                 studentInfo.studentPhoneNumber
               )}
-            </td>
-            <th>
+            </Td>
+            <Th>
               부모님<br></br>연락처
-            </th>
-            <td>
+            </Th>
+            <Td>
               {isEditMode ? (
                 <input
                   type="text"
@@ -251,22 +248,7 @@ const WebStudentDetail = () => {
               ) : (
                 studentInfo.parentPhoneNumber
               )}
-            </td>
-          </tr>
-          <tr>
-            <th>아이디</th>
-            <td colSpan={4}>
-              {isEditMode ? (
-                <input
-                  type="text"
-                  name="id"
-                  value={selectedId}
-                  onChange={(e) => handleInputChange(e, "id")}
-                />
-              ) : (
-                studentInfo.id
-              )}
-            </td>
+            </Td>
           </tr>
         </tbody>
       </Table>
