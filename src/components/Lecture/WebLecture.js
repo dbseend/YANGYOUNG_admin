@@ -12,7 +12,7 @@ const columns = [
   { key: "time", label: "시간" },
   { key: "room", label: "강의실" },
   { key: "teacher", label: "선생님" },
-  { key: "id", label: "수업코드" },
+//   { key: "id", label: "수업코드" },
 ];
 
 const Lecture = () => {
@@ -103,6 +103,36 @@ const Lecture = () => {
 
             <Button onClick={handleDeleteSelectedLectures}>삭제</Button>
           </StyledButtonContainer>
+          {/* <StyledTable>
+            <thead>
+              <tr>
+                {columns &&
+                  columns.map((column) => (
+                    <StyledTh key={column.key}>{column.label}</StyledTh>
+                  ))}
+              </tr>
+            </thead>
+            <tbody>
+              {lectureList &&
+                lectureList.map((lecture, index) => (
+                  <StyledTr key={index}>
+                    {columns &&
+                      columns.map((column) => (
+                        <StyledTd
+                          onClick={() => moveToLectureDetail(lecture.id)}
+                          key={column.key}
+                        >
+                          {column.key === "index"
+                            ? index + 1
+                            : column.key === "dayList"
+                            ? lecture.dayList.join(", ")
+                            : lecture[column.key]}
+                        </StyledTd>
+                      ))}
+                  </StyledTr>
+                ))}
+            </tbody>
+          </StyledTable> */}
 
           <StyledTable>
             <thead>

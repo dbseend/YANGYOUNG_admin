@@ -2,7 +2,10 @@ import axios from "axios";
 
 export const viewSectionTask = async (sectionId) => {
   try {
-    const response = await axios.get(process.env.REACT_APP_URL + `task/section/${sectionId}`);
+    const response = await axios.get(
+      // process.env.REACT_APP_URL + `task/section/${sectionId}`
+      process.env.REACT_APP_DEV_URL + `task/section/${sectionId}`
+      );
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -11,7 +14,10 @@ export const viewSectionTask = async (sectionId) => {
 };
 export const viewPersonalTask = async (studentId) => {
     try {
-      const response = await axios.get(process.env.REACT_APP_URL + `task/student/${studentId}`);
+      const response = await axios.get(
+        // process.env.REACT_APP_URL + `task/student/${studentId}`
+        process.env.REACT_APP_DEV_URL + `task/student/${studentId}`
+        );
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -21,7 +27,10 @@ export const viewPersonalTask = async (studentId) => {
 
 export const addSectionTask = async (taskData) => {
   try {
-    const response = await axios.post(process.env.REACT_APP_URL + `task/section`, taskData);
+    const response = await axios.post(
+      // process.env.REACT_APP_URL + `task/section`, 
+      process.env.REACT_APP_DEV_URL + `task/section`,
+      taskData);
     return response.data;
   } catch (error) {
     throw error;
@@ -30,7 +39,10 @@ export const addSectionTask = async (taskData) => {
 
 export const addPersonalTask = async (taskData) => {
     try {
-      const response = await axios.post(process.env.REACT_APP_URL + `task/student`, taskData);
+      const response = await axios.post(
+        // process.env.REACT_APP_URL + `task/student`, 
+        process.env.REACT_APP_DEV_URL + `task/student`,
+        taskData);
       return response.data;
     } catch (error) {
       throw error;
