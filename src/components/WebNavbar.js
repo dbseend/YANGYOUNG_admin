@@ -36,6 +36,18 @@ const Navbar = () => {
 
   const isactive = (path) => location.pathname === path;
 
+  const moveToAttendance = () => {
+    navigate("/attendance");
+  };
+
+  const moveToStudent = () => {
+    // alert("서비스 준비 중입니다.");
+    navigate("/student");
+  };
+
+  const moveToLecture = () => {
+    // alert("서비스 준비 중입니다.");
+    navigate("/lecture");
   const moveTo = (path) => {
     navigate(path);
   };

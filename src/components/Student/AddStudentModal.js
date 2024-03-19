@@ -61,8 +61,7 @@ const AddStudentModal = ({ onClose, onAdd }) => {
         ...prevStudent,
         [name]: formatPhoneNumber(value),
       }));
-    } 
-    else if (name === "parentPhoneNumber"){
+    } else if (name === "parentPhoneNumber") {
       setNewStudent((prevStudent) => ({
         ...prevStudent,
         [name]: formatPhoneNumber(value),
@@ -116,7 +115,7 @@ const AddStudentModal = ({ onClose, onAdd }) => {
       // 실제 추가된 학생 정보를 사용하여 onAdd 호출
       onAdd(response);
       onClose();
-      window.location.reload(true); 
+      window.location.reload(true);
     } catch (error) {
       alert("에러 발생: " + error.message);
       console.error("Error adding student:", error);
