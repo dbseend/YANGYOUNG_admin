@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-const WebNavbar = () => {
+const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -36,68 +36,54 @@ const WebNavbar = () => {
 
   const isactive = (path) => location.pathname === path;
 
-  const moveToAttendance = () => {
-    navigate("/attendance");
+  const moveTo = (path) => {
+    navigate(path);
   };
 
-  const moveToStudent = () => {
-    // alert("서비스 준비 중입니다.");
-    navigate("/student");
+  const onRefreshClick = () => {
+    window.location.reload(true);  // Reload the page
   };
 
-  const moveToLecture = () => {
-    // alert("서비스 준비 중입니다.");
-    navigate("/lecture");
-    const moveTo = (path) => {
-      navigate(path);
-    };
+  return (
+    <NavbarContainer $scrolled={isScrolled}>
+      <Logo onClick={onRefreshClick}>양영학원 고등부</Logo>
+      <MenuList>
+        <NavLink
+          href="#"
+          onClick={() => moveTo("/attendance")}
+          isactive={isactive("/attendance").toString()}
+        >
+          출결관리
+        </NavLink>
 
-    const onRefreshClick = () => {
-      window.location.reload(true); // Reload the page
-    };
+        <NavLink
+          href="#"
+          onClick={() => moveTo("/student")}
+          isactive={isactive("/student").toString()}
+        >
+          학생관리
+        </NavLink>
 
-    return (
-      <NavbarContainer $scrolled={isScrolled}>
-        <Logo onClick={onRefreshClick}>양영학원 고등부</Logo>
-        <MenuList>
-          <NavLink
-            href="#"
-            onClick={() => moveTo("/attendance")}
-            isactive={isactive("/attendance").toString()}
-          >
-            출결관리
-          </NavLink>
+        <NavLink
+          href="#"
+          onClick={() => moveTo("/lecture")}
+          isactive={isactive("/lecture").toString()}
+        >
+          수업관리
+        </NavLink>
 
-          <NavLink
-            href="#"
-            onClick={() => moveTo("/student")}
-            isactive={isactive("/student").toString()}
-          >
-            학생관리
-          </NavLink>
-
-          <NavLink
-            href="#"
-            onClick={() => moveTo("/lecture")}
-            isactive={isactive("/lecture").toString()}
-          >
-            수업관리
-          </NavLink>
-
-          <NavLink
-            href="#"
-            onClick={() => moveTo("/section")}
-            isactive={isactive("/section").toString()}
-          >
-            분반관리
-          </NavLink>
-          <LogoutButton onClick={onLogOutClick}>로그아웃</LogoutButton>
-        </MenuList>
-      </NavbarContainer>
-    );
-  };
+        <NavLink
+          href="#"
+          onClick={() => moveTo("/section")}
+          isactive={isactive("/section").toString()}
+        >
+          분반관리
+        </NavLink>
+        <LogoutButton onClick={onLogOutClick}>로그아웃</LogoutButton>
+      </MenuList>
+    </NavbarContainer>
+  );
 };
-
 const NavbarContainer = styled.div`
   position: fixed;
   top: 0;
@@ -165,4 +151,4 @@ const LogoutButton = styled.button`
   min-width: 60px;
 `;
 
-export default WebNavbar;
+export default Navbar;
