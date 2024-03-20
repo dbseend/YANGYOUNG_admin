@@ -3,6 +3,7 @@ import styled from "styled-components";
 import AtTable from "./WebAtTable";
 import { viewStudent } from "../../api/StudentApi";
 import { GlobalStyle } from "../../Globalstyle";
+
 const Attendance = () => {
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-CA");
@@ -143,12 +144,9 @@ const DatePicker = styled.input`
   width: 320px;
   margin-bottom: 10px;
 `;
-<<<<<<< HEAD:src/components/Attendance/WebAttendance.js
 export { Title };
 export default Attendance;
-=======
 
-<<<<<<< HEAD
 const ButtonWrapper = styled.div`
   margin-top: 20px;
   display: flex;
@@ -165,91 +163,91 @@ const Button = styled.button`
   justify-content: center;
 `;
 
-const Attendance = () => {
-  const today = new Date();
-  const formattedDate = today.toLocaleDateString("en-CA");
-  const [date, setDate] = useState(formattedDate);
-  const [selectedBan, setSelectedBan] = useState("");
-  const [sectionId, setSectionId] = useState(0);
-  const [buttonText, setButtonText] = useState("");
-  const ban = ["W", "I", "N", "T", "E", "R"];
+// const Attendance = () => {
+//   const today = new Date();
+//   const formattedDate = today.toLocaleDateString("en-CA");
+//   const [date, setDate] = useState(formattedDate);
+//   const [selectedBan, setSelectedBan] = useState("");
+//   const [sectionId, setSectionId] = useState(0);
+//   const [buttonText, setButtonText] = useState("");
+//   const ban = ["W", "I", "N", "T", "E", "R"];
 
-  const changeDate = (e) => {
-    setDate(e.target.value);
-  };
+//   const changeDate = (e) => {
+//     setDate(e.target.value);
+//   };
 
-  const handleDropdownChange = (event) => {
+//   const handleDropdownChange = (event) => {
 
-    if (!date) {
-      alert("날짜를 먼저 선택하세요.");
-      return;
-    }
+//     if (!date) {
+//       alert("날짜를 먼저 선택하세요.");
+//       return;
+//     }
 
-    const selectedValue = event.target.value;
+//     const selectedValue = event.target.value;
 
-    setSelectedBan(selectedValue);
+//     setSelectedBan(selectedValue);
 
-    switch (selectedValue) {
-      case "W":
-        setSectionId(1);
-        break;
-      case "I":
-        setSectionId(2);
-        break;
-      case "N":
-        setSectionId(3);
-        break;
-      case "T":
-        setSectionId(4);
-        break;
-      case "E":
-        setSectionId(5);
-        break;
-      case "R":
-        setSectionId(6);
-        break;
-    }
-  };
+//     switch (selectedValue) {
+//       case "W":
+//         setSectionId(1);
+//         break;
+//       case "I":
+//         setSectionId(2);
+//         break;
+//       case "N":
+//         setSectionId(3);
+//         break;
+//       case "T":
+//         setSectionId(4);
+//         break;
+//       case "E":
+//         setSectionId(5);
+//         break;
+//       case "R":
+//         setSectionId(6);
+//         break;
+//     }
+//   };
 
-  const handleButtonClick = (buttonNumber) => {
-    if (!date) {
-      alert("날짜를 먼저 선택하세요.");
-      return;
-    }
+//   const handleButtonClick = (buttonNumber) => {
+//     if (!date) {
+//       alert("날짜를 먼저 선택하세요.");
+//       return;
+//     }
 
-    const buttonMap = ["", "W", "I", "N", "T", "E", "R"];
-    setButtonText(buttonMap[buttonNumber]);
-  };
+//     const buttonMap = ["", "W", "I", "N", "T", "E", "R"];
+//     setButtonText(buttonMap[buttonNumber]);
+//   };
 
-  return (
-    <>
-      <GlobalStyle />
-      <Container>
-        <h1>출결관리</h1>
-        <h2>날짜와 반을 선택해주세요</h2>
-        <Label>날짜</Label>
-        <Inputing type="date" value={date} onChange={changeDate} />
-        <Label>반</Label>
-        <select onChange={handleDropdownChange} value={selectedBan || ""}>
-          <option disabled value="">
-            반 선택
-          </option>
-          {ban.map((banOption) => (
-            <option key={banOption} value={banOption}>
-              {banOption}
-            </option>
-          ))}
-        </select>
-        <div>
-          {selectedBan && <AtTable date={date} sectionId={sectionId} />}
-        </div>
-      </Container>
-    </>
-  );
-};
-=======
-const StyledTable = styled.div``;
->>>>>>> main
+//   return (
+//     <>
+//       <GlobalStyle />
+//       <Container>
+//         <h1>출결관리</h1>
+//         <h2>날짜와 반을 선택해주세요</h2>
+//         <Label>날짜</Label>
+//         <Inputing type="date" value={date} onChange={changeDate} />
+//         <Label>반</Label>
+//         <select onChange={handleDropdownChange} value={selectedBan || ""}>
+//           <option disabled value="">
+//             반 선택
+//           </option>
+//           {ban.map((banOption) => (
+//             <option key={banOption} value={banOption}>
+//               {banOption}
+//             </option>
+//           ))}
+//         </select>
+//         <div>
+//           {selectedBan && <AtTable date={date} sectionId={sectionId} />}
+//         </div>
+//       </Container>
+//     </>
+//   );
+// };
+// =======
+// const StyledTable = styled.div``;
+// >>>>>>> main
 
-export default Attendance;
->>>>>>> 4d5d0817bd4d0d7191aa5c84d19b5cb6f0f8316c:src/components/WebAttendance.js
+// export default Attendance;
+// >>>>>>> 4d5d0817bd4d0d7191aa5c84d19b5cb6f0f8316c:src/components/WebAttendance.js

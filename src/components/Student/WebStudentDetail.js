@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import {
-  editStudentInfo,
-  getStudentInfo,
-  viewStudent,
-} from "../../api/StudentApi";
+import { editStudentInfo, getStudentInfo } from "../../api/StudentApi";
 import { gradeTypeConvert } from "../../util/Util";
 
 const WebStudentDetail = () => {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
-  const columns = [
+
+  //분반 정보 테이블 컬럼
+  const sectionColumns = [
+    { key: "name", label: "이름" },
+    { key: "teacher", label: "선생님" },
+  ];
+
+  // 수업 정보 테이블 컬럼
+  const lectureColumn = [
     { key: "name", label: "수업명" },
     { key: "dayList", label: "요일" },
     { key: "time", label: "시간" },
@@ -33,6 +37,7 @@ const WebStudentDetail = () => {
   // 검색 옵션(학년, 반) 리스트
   const [gradeList, setGradeList] = useState(["중3", "고1", "고2", "고3"]);
   const [sectionList, setSectionList] = useState([]);
+  const [sectionCount, setSectionCount] = useState(0);
 
   // 수정된 학생 정보
   const [selectedId, setSelectedId] = useState("");
@@ -50,7 +55,7 @@ const WebStudentDetail = () => {
   // 화면 렌더링 시 학생 정보를 가져오는 함수
   useEffect(() => {
     fetchStudentDetail();
-    viewAllStudent();
+    getSearchOptions();
   }, []);
 
   const openAddModal = () => {
@@ -75,6 +80,14 @@ const WebStudentDetail = () => {
       setSelectedParentPhoneNumber(data.studentResponse.parentPhoneNumber);
       setSelectedGrade(data.studentResponse.grade);
 
+      // 분반 정보 저장
+      setSectionList(data.sectionAllBriefResponse.sectionBriefResponses);
+      setSectionCount(data.sectionAllBriefResponse.sectionCount);
+      console.log(
+        "분반 정보: ",
+        data.sectionAllBriefResponse.sectionBriefResponses
+      );
+
       // 수업 정보 저장
       setLectureList(data.lectureAllResponse.lectureResponseList);
       setLectureCount(data.lectureAllResponse.count);
@@ -86,7 +99,7 @@ const WebStudentDetail = () => {
   };
 
   // 검색 옵션을 가져오는 함수(반, 학년)
-  const viewAllStudent = async () => {
+  const getSearchOptions = async () => {
     // viewStudent().then((data) => {
     //   // console.log("학생 정보: ", data);
     //   // setGradeList(data.gradeList);
@@ -158,7 +171,7 @@ const WebStudentDetail = () => {
   return (
     <Div>
       <Title>상세 정보</Title>
-      
+
       <Container>
         <Button onClick={handleToggleEditMode}>
           {isEditMode ? "취소" : "수정"}
@@ -253,6 +266,38 @@ const WebStudentDetail = () => {
         </tbody>
       </Table>
 
+      <Guide2>분반 정보</Guide2>
+      <p>
+        {studentInfo.name} 학생은 총 {sectionCount}개의 분반에 속해있습니다.
+      </p>
+      <Table>
+        <thead>
+          <tr>
+            {sectionColumns &&
+              sectionColumns.map((column) => (
+                <th key={column.key}>{column.label}</th>
+              ))}
+          </tr>
+        </thead>
+        <tbody>
+          {sectionList &&
+            sectionList.map((section) => (
+              <tr key={section.id}>
+                {sectionColumns &&
+                  sectionColumns.map((column) => (
+                    <td key={column.key}>
+                      {column.key === "name"
+                        ? section.name
+                        : column.key === "teacher"
+                        ? section.teacher
+                        : ""}
+                    </td>
+                  ))}
+              </tr>
+            ))}
+        </tbody>
+      </Table>
+
       <Guide2>수강 정보</Guide2>
       <p>
         {studentInfo.name} 학생은 총 {lectureCount}개의 수업을 수강 중입니다.
@@ -260,16 +305,18 @@ const WebStudentDetail = () => {
       <Table>
         <thead>
           <tr>
-            {columns &&
-              columns.map((column) => <th key={column.key}>{column.label}</th>)}
+            {lectureColumn &&
+              lectureColumn.map((column) => (
+                <th key={column.key}>{column.label}</th>
+              ))}
           </tr>
         </thead>
         <tbody>
           {lectureList &&
             lectureList.map((lecture, index) => (
               <tr key={index}>
-                {columns &&
-                  columns.map((column) => (
+                {lectureColumn &&
+                  lectureColumn.map((column) => (
                     <td key={column.key}>
                       {column.key === "index"
                         ? index + 1
