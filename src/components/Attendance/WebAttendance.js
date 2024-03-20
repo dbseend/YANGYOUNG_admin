@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AtTable from "./WebAtTable";
-import { viewStudent } from "../../api/StudentApi";
 import { GlobalStyle } from "../../Globalstyle";
+import { getSearchOption } from "../../api/UtilAPI";
 
 const Attendance = () => {
   const today = new Date();
@@ -13,7 +13,9 @@ const Attendance = () => {
   const [sectionList, setSection] = useState([]);
 
   useEffect(() => {
-    viewAllStudent();
+    getSearchOption().then ((response) => {
+      setSection(response.sectionList);
+    });
   }, []);
 
   useEffect(() => {
@@ -37,18 +39,6 @@ const Attendance = () => {
     const selectedValue = e.target.value;
     setSelectedSection(selectedValue);
     setSectionId(sectionList[selectedValue].id);
-  };
-
-  const viewAllStudent = async () => {
-    try {
-      const response = await viewStudent();
-
-      setSection(response.sectionList);
-
-      console.log(response);
-    } catch (error) {
-      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
-    }
   };
 
   return (

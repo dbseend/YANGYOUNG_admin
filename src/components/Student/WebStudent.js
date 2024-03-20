@@ -5,6 +5,7 @@ import StudentList from "./WebStudentList";
 import { viewStudent } from "../../api/StudentApi";
 import { Title } from "../Attendance/WebAttendance";
 import { GlobalStyle } from "../../Globalstyle";
+import { getSearchOption } from "../../api/UtilAPI";
 
 const WebStudent = () => {
   const navigate = useNavigate();
@@ -20,6 +21,13 @@ const WebStudent = () => {
 
   useEffect(() => {
     viewAllStudent();
+    getSearchOption().then((response) => {
+      setSectionList(response.sectionList);
+      const sortedByName = response.gradeList
+        .slice()
+        .sort((a, b) => a.localeCompare(b));
+      setGradeList(sortedByName);
+    });
   }, []);
 
   // 학생 전체 조회
@@ -32,8 +40,6 @@ const WebStudent = () => {
           index: index + 1,
         })
       );
-      setGradeList(response.gradeList);
-      setSectionList(response.sectionList);
       setStudentList(studentsWithIndex);
       setFilteredData(studentsWithIndex);
     } catch (error) {
@@ -50,7 +56,8 @@ const WebStudent = () => {
           item.name.toLowerCase().includes(searchTerm.toLowerCase()));
       const sectionMatch =
         !selectedSection ||
-        item.sectionName.toLowerCase().includes(selectedSection.toLowerCase());
+        item.sectionNameList.includes(selectedSection);
+        // item.sectionName.toLowerCase().includes(selectedSection.toLowerCase());
       const schoolMatch =
         !selectedSchool ||
         item.school.toLowerCase().includes(selectedSchool.toLowerCase());
@@ -95,7 +102,7 @@ const WebStudent = () => {
     }
   };
 
-  // 초기화 버튼 클릭 시 검색 조건 초기화 
+  // 초기화 버튼 클릭 시 검색 조건 초기화
   const handleReset = () => {
     setSearchTerm("");
     setSelectedSection("");
@@ -118,7 +125,7 @@ const WebStudent = () => {
             placeholder="학생 이름으로 검색"
           />
 
-          {/* <Label className="second-child">반</Label>
+          <Label className="second-child">반</Label>
           <OptionSelect
             onChange={(e) => handleDropdownChange(e, "section")}
             value={selectedSection || ""}
@@ -127,11 +134,9 @@ const WebStudent = () => {
               반 선택
             </option>
             {sectionList.map((banOption) => (
-              <option key={banOption} >
-                {banOption.name}
-              </option>
+              <option key={banOption}>{banOption.name}</option>
             ))}
-          </OptionSelect> */}
+          </OptionSelect>
 
           <Label className="third-child">학교</Label>
           <PostInput

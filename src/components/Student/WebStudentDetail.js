@@ -55,16 +55,7 @@ const WebStudentDetail = () => {
   // 화면 렌더링 시 학생 정보를 가져오는 함수
   useEffect(() => {
     fetchStudentDetail();
-    getSearchOptions();
   }, []);
-
-  const openAddModal = () => {
-    setAddModalOpen(true);
-  };
-
-  const closeAddModal = () => {
-    setAddModalOpen(false);
-  };
 
   // 학생 정보를 가져오는 함수
   const fetchStudentDetail = async () => {
@@ -96,15 +87,6 @@ const WebStudentDetail = () => {
       // setTaskInfo(data.studentTaskAllResponse.studentTaskResponseList);
       // setTaskCount(data.studentTaskAllResponse.studentTaskSize);
     });
-  };
-
-  // 검색 옵션을 가져오는 함수(반, 학년)
-  const getSearchOptions = async () => {
-    // viewStudent().then((data) => {
-    //   // console.log("학생 정보: ", data);
-    //   // setGradeList(data.gradeList);
-    //   setSectionList(data.sectionList);
-    // });
   };
 
   // 수정 모드를 토글하는 함수
