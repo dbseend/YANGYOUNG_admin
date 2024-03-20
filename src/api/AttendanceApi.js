@@ -6,7 +6,8 @@ export const getSectionAttendanceInfo = async (id, date) => {
   try {
     const response = await axios.get(
       // `http://localhost:8080/api/v0/attendance/section/${id}`,
-      process.env.REACT_APP_URL + `attendance/section/${id}`,
+      // process.env.REACT_APP_URL + `attendance/section/${id}`,
+      process.env.REACT_APP_DEV_URL + `attendance/section/${id}`,
       {
         params: {
           selectedDay: date,
@@ -27,8 +28,9 @@ export const postAttendanceBySection = async (data) => {
 
   try {
     const response = await axios.patch(
-      `${process.env.REACT_APP_URL}attendance`,
+      // `${process.env.REACT_APP_URL}attendance`,
       // `http://localhost:8080/api/v0/attendance`,
+      `${process.env.REACT_APP_DEV_URL}attendance`,
       data
     );
     console.log(response.data);
