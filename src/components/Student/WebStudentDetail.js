@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { editStudentInfo, getStudentInfo } from "../../api/StudentApi";
 import { gradeTypeConvert } from "../../util/Util";
+import { addPersonalTask } from "../../api/TaskApi";
+import AddPersonalTaskModal from "./AddPersonalTaskModal";
+import WebStudentTask from "./WebStudentTask";
 
 const WebStudentDetail = () => {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
@@ -150,6 +153,14 @@ const WebStudentDetail = () => {
     }
   };
 
+  const openAddModal = () => {
+    setAddModalOpen(true);
+  };
+
+  const closeAddModal = () => {
+    setAddModalOpen(false);
+  };
+
   return (
     <Div>
       <Title>상세 정보</Title>
@@ -248,6 +259,8 @@ const WebStudentDetail = () => {
         </tbody>
       </Table>
 
+      <WebStudentTask />
+
       <Guide2>분반 정보</Guide2>
       <p>
         {studentInfo.name} 학생은 총 {sectionCount}개의 분반에 속해있습니다.
@@ -317,15 +330,14 @@ const WebStudentDetail = () => {
         </tbody>
       </Table>
 
-      <Guide2>과제 정보</Guide2>
+      {/* <Guide2>개인 과제 정보</Guide2>
       <p>
-        {studentInfo.name} 학생은 총 {taskCount && taskCount}개의 할 일이
-        있습니다.
+        {studentInfo.name} 학생은 총 {taskCount && taskCount}개의 개인 할 과제가 있습니다.
       </p>
-      {/* <Button onClick={openAddModal}>등록</Button>
+      <Button onClick={openAddModal}>등록</Button>
       {isAddModalOpen && (
-        <AddPersonalTaskModal onClose={closeAddModal} onAdd={AddPersonalTask} />
-      )} */}
+        <AddPersonalTaskModal onClose={closeAddModal} onAdd={addPersonalTask} />
+      )}
       <Table>
         <thead>
           <th>과제명</th>
@@ -340,7 +352,7 @@ const WebStudentDetail = () => {
               </tr>
             ))}
         </tbody>
-      </Table>
+      </Table> */}
     </Div>
   );
 };

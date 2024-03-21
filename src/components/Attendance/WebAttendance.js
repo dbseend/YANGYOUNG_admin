@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AtTable from "./WebAtTable";
-import { GlobalStyle } from "../../Globalstyle";
+import { GlobalStyle } from "../../styles/Globalstyle";
 import { getSearchOption } from "../../api/UtilAPI";
 
 const Attendance = () => {

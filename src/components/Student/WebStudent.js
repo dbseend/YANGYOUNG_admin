@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import StudentList from "./WebStudentList";
 import { viewStudent } from "../../api/StudentApi";
 import { Title } from "../Attendance/WebAttendance";
-import { GlobalStyle } from "../../Globalstyle";
+import { GlobalStyle } from "../../styles/Globalstyle";
 import { getSearchOption } from "../../api/UtilAPI";
+import { Button } from "../../styles/CommonStyles";
 
 const WebStudent = () => {
   const navigate = useNavigate();
@@ -268,20 +269,20 @@ const SearchButtonDiv = styled.div`
   gap: 26px;
 `;
 
-const Button = styled.button`
-  width: 80px;
-  height: 30px;
-  flex-shrink: 0;
-  border-radius: 6px;
-  background: #000;
-  color: #fff;
-  font-family: Poppins;
-  font-size: 15px;
-  font-style: normal;
-  line-height: normal;
-  cursor: pointer;
-  border: none;
-`;
+// const Button = styled.button`
+//   width: 80px;
+//   height: 30px;
+//   flex-shrink: 0;
+//   border-radius: 6px;
+//   background: #000;
+//   color: #fff;
+//   font-family: Poppins;
+//   font-size: 15px;
+//   font-style: normal;
+//   line-height: normal;
+//   cursor: pointer;
+//   border: none;
+// `;
 
-export { Button, OptionSelect };
+export { OptionSelect };
 export default WebStudent;
