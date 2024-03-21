@@ -24,8 +24,8 @@ export const viewPersonalTask = async (studentId, date) => {
   try {
     const response = await axios.get(
       // process.env.REACT_APP_URL + `task/student/${studentId}`
-      // process.env.REACT_APP_DEV_URL + `task/student/${studentId}`,
-      `http://localhost:8080/api/v0/task/student/${studentId}`,
+      process.env.REACT_APP_DEV_URL + `task/student/${studentId}`,
+      // `http://localhost:8080/api/v0/task/student/${studentId}`,
       {
         params: {
           date: date,
@@ -58,8 +58,8 @@ export const addPersonalTask = async (taskData) => {
   try {
     const response = await axios.post(
       // process.env.REACT_APP_URL + `task/student`,
-      // process.env.REACT_APP_DEV_URL + `task/student`,
-      `http://localhost:8080/api/v0/task/student`,
+      process.env.REACT_APP_DEV_URL + `task/student`,
+      // `http://localhost:8080/api/v0/task/student`,
       taskData
     );
     return response.data;
@@ -74,8 +74,8 @@ export const deleteTaskAPI = async (taskIdList) => {
   try {
     const response = await axios.delete(
       // process.env.REACT_APP_URL + `task`
-      // process.env.REACT_APP_DEV_URL + `task`,
-      `http://localhost:8080/api/v0/task`,
+      process.env.REACT_APP_DEV_URL + `task`,
+      // `http://localhost:8080/api/v0/task`,
       {
         params: {
           taskIdList: taskIdList.join(","),
