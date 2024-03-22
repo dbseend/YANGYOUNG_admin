@@ -77,3 +77,14 @@ export const SubTitle = styled.div`
   margin-bottom: 10px;
   margin-top: 25px;
 `;
+
+export const UpdateAndDeleteButton = styled.div`
+  padding-right: 10%;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+`;
+
+export const DateInput = styled.input`
+  width: 10%;
+`;
