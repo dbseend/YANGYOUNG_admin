@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { getOneLecture } from "../../api/LectureApi";
 import {
   ListTable,
   ListTd,
   ListTh,
   ListTr,
-  Title,
   SubTitle,
+  Title,
 } from "../../styles/CommonStyles";
-import { useParams } from "react-router-dom";
-import { getOneLecture } from "../../api/LectureApi";
 
 const lectures = [
   { key: "name", label: "수업명" },

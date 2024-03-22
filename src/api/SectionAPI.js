@@ -5,7 +5,7 @@ export const viewSection = async () => {
     const response = await axios.get(
       // process.env.REACT_APP_URL + `section`
       process.env.REACT_APP_DEV_URL + `section`
-      );
+    );
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -47,6 +47,21 @@ export const deleteSection = async (sectionId) => {
     const response = await axios.delete(
       // process.env.REACT_APP_URL + `section/${sectionId}`
       process.env.REACT_APP_DEV_URL + `section/${sectionId}`
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateSectionAPI = async (updateData) => {
+  console.log(updateData);
+  try {
+    const response = await axios.patch(
+      // process.env.REACT_APP_URL + `section/${sectionId}`,
+      // process.env.REACT_APP_DEV_URL + `section`,
+      'http://localhost:8080/api/v0/section',
+      updateData
     );
     return response;
   } catch (error) {
