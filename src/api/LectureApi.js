@@ -14,7 +14,8 @@ export const viewLecture = async () => {
   }
 };
 
-export const addLecture = async (lectureData) => {
+export const addLectureAPI = async (lectureData) => {
+  console.log(lectureData);
   try {
     const response = await axios.post(
       // process.env.REACT_APP_URL + `lecture`,
