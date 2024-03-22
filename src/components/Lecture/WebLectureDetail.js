@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import {
+  ListTable,
+  ListTd,
+  ListTh,
+  ListTr,
+  Title,
+  SubTitle,
+} from "../../styles/CommonStyles";
 import { useParams } from "react-router-dom";
 import { getOneLecture } from "../../api/LectureApi";
 
@@ -7,14 +15,15 @@ const lectures = [
   { key: "name", label: "수업명" },
   { key: "teacher", label: "선생님" },
   { key: "dayList", label: "요일" },
+  { key: "dateList", label: "날짜" },
   { key: "time", label: "시간" },
-  { key: "room", label: "강의실" },
-  { key: "id", label: "수업코드" },
+  { key: "homeRoom", label: "홈룸" },
+  { key: "lectureRoom", label: "강의실" },
 ];
 
 const WebLectureDetail = () => {
   const { id } = useParams();
-  const [lectureOneInfo, setLectureOneInfo] = useState(null); // Changed [] to null
+  const [lectureOneInfo, setLectureOneInfo] = useState(null);
 
   useEffect(() => {
     const fetchLectureDetail = async () => {
@@ -32,44 +41,70 @@ const WebLectureDetail = () => {
   return (
     <Div>
       <Title>상세 정보</Title>
-      <Guide1>수업 정보</Guide1>
-      <Table>
+      <SubTitle>수업 정보</SubTitle>
+      <ListTable>
         <tbody>
-          <tr>
-            <th>{lectures[0].label}</th>
-            <td>{lectureOneInfo ? lectureOneInfo[lectures[0].key] : "-"}</td>
-            <th>{lectures[1].label}</th>
-            <td>{lectureOneInfo ? lectureOneInfo[lectures[1].key] : "-"}</td>
-          </tr>
-          <tr>
-            <th>{lectures[2].label}</th>
-            <td colSpan="3">
-              {lectureOneInfo
-                ? lectureOneInfo[lectures[2].key].join(", ")
+          <ListTr>
+            <ListTh>수업명</ListTh>
+            <ListTd>{lectureOneInfo ? lectureOneInfo.name : "-"}</ListTd>
+            <ListTh>선생님</ListTh>
+            <ListTd>{lectureOneInfo ? lectureOneInfo.teacher : "-"}</ListTd>
+          </ListTr>
+          <ListTr>
+            <ListTh>요일</ListTh>
+            <ListTd>
+              {lectureOneInfo && lectureOneInfo.dayList
+                ? lectureOneInfo.dayList.join(", ")
                 : "-"}
-            </td>
-          </tr>
-          <tr>
-            <th>{lectures[3].label}</th>
-            <td colSpan="3">
+            </ListTd>{" "}
+            <ListTh>날짜</ListTh>
+            <ListTd>
+              {lectureOneInfo && lectureOneInfo.dateList
+                ? lectureOneInfo.dateList.join(", ")
+                : "-"}
+            </ListTd>
+          </ListTr>
+          <ListTr>
+            <ListTh>홈룸</ListTh>
+            <ListTd>{lectureOneInfo ? lectureOneInfo.homeRoom : "-"}</ListTd>
+            <ListTh>강의실</ListTh>
+            <ListTd>{lectureOneInfo ? lectureOneInfo.lectureRoom : "-"}</ListTd>
+          </ListTr>
+          <ListTr>
+            <ListTh>시간</ListTh>
+            <ListTd>
               {lectureOneInfo
                 ? `${lectureOneInfo.startTime.slice(
                     0,
                     5
                   )}-${lectureOneInfo.endTime.slice(0, 5)}`
                 : "-"}
-            </td>
-          </tr>
-          <tr>
-            <th>{lectures[4].label}</th>
-            <td>{lectureOneInfo ? lectureOneInfo[lectures[4].key] : "-"}</td>
-            <th>{lectures[5].label}</th>
-            <td>{lectureOneInfo ? lectureOneInfo[lectures[5].key] : "-"}</td>
-          </tr>
+            </ListTd>
+          </ListTr>
         </tbody>
-      </Table>
+      </ListTable>
 
-      {/* </Table> */}
+      <SubTitle>수강중인 분반</SubTitle>
+      <ListTable>
+        <tbody>
+          <ListTr>
+            <ListTh>분반명</ListTh>
+          </ListTr>
+          {lectureOneInfo &&
+          lectureOneInfo.sectionName &&
+          lectureOneInfo.sectionName.length > 0 ? (
+            lectureOneInfo.sectionName.map((section, index) => (
+              <ListTr key={index}>
+                <ListTd>{section}</ListTd>
+              </ListTr>
+            ))
+          ) : (
+            <ListTr>
+              <ListTd>수강중인 분반이 없습니다.</ListTd>
+            </ListTr>
+          )}
+        </tbody>
+      </ListTable>
     </Div>
   );
 };
@@ -82,14 +117,6 @@ const Div = styled.div`
   margin-top: 100px;
   margin-left: 12.5%;
   margin-right: 12.5%;
-`;
-
-const Title = styled.div`
-  color: #000;
-  font-family: Poppins;
-  font-size: 40px;
-  font-weight: 700;
-  margin-bottom: 10px;
 `;
 
 const Guide1 = styled.h3`

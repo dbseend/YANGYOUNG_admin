@@ -10,10 +10,11 @@ const columns = [
   { key: "name", label: "수업명" },
   { key: "dayList", label: "요일" },
   { key: "time", label: "시간" },
-  {key: "homrRoom", label: "홈룸"},
+  { key: "homrRoom", label: "홈룸" },
   { key: "lectureRoom", label: "강의실" },
   { key: "teacher", label: "선생님" },
-//   { key: "id", label: "수업코드" },
+  { key: "check", label: "선택" },
+  //   { key: "id", label: "수업코드" },
 ];
 
 const Lecture = () => {
@@ -45,16 +46,38 @@ const Lecture = () => {
     navigate(`/lecture/${lectureId}`);
   };
 
+  // const handleCheckboxChange = (lectureId) => {
+  //   // Toggle the selection state of the lecture
+  //   setSelectedLectures((prevSelectedLectures) => {
+  //     if (prevSelectedLectures.includes(lectureId)) {
+  //       return prevSelectedLectures.filter((id) => id !== lectureId);
+  //     } else {
+  //       return [...prevSelectedLectures, lectureId];
+  //     }
+  //   });
+  // };
+
+  // 체크박스 리스트 전체 선택 및 해제
+  const handleAllCheckboxChange = () => {
+    if (selectedLectures.length === lectureList.length) {
+      setSelectedLectures([]);
+    }
+    if (selectedLectures.length !== lectureList.length) {
+      setSelectedLectures(lectureList.map((student) => student.id));
+    }
+  };
+
+  // 체크박스 선택 시 학생 목록에 추가/제거
   const handleCheckboxChange = (lectureId) => {
-    // Toggle the selection state of the lecture
-    setSelectedLectures((prevSelectedLectures) => {
-      if (prevSelectedLectures.includes(lectureId)) {
-        return prevSelectedLectures.filter((id) => id !== lectureId);
+    setSelectedLectures((prevSelected) => {
+      if (prevSelected.includes(lectureId)) {
+        return prevSelected.filter((id) => id !== lectureId);
       } else {
-        return [...prevSelectedLectures, lectureId];
+        return [...prevSelected, lectureId];
       }
     });
   };
+
   const handleDeleteSelectedLectures = async () => {
     console.log("Delete selected lectures:", selectedLectures);
     try {
@@ -138,10 +161,23 @@ const Lecture = () => {
           <StyledTable>
             <thead>
               <tr>
-                {columns &&
-                  columns.map((column) => (
-                    <StyledTh key={column.key}>{column.label}</StyledTh>
-                  ))}
+                {columns.map((column) => (
+                  <React.Fragment key={column.key}>
+                    {column.key === "check" ? (
+                      <StyledTh>
+                        <input
+                          type="checkbox"
+                          checked={
+                            selectedLectures.length === lectureList.length
+                          }
+                          onClick={handleAllCheckboxChange}
+                        />
+                      </StyledTh>
+                    ) : (
+                      <StyledTh>{column.label}</StyledTh>
+                    )}
+                  </React.Fragment>
+                ))}
               </tr>
             </thead>
             <tbody>
@@ -151,16 +187,38 @@ const Lecture = () => {
                     {columns &&
                       columns.map((column) => (
                         <StyledTd
-                          onClick={() => moveToLectureDetail(lecture.id)}
                           key={column.key}
+                          onClick={
+                            column.key === "check"
+                              ? null
+                              : () => moveToLectureDetail(lecture.id)
+                          }
                         >
-                          {column.key === "index" ? index+1 : "" }
+                          {column.key === "index" ? index + 1 : ""}
                           {column.key === "name" ? lecture.name : ""}
-                          {column.key === "dayList" ? lecture.dayList.join(", ") : ""}
-                          {column.key === "time" ? `${lecture.startTime.slice(0, 5)}-${lecture.endTime.slice(0, 5)}` : ""}
+                          {column.key === "dayList"
+                            ? lecture.dayList.join(", ")
+                            : ""}
+                          {column.key === "time"
+                            ? `${lecture.startTime.slice(
+                                0,
+                                5
+                              )}-${lecture.endTime.slice(0, 5)}`
+                            : ""}
                           {column.key === "homrRoom" ? lecture.homeRoom : ""}
-                          {column.key === "lectureRoom" ? lecture.lectureRoom : ""}
+                          {column.key === "lectureRoom"
+                            ? lecture.lectureRoom
+                            : ""}
                           {column.key === "teacher" ? lecture.teacher : ""}
+                          {column.key === "check" ? (
+                            <input
+                              type="checkbox"
+                              checked={selectedLectures.includes(lecture.id)}
+                              onChange={() => handleCheckboxChange(lecture.id)}
+                            />
+                          ) : (
+                            ""
+                          )}
                           {/* {column.key === "index"
                             ? index + 1
                             : column.key === "dayList"
@@ -173,14 +231,14 @@ const Lecture = () => {
                             : lecture[column.key]} */}
                         </StyledTd>
                       ))}
-
+                    {/* 
                     <StyledTd>
                       <input
                         type="checkbox"
                         checked={selectedLectures.includes(lecture.id)}
                         onChange={() => handleCheckboxChange(lecture.id)}
                       />
-                    </StyledTd>
+                    </StyledTd> */}
                   </StyledTr>
                 ))}
             </tbody>

@@ -10,7 +10,8 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     dayList: [],
     startTime: { hour: 0, minute: 0, second: 0, nano: 0 },
     endTime: { hour: 0, minute: 0, second: 0, nano: 0 },
-    room: "",
+    homeRoom: "",
+    lectureRoom: "",
     sectionIdList: [],
   });
   const [sectionList, setSectionList] = useState([]);
@@ -176,6 +177,26 @@ const AddLectureModal = ({ onClose, onAdd }) => {
             </BigForm>
             <BigForm>
               <FormGroup>
+                <Label>홈룸</Label>
+                <Input
+                  type="text"
+                  name="room"
+                  value={newLecture.homeRoom}
+                  onChange={handleRoomChange}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label>강의실</Label>
+                <Input
+                  type="text"
+                  name="room"
+                  value={newLecture.lectureRoom}
+                  onChange={handleRoomChange}
+                />
+              </FormGroup>
+            </BigForm>
+            <BigForm>
+              <FormGroup>
                 <Label>요일</Label>
                 <DaySelection>
                   {daysOfWeek.map((day) => (
@@ -189,15 +210,17 @@ const AddLectureModal = ({ onClose, onAdd }) => {
                   ))}
                 </DaySelection>
               </FormGroup>
-              <FormGroup>
-                <Label>강의실</Label>
-                <Input
-                  type="text"
-                  name="room"
-                  value={newLecture.room}
-                  onChange={handleRoomChange}
-                />
-              </FormGroup>
+              <Label>날짜</Label>
+              <Input
+                type="date"
+                value={newLecture.date}
+                onChange={(e) =>
+                  setNewLecture((prevLecture) => ({
+                    ...prevLecture,
+                    date: e.target.value,
+                  }))
+                }
+              />
             </BigForm>
             <BigForm>
               <FormGroup>
@@ -229,18 +252,6 @@ const AddLectureModal = ({ onClose, onAdd }) => {
                 </option>
               ))}
             </Select>
-            {/* <Select
-              onChange={handleSectionIdChange}
-              value={selectedSectionIds}
-              multiple
-            >
-              {sectionList &&
-                sectionList.map((section) => (
-                  <option selected = {selectedSectionIds.includes(section.key)} key={section.id} value={section.id}>
-                    {section.name}
-                  </option>
-                ))}
-            </Select> */}
             <AddButton type="submit">등록</AddButton>
           </Form>
         </ModalContent>
@@ -303,7 +314,7 @@ const Form = styled.form``;
 const BigForm = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
 const FormGroup = styled.div`
   display: flex;
@@ -323,6 +334,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   width: 100%;
+  height: 40px;
   padding: 8px;
   font-size: 1rem;
   border: 1px solid #ddd;
