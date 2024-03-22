@@ -10,7 +10,7 @@ const columns = [
   { key: "index", label: "순번" },
   { key: "name", label: "반 이름" },
   { key: "teacher", label: "담임" },
-  // { key: "id", label: "분반코드" },
+  { key: "homeRoom", label: "홈룸" },
   { key: "check", label: "선택" },
 ];
 
@@ -162,6 +162,7 @@ const Section = () => {
                       {column.key === "index" ? index + 1 : ""}
                       {column.key === "name" ? section.name : ""}
                       {column.key === "teacher" ? section.teacher : ""}
+                      {column.key === "homeRoom" ? section.homeRoom : ""}
                       {column.key === "check" ? (
                         <input
                           type="checkbox"

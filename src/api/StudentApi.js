@@ -4,8 +4,8 @@ import axios from "axios";
 export const addStudent = async (studentData) => {
   try {
     const response = await axios.post(
-      process.env.REACT_APP_DEV_URL + `student`,
-      // process.env.REACT_APP_URL + `student`,
+      // process.env.REACT_APP_DEV_URL + `student`,
+      process.env.REACT_APP_URL + `student`,
       studentData
     );
 
@@ -21,8 +21,8 @@ export const addStudent = async (studentData) => {
 export const viewStudent = async () => {
   try {
     const response = await axios.get(
-      process.env.REACT_APP_DEV_URL + `student`
-      // process.env.REACT_APP_URL + `student`
+      // process.env.REACT_APP_DEV_URL + `student`
+      process.env.REACT_APP_URL + `student`
     );
     console.log(response.data);
     return response.data;
@@ -35,8 +35,8 @@ export const viewStudent = async () => {
 export const getStudentInfo = async (id) => {
   try {
     const response = await axios.get(
-      process.env.REACT_APP_DEV_URL + `student/${id}`
-      // process.env.REACT_APP_URL + `student/${id}`
+      // process.env.REACT_APP_DEV_URL + `student/${id}`
+      process.env.REACT_APP_URL + `student/${id}`
     );
     return response.data;
   } catch (error) {
@@ -50,8 +50,8 @@ export const editStudentInfo = async (studentData) => {
   try {
     const response = await axios.patch(
       // 'http://localhost:8080/api/v0/student',
-      process.env.REACT_APP_DEV_URL + `student`,
-      // process.env.REACT_APP_URL + `student`,
+      // process.env.REACT_APP_DEV_URL + `student`,
+      process.env.REACT_APP_URL + `student`,
       studentData
     );
     return response.data;
@@ -65,8 +65,8 @@ export const editStudentInfo = async (studentData) => {
 export const deleteStudent = async (id) => {
   try {
     await axios.delete(
-      process.env.REACT_APP_DEV_URL + `student/${id}`, 
-      // process.env.REACT_APP_URL + `student/${id}`, 
+      // process.env.REACT_APP_DEV_URL + `student/${id}`, 
+      process.env.REACT_APP_URL + `student/${id}`, 
       id);
   } catch (error) {
     console.error("학생 삭제 중 오류 발생:", error);
