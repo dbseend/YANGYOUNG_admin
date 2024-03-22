@@ -65,12 +65,8 @@ const WebLectureDetail = () => {
             </ListTd>
           </ListTr>
           <ListTr>
-            <ListTh>홈룸</ListTh>
-            <ListTd>{lectureOneInfo ? lectureOneInfo.homeRoom : "-"}</ListTd>
             <ListTh>강의실</ListTh>
             <ListTd>{lectureOneInfo ? lectureOneInfo.lectureRoom : "-"}</ListTd>
-          </ListTr>
-          <ListTr>
             <ListTh>시간</ListTh>
             <ListTd>
               {lectureOneInfo
