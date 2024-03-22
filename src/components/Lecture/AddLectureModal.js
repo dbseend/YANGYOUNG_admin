@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { addLecture } from "../../api/LectureApi";
+import { addLectureAPI } from "../../api/LectureApi";
 import { getSearchOptionAPI } from "../../api/UtilAPI";
 
 const AddLectureModal = ({ onClose, onAdd }) => {
@@ -8,12 +8,11 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     name: "",
     teacher: "",
     dayList: [],
+    dateList: [],
     startTime: { hour: 0, minute: 0, second: 0, nano: 0 },
     endTime: { hour: 0, minute: 0, second: 0, nano: 0 },
-    homeRoom: "",
     lectureRoom: "",
     sectionIdList: [],
-    date: "",
   });
   const [sectionList, setSectionList] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
@@ -121,39 +120,44 @@ const AddLectureModal = ({ onClose, onAdd }) => {
   };
 
   const handleAddLecture = async (e) => {
+    console.log(selectedDays.length, newLecture.dateList.length);
     e.preventDefault();
     try {
       // 필수 입력 사항 확인
       if (
         newLecture.name.trim() === "" ||
         newLecture.teacher.trim() === "" ||
-        newLecture.room.trim() === "" ||
-        selectedDays.length === 0 ||
+        newLecture.lectureRoom.trim() === "" ||
+        (selectedDays.length === 0 && newLecture.dateList.length === 0) ||
         selectedSectionIds.length === 0 ||
-        (newLecture.startTime.hour === null) | // 시작 시간이 0시인 경우
-          (newLecture.startTime.minute === null) || // 시작 분이 0분인 경우
-        newLecture.endTime.hour === null || // 종료 시간이 0시인 경우
-        newLecture.endTime.minute === null // 종료 분이 0분인 경우
+        (newLecture.startTime.hour === null) |
+          (newLecture.startTime.minute === null) ||
+        newLecture.endTime.hour === null ||
+        newLecture.endTime.minute === null
       ) {
         alert("모든 필수 항목을 입력하세요.");
         return;
       }
 
+      // 날짜 선택 1개만 가능하도록 - 요청시 바로 변경
+      const lastDate = newLecture.dateList[newLecture.dateList.length - 1];
+      const dateList = [lastDate];
+
       const lectureData = {
         name: newLecture.name,
         teacher: newLecture.teacher,
         dayList: selectedDays, // 수정된 부분
+        dateList: dateList,
         startTime: formatTime(newLecture.startTime), // 시간 형식에 맞게 변환
         endTime: formatTime(newLecture.endTime), // 시간 형식에 맞게 변환
-        room: newLecture.room,
+        lectureRoom: newLecture.lectureRoom,
         sectionIdList: selectedSectionIds,
-        // sectionIdList: newLecture.sectionIdList,
       };
 
       console.log("전송 데이터:", lectureData);
 
       // addLecture 함수 호출
-      const response = await addLecture(lectureData);
+      const response = await addLectureAPI(lectureData);
 
       alert("수업 정보가 추가되었습니다.");
       window.location.reload(true); // Reload the page
@@ -165,6 +169,20 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     }
   };
 
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+    setNewLecture((prevLecture) => ({
+      ...prevLecture,
+      dateList: prevLecture.dateList.concat(selectedDate),
+    }));
+  };
+
+  <DatePicker
+    type="date"
+    value={newLecture.date}
+    onChange={handleDateChange}
+  />;
+
   return (
     <ModalOverlay>
       <ModalWrapper>
@@ -173,7 +191,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
             <h2>수업 등록</h2>
             <CloseButton onClick={onClose}>닫기</CloseButton>
           </ModalHeader>
-          <Form onSubmit={handleAddLecture}>
+          <Form>
             <BigForm>
               <FormGroup>
                 <Label>수업명</Label>
@@ -196,15 +214,6 @@ const AddLectureModal = ({ onClose, onAdd }) => {
             </BigForm>
             <BigForm>
               <FormGroup>
-                <Label>홈룸</Label>
-                <Input
-                  type="text"
-                  name="homeRoom"
-                  value={newLecture.homeRoom}
-                  onChange={handleHomeRoomChange}
-                />
-              </FormGroup>
-              <FormGroup>
                 <Label>강의실</Label>
                 <Input
                   type="text"
@@ -213,6 +222,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
                   onChange={handleLectureRoomChange}
                 />
               </FormGroup>
+              <FormGroup></FormGroup>
             </BigForm>
             <RadioForm>
               <div>
@@ -265,12 +275,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
                       <DatePicker
                         type="date"
                         value={newLecture.date}
-                        onChange={(e) =>
-                          setNewLecture((prevLecture) => ({
-                            ...prevLecture,
-                            date: e.target.value,
-                          }))
-                        }
+                        onChange={handleDateChange}
                       />
                     </FormGroup>
                   </div>
@@ -313,7 +318,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
               </FormGroup>
             </Wrapper>
           </Form>
-          <AddButton type="submit">등록</AddButton>
+          <AddButton onClick={handleAddLecture}>등록</AddButton>
         </ModalContent>
       </ModalWrapper>
     </ModalOverlay>

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { getOneSection, updateSectionAPI } from "../../api/SectionAPI";
 import {
   ListTable,
   ListTd,
   ListTh,
   ListTr,
   SubTitle,
+  Button,
+  RowDiv,
 } from "../../styles/CommonStyles";
-import { getOneSection } from "../../api/SectionAPI";
-import { deleteTaskAPI } from "../../api/TaskApi";
 import WebSectionTask from "./WebSectionTask";
 
 const lectures = [
@@ -29,18 +30,20 @@ const students = [
 const WebSectionDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const today = new Date().toLocaleDateString("en-CA");
-  const [date, setDate] = useState(today);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const [updateData, setUpdateData] = useState({
+    sectionId: parseInt(id),
+    name: "",
+    teacher: "",
+    homeRoom: "",
+  });
 
   const [studentList, setStudentList] = useState([]);
   const [studentCount, setStudentCount] = useState(0);
   const [lectureCount, setLectureCount] = useState(0);
   const [lectureList, setLectureList] = useState([]);
   const [sectionInfo, setSectionInfo] = useState([]);
-  const [taskCount, setTaskCount] = useState(0);
-  const [taskList, setTaskList] = useState([]);
-  const [selectedTaskList, setSelectedTaskList] = useState([]);
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
 
   // 분반 정보 불러오기
   useEffect(() => {
@@ -53,61 +56,60 @@ const WebSectionDetail = () => {
         setLectureCount(response.lectureAllResponse.count); // 수업 개수
         setLectureList(response.lectureAllResponse.lectureResponseList); // 수업 목록
         setSectionInfo(response.sectionResponse); // 반 목록
-        setTaskCount(response.sectionTaskAllResponse.sectionTaskSize); //과제 개수
-        setTaskList(response.sectionTaskAllResponse.sectionTaskResponseList); // 과제 목록
+
+        setUpdateData({
+          sectionId: id,
+          name: response.sectionResponse.name,
+          teacher: response.sectionResponse.teacher,
+          homeRoom: response.sectionResponse.homrRoom,
+        });
       } catch (error) {
         console.error("Error fetching student data:", error);
       }
+      setIsEdit(false);
     };
 
     fetchData();
   }, [id]);
 
-  // 할 일 삭제
-  const deleteTask = async () => {
-    const taskIdList = selectedTaskList.map((taskId) => taskId);
-    await deleteTaskAPI(taskIdList);
-    window.location.reload();
-  };
+  const updateSection = async () => {
 
-  const openAddModal = () => {
-    setAddModalOpen(true);
-  };
+    const data = {
+      sectionId: parseInt(id),
+      name: updateData.name,
+      teacher: updateData.teacher,
+      homeRoom: updateData.homeRoom,
+    };
 
-  const closeAddModal = () => {
-    setAddModalOpen(false);
-  };
-
-  const handleAddSection = (response) => {
-    console.log("새 분반 정보: ", response);
+    try {
+      const response = await updateSectionAPI(data);
+      console.log(response);
+      alert("수정되었습니다.");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error fetching student data:", error);
+      alert("수정 중 오류가 발생했습니다.");
+    }
   };
 
   const moveToStudentDetail = (studentId) => {
     navigate(`/student/${studentId}`);
   };
 
-  const handleAllCheckboxChange = () => {
-    console.log(selectedTaskList.length);
-    if (selectedTaskList.length === taskList.length) {
-      setSelectedTaskList([]);
-    }
-    if (selectedTaskList.length !== taskList.length) {
-      setSelectedTaskList(taskList.map((task) => task.id));
-    }
+  const handleChangeIsEdit = () => {
+    setIsEdit(!isEdit);
   };
 
-  const handleCheckboxChange = (taskId) => {
-    setSelectedTaskList((prevSelected) => {
-      if (prevSelected.includes(taskId)) {
-        return prevSelected.filter((id) => id !== taskId);
-      } else {
-        return [...prevSelected, taskId];
-      }
-    });
-  };
-
-  const handleDateChange = (e) => {
-    setDate(e.target.value);
+  const handleChangeInput = (e, type) => {
+    if (type === "name") {
+      setUpdateData({ ...updateData, name: e.target.value });
+    }
+    if (type === "teacher") {
+      setUpdateData({ ...updateData, teacher: e.target.value });
+    }
+    if (type === "homeRoom") {
+      setUpdateData({ ...updateData, homeRoom: e.target.value });
+    }
   };
 
   return (
@@ -116,15 +118,64 @@ const WebSectionDetail = () => {
 
       {/* 분반 정보 */}
       <SubTitle>분반 정보</SubTitle>
+      {isEdit ? (
+        <RowDiv>
+          <Button
+            onClick={updateSection}
+            style={{ marginRight: 10, marginBottom: 10 }}
+          >
+            저장
+          </Button>
+          <Button onClick={handleChangeIsEdit} style={{ marginBottom: 10 }}>
+            취소
+          </Button>
+        </RowDiv>
+      ) : (
+        <>
+          <Button onClick={handleChangeIsEdit} style={{ marginBottom: 10 }}>
+            수정
+          </Button>
+        </>
+      )}
+
       <ListTable>
         <tbody>
           <ListTr>
             <ListTh>분반명</ListTh>
-            <ListTd>{sectionInfo.name}</ListTd>
+            <ListTd>
+              {isEdit ? (
+                <input
+                  value={sectionInfo.name}
+                  onChange={(e) => handleChangeInput(e, "name")}
+                />
+              ) : (
+                sectionInfo.name
+              )}
+            </ListTd>
             <ListTh>담임</ListTh>
-            <ListTd>{sectionInfo.teacher}</ListTd>
+            <ListTd>
+              {isEdit ? (
+                <input
+                  value={sectionInfo.teacher}
+                  onChange={(e) => handleChangeInput(e, "teacher")}
+                />
+              ) : (
+                sectionInfo.teacher
+              )}
+            </ListTd>
+            <ListTh>홈룸</ListTh>
+            <ListTd>
+              {isEdit ? (
+                <input
+                  value={sectionInfo.homeRoom}
+                  onChange={(e) => handleChangeInput(e, "homeRoom")}
+                />
+              ) : (
+                sectionInfo.homeRoom
+              )}
+            </ListTd>
             {/* <ListTh>id</ListTh>
-            <ListTd>{sectionInfo.id}</ListTd> */}
+      <ListTd>{sectionInfo.id}</ListTd> */}
           </ListTr>
         </tbody>
       </ListTable>
@@ -220,33 +271,6 @@ const Title = styled.div`
   font-size: 40px;
   font-weight: 700;
   margin-bottom: 10px;
-`;
-
-const Guide1 = styled.h3`
-  margin-top: 20px;
-`;
-
-const Guide2 = styled.h3`
-  margin-top: 40px;
-`;
-
-const Table = styled.table`
-  width: 80%;
-  border-collapse: collapse;
-
-  th {
-    padding: 8px;
-    border: 1px solid #ddd;
-    text-align: center;
-    background-color: #f2f2f2;
-    width: 15%;
-  }
-
-  td {
-    padding: 8px;
-    border: 1px solid #ddd;
-    text-align: center;
-  }
 `;
 
 const Pointer = styled.td`

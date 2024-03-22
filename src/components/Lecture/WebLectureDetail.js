@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { getOneLecture } from "../../api/LectureApi";
 import {
   ListTable,
   ListTd,
   ListTh,
   ListTr,
-  Title,
   SubTitle,
+  Title,
 } from "../../styles/CommonStyles";
-import { useParams } from "react-router-dom";
-import { getOneLecture } from "../../api/LectureApi";
 
 const lectures = [
   { key: "name", label: "수업명" },
@@ -65,12 +65,8 @@ const WebLectureDetail = () => {
             </ListTd>
           </ListTr>
           <ListTr>
-            <ListTh>홈룸</ListTh>
-            <ListTd>{lectureOneInfo ? lectureOneInfo.homeRoom : "-"}</ListTd>
             <ListTh>강의실</ListTh>
             <ListTd>{lectureOneInfo ? lectureOneInfo.lectureRoom : "-"}</ListTd>
-          </ListTr>
-          <ListTr>
             <ListTh>시간</ListTh>
             <ListTd>
               {lectureOneInfo
