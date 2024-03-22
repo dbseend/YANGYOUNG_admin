@@ -10,7 +10,8 @@ const columns = [
   { key: "name", label: "수업명" },
   { key: "dayList", label: "요일" },
   { key: "time", label: "시간" },
-  { key: "room", label: "강의실" },
+  {key: "homrRoom", label: "홈룸"},
+  { key: "lectureRoom", label: "강의실" },
   { key: "teacher", label: "선생님" },
 //   { key: "id", label: "수업코드" },
 ];
@@ -25,9 +26,9 @@ const Lecture = () => {
     async function fetchData() {
       try {
         const response = await viewLecture();
-        const { lectureResponseList, count } = response;
+        const { lectureResponseList, lectureCount } = response;
         setLectureList(lectureResponseList);
-        setLectureCount(count);
+        setLectureCount(lectureCount);
       } catch (error) {
         console.error("Error fetching lecture data:", error);
       }
@@ -153,7 +154,14 @@ const Lecture = () => {
                           onClick={() => moveToLectureDetail(lecture.id)}
                           key={column.key}
                         >
-                          {column.key === "index"
+                          {column.key === "index" ? index+1 : "" }
+                          {column.key === "name" ? lecture.name : ""}
+                          {column.key === "dayList" ? lecture.dayList.join(", ") : ""}
+                          {column.key === "time" ? `${lecture.startTime.slice(0, 5)}-${lecture.endTime.slice(0, 5)}` : ""}
+                          {column.key === "homrRoom" ? lecture.homeRoom : ""}
+                          {column.key === "lectureRoom" ? lecture.lectureRoom : ""}
+                          {column.key === "teacher" ? lecture.teacher : ""}
+                          {/* {column.key === "index"
                             ? index + 1
                             : column.key === "dayList"
                             ? lecture.dayList.join(", ")
@@ -162,7 +170,7 @@ const Lecture = () => {
                                 0,
                                 5
                               )}-${lecture.endTime.slice(0, 5)}`
-                            : lecture[column.key]}
+                            : lecture[column.key]} */}
                         </StyledTd>
                       ))}
 
