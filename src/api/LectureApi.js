@@ -4,7 +4,8 @@ export const viewLecture = async () => {
   try {
     const response = await axios.get(
       // "http://localhost:8080/api/v0/lecture"
-      process.env.REACT_APP_URL + `lecture`
+      // process.env.REACT_APP_URL + `lecture`
+      process.env.REACT_APP_DEV_URL + `lecture`
     );
     console.log(response.data);
     return response.data;
@@ -16,7 +17,8 @@ export const viewLecture = async () => {
 export const addLecture = async (lectureData) => {
   try {
     const response = await axios.post(
-      process.env.REACT_APP_URL + `lecture`,
+      // process.env.REACT_APP_URL + `lecture`,
+      process.env.REACT_APP_DEV_URL + `lecture`,
       lectureData
     );
     return response.data;
@@ -28,7 +30,8 @@ export const addLecture = async (lectureData) => {
 export const getOneLecture = async (lectureId) => {
   try {
     const response = await axios.get(
-      process.env.REACT_APP_URL + `lecture/${lectureId}`
+      // process.env.REACT_APP_URL + `lecture/${lectureId}`
+      process.env.REACT_APP_DEV_URL + `lecture/${lectureId}`
     );
     console.log(response);
     return response;
@@ -41,7 +44,8 @@ export const getOneLecture = async (lectureId) => {
 export const deleteLecture = async (lectureId) => {
   try {
     const response = await axios.delete(
-      process.env.REACT_APP_URL + `lecture/${lectureId}`
+      // process.env.REACT_APP_URL + `lecture/${lectureId}`
+      process.env.REACT_APP_DEV_URL + `lecture/${lectureId}`
     );
     return response;
   } catch (error) {

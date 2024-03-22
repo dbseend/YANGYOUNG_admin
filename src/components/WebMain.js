@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { GlobalStyle } from "../Globalstyle";
+import { GlobalStyle } from "../styles/Globalstyle";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../fbase";
+import { auth } from "../api/fbase";
 import Login from "../assets/LoginImage.svg";
 
 const Main = () => {

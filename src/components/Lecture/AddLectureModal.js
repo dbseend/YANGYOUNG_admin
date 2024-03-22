@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { addLecture } from "../../api/LectureApi";
-import { viewStudent } from "../../api/StudentApi";
+import { getSearchOptionAPI } from "../../api/UtilAPI";
 
 const AddLectureModal = ({ onClose, onAdd }) => {
   const [newLecture, setNewLecture] = useState({
@@ -10,11 +10,24 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     dayList: [],
     startTime: { hour: 0, minute: 0, second: 0, nano: 0 },
     endTime: { hour: 0, minute: 0, second: 0, nano: 0 },
-    room: "",
-    sectionId: 0,
+    homeRoom: "",
+    lectureRoom: "",
+    sectionIdList: [],
+    date: "",
   });
   const [sectionList, setSectionList] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
+  const [selectedSectionIds, setSelectedSectionIds] = useState([]);
+  const [selectedOption, setSelectedOption] = useState("day");
+
+  const handleOptionChange = (option) => {
+    if (option === "day" || option === "date") {
+      setSelectedOption(option);
+    } else {
+      console.error("올바르지 않은 옵션입니다.");
+    }
+  };
+
   const daysOfWeek = [
     { key: "월요일", label: "월" },
     { key: "화요일", label: "화" },
@@ -26,21 +39,12 @@ const AddLectureModal = ({ onClose, onAdd }) => {
   ];
 
   useEffect(() => {
-    viewAllStudent();
+    viewSearchOption();
   }, []);
 
-  const viewAllStudent = async () => {
-    try {
-      const response = await viewStudent();
-      setSectionList(response.sectionList);
-      setNewLecture((prevLecture) => ({
-        ...prevLecture,
-        sectionId:
-          response.sectionList.length > 0 ? response.sectionList[0].id : 0,
-      }));
-    } catch (error) {
-      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
-    }
+  const viewSearchOption = async () => {
+    const response = await getSearchOptionAPI();
+    setSectionList(response.sectionList);
   };
 
   const handleNameChange = (e) => {
@@ -92,18 +96,28 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     }));
   };
 
-  const handleRoomChange = (e) => {
+  const handleHomeRoomChange = (e) => {
     setNewLecture((prevLecture) => ({
       ...prevLecture,
-      room: e.target.value,
+      homeRoom: e.target.value,
     }));
   };
 
-  const handleSectionIdChange = (e) => {
+  const handleLectureRoomChange = (e) => {
     setNewLecture((prevLecture) => ({
       ...prevLecture,
-      sectionId: parseInt(e.target.value),
+      lectureRoom: e.target.value,
     }));
+  };
+
+  // 반 선택 핸들러
+  const handleDropdownChange = (e) => {
+    const selectedOptions = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+    setSelectedSectionIds(selectedOptions);
+    // setSelectedSectionList(selectedOptions);
   };
 
   const handleAddLecture = async (e) => {
@@ -115,7 +129,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
         newLecture.teacher.trim() === "" ||
         newLecture.room.trim() === "" ||
         selectedDays.length === 0 ||
-        newLecture.sectionId === 0 ||
+        selectedSectionIds.length === 0 ||
         (newLecture.startTime.hour === null) | // 시작 시간이 0시인 경우
           (newLecture.startTime.minute === null) || // 시작 분이 0분인 경우
         newLecture.endTime.hour === null || // 종료 시간이 0시인 경우
@@ -132,7 +146,8 @@ const AddLectureModal = ({ onClose, onAdd }) => {
         startTime: formatTime(newLecture.startTime), // 시간 형식에 맞게 변환
         endTime: formatTime(newLecture.endTime), // 시간 형식에 맞게 변환
         room: newLecture.room,
-        sectionId: newLecture.sectionId,
+        sectionIdList: selectedSectionIds,
+        // sectionIdList: newLecture.sectionIdList,
       };
 
       console.log("전송 데이터:", lectureData);
@@ -159,78 +174,146 @@ const AddLectureModal = ({ onClose, onAdd }) => {
             <CloseButton onClick={onClose}>닫기</CloseButton>
           </ModalHeader>
           <Form onSubmit={handleAddLecture}>
-            <FormGroup>
-              <Label>수업명</Label>
-              <Input
-                type="text"
-                name="name"
-                value={newLecture.name}
-                onChange={handleNameChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label>강사</Label>
-              <Input
-                type="text"
-                name="teacher"
-                value={newLecture.teacher}
-                onChange={handleTeacherChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label>요일</Label>
-              <DaySelection>
-                {daysOfWeek.map((day) => (
-                  <DayButton
-                    key={day.key}
-                    selected={selectedDays.includes(day.key)}
-                    onClick={() => handleDayChange(day.key)}
-                  >
-                    {day.label}
-                  </DayButton>
-                ))}
-              </DaySelection>
-            </FormGroup>
-            <FormGroup>
-              <Label>시작 시간</Label>
-              <Input
-                type="time"
-                value={formatTime(newLecture.startTime)}
-                onChange={handleStartTimeChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label>마치는 시간</Label>
-              <Input
-                type="time"
-                value={formatTime(newLecture.endTime)}
-                onChange={handleEndTimeChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label>강의실</Label>
-              <Input
-                type="text"
-                name="room"
-                value={newLecture.room}
-                onChange={handleRoomChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label>분반</Label>
-              <Select
-                onChange={handleSectionIdChange}
-                value={newLecture.sectionId}
-              >
-                {sectionList.map((section) => (
-                  <option key={section.id} value={section.id}>
-                    {section.name}
-                  </option>
-                ))}
-              </Select>
-            </FormGroup>
-            <AddButton type="submit">등록</AddButton>
+            <BigForm>
+              <FormGroup>
+                <Label>수업명</Label>
+                <Input
+                  type="text"
+                  name="name"
+                  value={newLecture.name}
+                  onChange={handleNameChange}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label>선생님</Label>
+                <Input
+                  type="text"
+                  name="teacher"
+                  value={newLecture.teacher}
+                  onChange={handleTeacherChange}
+                />
+              </FormGroup>
+            </BigForm>
+            <BigForm>
+              <FormGroup>
+                <Label>홈룸</Label>
+                <Input
+                  type="text"
+                  name="homeRoom"
+                  value={newLecture.homeRoom}
+                  onChange={handleHomeRoomChange}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label>강의실</Label>
+                <Input
+                  type="text"
+                  name="lectureRoom"
+                  value={newLecture.lectureRoom}
+                  onChange={handleLectureRoomChange}
+                />
+              </FormGroup>
+            </BigForm>
+            <RadioForm>
+              <div>
+                <Radio>
+                  <div>
+                    <input
+                      type="radio"
+                      id="day"
+                      value="day"
+                      checked={selectedOption === "day"}
+                      onChange={() => handleOptionChange("day")}
+                    />
+                    <label htmlFor="day">요일 선택</label>
+                  </div>
+                  <div>
+                    <input
+                      type="radio"
+                      id="date"
+                      value="date"
+                      checked={selectedOption === "date"}
+                      onChange={() => handleOptionChange("date")}
+                    />
+                    <label htmlFor="date">날짜 선택</label>
+                  </div>
+                </Radio>
+                {/* 선택된 옵션에 따라 해당 입력 필드를 보여줌 */}
+                {selectedOption === "day" ? (
+                  <div>
+                    {/* 요일 선택 필드 */}
+                    <FormGroup>
+                      <Label>요일</Label>
+                      <DaySelection>
+                        {daysOfWeek.map((day) => (
+                          <DayButton
+                            key={day.key}
+                            selected={selectedDays.includes(day.key)}
+                            onClick={() => handleDayChange(day.key)}
+                          >
+                            {day.label}
+                          </DayButton>
+                        ))}
+                      </DaySelection>
+                    </FormGroup>
+                  </div>
+                ) : (
+                  <div>
+                    {/* 날짜 선택 필드 */}
+                    <FormGroup>
+                      <Label>날짜</Label>
+                      <DatePicker
+                        type="date"
+                        value={newLecture.date}
+                        onChange={(e) =>
+                          setNewLecture((prevLecture) => ({
+                            ...prevLecture,
+                            date: e.target.value,
+                          }))
+                        }
+                      />
+                    </FormGroup>
+                  </div>
+                )}
+              </div>
+            </RadioForm>
+            <BigForm>
+              <FormGroup>
+                <Label>시작 시간</Label>
+                <Input
+                  type="time"
+                  value={formatTime(newLecture.startTime)}
+                  onChange={handleStartTimeChange}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label>마치는 시간</Label>
+                <Input
+                  type="time"
+                  value={formatTime(newLecture.endTime)}
+                  onChange={handleEndTimeChange}
+                />
+              </FormGroup>
+            </BigForm>
+            <Wrapper>
+              <FormGroup>
+                <Label>반</Label>
+                <Select
+                  onChange={handleDropdownChange}
+                  value={selectedSectionIds}
+                  multiple
+                >
+                  {sectionList.map((section) => (
+                    <option key={section.id} value={section.id}>
+                      {section.name}
+                    </option>
+                  ))}
+                </Select>
+                <div>*다중 선택 시 ctrl/shift를 사용하세요.</div>
+              </FormGroup>
+            </Wrapper>
           </Form>
+          <AddButton type="submit">등록</AddButton>
         </ModalContent>
       </ModalWrapper>
     </ModalOverlay>
@@ -255,8 +338,9 @@ const ModalWrapper = styled.div`
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  max-width: 600px; /* 최대 넓이 설정 */
+  max-width: 70%;
   width: 100%;
+  /* height: 70%; */
 `;
 
 const ModalContent = styled.div`
@@ -285,9 +369,37 @@ const CloseButton = styled.button`
   color: #666;
 `;
 
-const Form = styled.form``;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
+const Wrapper = styled.div`
+  margin-left: 2.3%;
+`;
+
+const RadioForm = styled.div`
+  display: flex;
+  margin-left: 2.3%;
+`;
+const BigForm = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  /* justify-content: space-between; */
+`;
+
+const Radio = styled.div`
+  margin-top: 8px;
+  gap: 10px;
+  margin-bottom: 8px;
+  display: flex;
+`;
 const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 45%;
   margin-bottom: 20px;
 `;
 
@@ -302,6 +414,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   width: 100%;
+  height: 40px;
   padding: 8px;
   font-size: 1rem;
   border: 1px solid #ddd;
@@ -309,10 +422,20 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
-const Select = styled.select`
-  width: 100%;
+const DatePicker = styled.input`
+  width: 300%;
+  height: 40px;
   padding: 8px;
   font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+`;
+const Select = styled.select`
+  margin-bottom: 20px;
+  width: 100%;
+  padding: 8px;
+  font-size: 15px;
   border: 1px solid #ddd;
   border-radius: 4px;
 `;
@@ -326,6 +449,7 @@ const AddButton = styled.button`
   cursor: pointer;
   display: flex;
   justify-content: center;
+  margin-left: 2.3%;
 `;
 
 const DaySelection = styled.div`

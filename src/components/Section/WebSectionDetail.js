@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import {
+  ListTable,
+  ListTd,
+  ListTh,
+  ListTr,
+  SubTitle,
+} from "../../styles/CommonStyles";
 import { getOneSection } from "../../api/SectionAPI";
-import { Button } from "../Student/WebStudentList";
-import AddSectionTaskModal from "./AddSectionTaskModal";
+import { deleteTaskAPI } from "../../api/TaskApi";
+import WebSectionTask from "./WebSectionTask";
 
 const lectures = [
   { key: "name", label: "강의명" },
@@ -12,8 +19,6 @@ const lectures = [
   { key: "teacher", label: "선생님" },
   { key: "room", label: "강의실" },
 ];
-
-const taskColumns = [{ key: "assignment", label: "과제명" }];
 
 const students = [
   { key: "name", label: "이름" },
@@ -24,6 +29,8 @@ const students = [
 const WebSectionDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const today = new Date().toLocaleDateString("en-CA");
+  const [date, setDate] = useState(today);
 
   const [studentList, setStudentList] = useState([]);
   const [studentCount, setStudentCount] = useState(0);
@@ -32,6 +39,7 @@ const WebSectionDetail = () => {
   const [sectionInfo, setSectionInfo] = useState([]);
   const [taskCount, setTaskCount] = useState(0);
   const [taskList, setTaskList] = useState([]);
+  const [selectedTaskList, setSelectedTaskList] = useState([]);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
 
   // 분반 정보 불러오기
@@ -54,6 +62,14 @@ const WebSectionDetail = () => {
 
     fetchData();
   }, [id]);
+
+  // 할 일 삭제
+  const deleteTask = async () => {
+    const taskIdList = selectedTaskList.map((taskId) => taskId);
+    await deleteTaskAPI(taskIdList);
+    window.location.reload();
+  };
+
   const openAddModal = () => {
     setAddModalOpen(true);
   };
@@ -70,46 +86,70 @@ const WebSectionDetail = () => {
     navigate(`/student/${studentId}`);
   };
 
+  const handleAllCheckboxChange = () => {
+    console.log(selectedTaskList.length);
+    if (selectedTaskList.length === taskList.length) {
+      setSelectedTaskList([]);
+    }
+    if (selectedTaskList.length !== taskList.length) {
+      setSelectedTaskList(taskList.map((task) => task.id));
+    }
+  };
+
+  const handleCheckboxChange = (taskId) => {
+    setSelectedTaskList((prevSelected) => {
+      if (prevSelected.includes(taskId)) {
+        return prevSelected.filter((id) => id !== taskId);
+      } else {
+        return [...prevSelected, taskId];
+      }
+    });
+  };
+
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+  };
+
   return (
     <Div>
       <Title>상세 정보</Title>
 
       {/* 분반 정보 */}
-      <Guide1>분반 정보</Guide1>
-      <Table>
+      <SubTitle>분반 정보</SubTitle>
+      <ListTable>
         <tbody>
-          <tr>
-            <th>분반명</th>
-            <td>{sectionInfo.name}</td>
-            <th>담임</th>
-            <td>{sectionInfo.teacher}</td>
-            <th>id</th>
-            <td>{sectionInfo.id}</td>
-          </tr>
+          <ListTr>
+            <ListTh>분반명</ListTh>
+            <ListTd>{sectionInfo.name}</ListTd>
+            <ListTh>담임</ListTh>
+            <ListTd>{sectionInfo.teacher}</ListTd>
+            {/* <ListTh>id</ListTh>
+            <ListTd>{sectionInfo.id}</ListTd> */}
+          </ListTr>
         </tbody>
-      </Table>
+      </ListTable>
 
       {/* 수강 정보 */}
-      <Guide2>수강 정보</Guide2>
+      <SubTitle>수강 정보</SubTitle>
       <p>
         {sectionInfo.name} 분반에는 총 {lectureCount}개의 수업이 배정되어
         있습니다.
       </p>
-      <Table>
+      <ListTable>
         <thead>
-          <tr>
+          <ListTr>
             {lectures &&
               lectures.map((lecture) => (
-                <th key={lecture.key}>{lecture.label}</th>
+                <ListTh key={lecture.key}>{lecture.label}</ListTh>
               ))}
-          </tr>
+          </ListTr>
         </thead>
         <tbody>
           {lectureList &&
             lectureList.map((lecture, index) => (
-              <tr key={index}>
+              <ListTr key={index}>
                 {lectures.map((col) => (
-                  <td key={col.key}>
+                  <ListTd key={col.key}>
                     {col.key === "index"
                       ? index + 1
                       : col.key === "dayList"
@@ -120,73 +160,45 @@ const WebSectionDetail = () => {
                           5
                         )}-${lecture.endTime.slice(0, 5)}`
                       : lecture[col.key]}
-                  </td>
+                  </ListTd>
                 ))}
-              </tr>
+              </ListTr>
             ))}
         </tbody>
-      </Table>
+      </ListTable>
 
-      {/* 할일 정보 */}
-      <Guide2>할일</Guide2>
-      <Button onClick={openAddModal}>등록</Button>
-      {isAddModalOpen && (
-        <AddSectionTaskModal onClose={closeAddModal} onAdd={handleAddSection} />
-      )}
-      <p>
-        {sectionInfo.name} 분반에는 총 {taskCount}개의 할일이 배정되어 있습니다.
-      </p>
-      <Table>
-        <thead>
-          <tr>
-            {taskColumns &&
-              taskColumns.map((task) => <th key={task.key}>{task.label}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {taskList &&
-            taskList.map((task, index) => (
-              <tr key={index}>
-                {taskColumns.map((col) => (
-                  // 학생 아이디로 이동
-                  <td key={col.key}>{task[col.key]}</td>
-                ))}
-              </tr>
-            ))}
-        </tbody>
-      </Table>
+      <WebSectionTask />
 
       {/*학생 정보 */}
-      <Guide2>학생</Guide2>
+      <SubTitle>학생</SubTitle>
       <p>
         {sectionInfo.name} 분반에는 총 {studentCount}명의 학생이 배정되어
         있습니다.
       </p>
-      <Table>
+      <ListTable>
         <thead>
-          <tr>
+          <ListTr>
             {students &&
               students.map((student) => (
-                <th key={student.key}>{student.label}</th>
+                <ListTh key={student.key}>{student.label}</ListTh>
               ))}
-          </tr>
+          </ListTr>
         </thead>
         <tbody>
           {studentList &&
             studentList.map((student, index) => (
-              <tr key={index}>
+              <ListTr key={index}>
                 {students.map((col) => (
-                  <Pointer
-                    onClick={() => moveToStudentDetail(student.id)}
-                    key={col.key}
-                  >
-                    {student[col.key]}
-                  </Pointer>
+                  <ListTd key={col.key}>
+                    <Pointer onClick={() => moveToStudentDetail(student.id)}>
+                      {student[col.key]}
+                    </Pointer>
+                  </ListTd>
                 ))}
-              </tr>
+              </ListTr>
             ))}
         </tbody>
-      </Table>
+      </ListTable>
     </Div>
   );
 };

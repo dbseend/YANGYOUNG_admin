@@ -6,8 +6,9 @@ import { useParams } from "react-router-dom";
 const AddSectionTaskModal = ({ onClose, onAdd }) => {
   const { id } = useParams();
   const [newTask, setNewTask] = useState({
-    assignment: "",
-    sectionId: 0,
+    content: "",
+    taskDate: "",
+    sectionId: id,
   });
 
   const handleAssignmentChange = (e) => {
@@ -20,19 +21,14 @@ const AddSectionTaskModal = ({ onClose, onAdd }) => {
   const handleAddSectionTask = async (e) => {
     try {
       e.preventDefault();
-      if (newTask.assignment.trim() === "") {
+      if (newTask.content.trim() === "") {
         alert("모든 필수 항목을 입력하세요.");
         return;
       }
 
-      const taskData = {
-        assignment: newTask.assignment,
-        sectionId: id,
-      };
+      console.log("전송 데이터:", newTask);
 
-      console.log("전송 데이터:", taskData);
-
-      const response = await addSectionTask(taskData);
+      const response = await addSectionTask(newTask);
 
       // 서버에서 데이터 추가 완료 후에 처리
       alert("분반 할일이 추가 되었습니다");
@@ -62,7 +58,26 @@ const AddSectionTaskModal = ({ onClose, onAdd }) => {
                 type="text"
                 name="assignment"
                 value={newTask.assignment}
-                onChange={handleAssignmentChange}
+                onChange={(e) =>
+                  setNewTask((prevTask) => ({
+                    ...prevTask,
+                    content: e.target.value,
+                  }))
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label>날짜</Label>
+              <Input
+                type="date"
+                name="taskDate"
+                value={newTask.taskDate}
+                onChange={(e) =>
+                  setNewTask((prevTask) => ({
+                    ...prevTask,
+                    taskDate: e.target.value,
+                  }))
+                }
               />
             </FormGroup>
 

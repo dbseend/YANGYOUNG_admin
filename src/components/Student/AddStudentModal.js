@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { addStudent } from "../../api/StudentApi";
-import { viewStudent } from "../../api/StudentApi";
+import { getSearchOptionAPI } from "../../api/UtilAPI";
+
 const AddStudentModal = ({ onClose, onAdd }) => {
   const [newStudent, setNewStudent] = useState({
     id: 0,
@@ -9,25 +10,24 @@ const AddStudentModal = ({ onClose, onAdd }) => {
     grade: "",
     school: "",
     phoneNumber: "",
-    sectionId: 0,
+    sectionId: [],
   });
   const [sectionList, setSectionList] = useState([]);
-  const [selectedSection, setSelectedSection] = useState(0);
-  const [sectionId, setSectionId] = useState(0);
+  const [selectedSectionList, setSelectedSectionList] = useState([]);
 
   useEffect(() => {
-    viewAllStudent();
+    getSearchOption();
   }, []);
 
-  const viewAllStudent = async () => {
-    try {
-      const response = await viewStudent();
+  // 검색 옵션 조회(반, 학교, 학년)
+  const getSearchOption = async () => {
+    await getSearchOptionAPI().then((response) => {
+      console.log(response);
       setSectionList(response.sectionList);
-    } catch (error) {
-      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
-    }
+    });
   };
 
+  // 전화번호 정규화
   const formatPhoneNumber = (value) => {
     // Basic phone number formatting: 010-0000-0000
     const phoneNumberRegex = /^(\d{3})(\d{4})(\d{4})$/;
@@ -39,20 +39,81 @@ const AddStudentModal = ({ onClose, onAdd }) => {
 
     return value;
   };
-  const setNewStudentSectionId = (newSectionId) => {
-    setNewStudent((prevStudent) => ({
-      ...prevStudent,
-      sectionId: newSectionId,
-    }));
+
+  // 학생 추가
+  const handleAddStudent = async (e) => {
+    try {
+      e.preventDefault();
+      // Form validation 확인
+      if (!isFormValid()) {
+        alert("모든 항목을 입력해주세요.");
+        return;
+      }
+      if (
+        isPhoneNumberValid(newStudent.studentPhoneNumber) === false ||
+        isPhoneNumberValid(newStudent.parentPhoneNumber) === false
+      ) {
+        alert("올바른 전화번호 형식이 아닙니다.");
+        return;
+      }
+
+      // 학생 추가 API 호출
+      const studentData = {
+        id: parseInt(newStudent.id),
+        name: newStudent.name,
+        school: newStudent.school,
+        grade: newStudent.grade,
+        studentPhoneNumber: newStudent.studentPhoneNumber,
+        parentPhoneNumber: newStudent.parentPhoneNumber,
+        sectionIdList: selectedSectionList.map((section) =>
+          parseInt(section, 10)
+        ),
+      };
+      const response = await addStudent(studentData);
+
+      // 학생 추가 성공 시
+      alert("학생 인적사항이 등록되었습니다");
+      onAdd(response);
+      onClose();
+      window.location.reload(true);
+    } catch (error) {
+      // 학생 추가 실패 시
+      alert("학생 인적사항 등록 중 오류가 발생했습니다");
+    }
   };
 
+  // Form validation 확인
+  const isFormValid = () => {
+    if (
+      newStudent.id !== 0 &&
+      newStudent.name.trim() !== "" &&
+      newStudent.grade !== "" &&
+      selectedSectionList.length !== 0 &&
+      newStudent.school.trim() !== ""
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  // 전화번호 형식 확인
+  const isPhoneNumberValid = (phoneNumber) => {
+    const phoneNumberRegex = /^(\d{3}-\d{4}-\d{4})?$/;
+    if (phoneNumber !== "" && !phoneNumberRegex.test(phoneNumber)) {
+      return false;
+    }
+  };
+
+  // 반 선택 핸들러
   const handleDropdownChange = (e) => {
-    const selectedValue = e.target.value;
-    setSelectedSection(selectedValue);
-    setNewStudentSectionId(selectedValue);
-    console.log(selectedValue);
+    const selectedOptions = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+    setSelectedSectionList(selectedOptions);
   };
 
+  // 입력값 변경 핸들러
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "studentPhoneNumber") {
@@ -60,65 +121,13 @@ const AddStudentModal = ({ onClose, onAdd }) => {
         ...prevStudent,
         [name]: formatPhoneNumber(value),
       }));
-    } 
-    else if (name === "parentPhoneNumber"){
+    } else if (name === "parentPhoneNumber") {
       setNewStudent((prevStudent) => ({
         ...prevStudent,
         [name]: formatPhoneNumber(value),
       }));
     } else {
       setNewStudent((prevStudent) => ({ ...prevStudent, [name]: value }));
-    }
-  };
-
-  const handleAddStudent = async (e) => {
-    try {
-      e.preventDefault();
-      if (
-        newStudent.id === 0 ||
-        newStudent.name.trim() === "" ||
-        newStudent.grade === "" ||
-        newStudent.sectionId === "" ||
-        newStudent.school.trim() === "" ||
-        newStudent.studentPhoneNumber.trim() === "" ||
-        newStudent.parentPhoneNumber.trim() === ""
-      ) {
-        alert("모든 필수 항목을 입력하세요.");
-        return;
-      }
-      // Detailed phone number validation
-      const phoneNumberRegex = /^(\d{3}-\d{4}-\d{4})?$/;
-      if (
-        newStudent.phoneNumber.trim() !== "" &&
-        !phoneNumberRegex.test(newStudent.phoneNumber.trim())
-      ) {
-        alert("올바른 전화번호 형식이 아닙니다.");
-        return;
-      }
-      const studentData = {
-        id: newStudent.id,
-        name: newStudent.name,
-        school: newStudent.school,
-        grade: newStudent.grade,
-        studentPhoneNumber: newStudent.studentPhoneNumber,
-        parentPhoneNumber: newStudent.parentPhoneNumber,
-        sectionId: newStudent.sectionId,
-      };
-
-      console.log("전송 데이터:", studentData);
-
-      const response = await addStudent(studentData);
-
-      // 서버에서 데이터 추가 완료 후에 처리
-      alert("학생 정보가 추가 되었습니다");
-
-      // 실제 추가된 학생 정보를 사용하여 onAdd 호출
-      onAdd(response);
-      onClose();
-      window.location.reload(true); 
-    } catch (error) {
-      alert("에러 발생: " + error.message);
-      console.error("Error adding student:", error);
     }
   };
 
@@ -152,6 +161,16 @@ const AddStudentModal = ({ onClose, onAdd }) => {
             </FormGroup>
 
             <FormGroup>
+              <Label>학교</Label>
+              <Input
+                type="text"
+                name="school"
+                value={newStudent.school}
+                onChange={handleInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
               <Label>학년</Label>
               <Select
                 name="grade"
@@ -168,30 +187,18 @@ const AddStudentModal = ({ onClose, onAdd }) => {
             </FormGroup>
 
             <FormGroup>
-              <Label>반</Label>
+              <Label>반(다중 선택 시 ctrl 또는 shift를 사용해주세요)</Label>
               <Select
                 onChange={handleDropdownChange}
-                value={selectedSection || ""}
+                value={selectedSectionList}
+                multiple
               >
-                <option disabled value="">
-                  반 선택
-                </option>
-                {sectionList.map((banOption) => (
-                  <option key={banOption.id} value={banOption.id}>
-                    {banOption.name}
+                {sectionList.map((section) => (
+                  <option key={section.id} value={section.id}>
+                    {section.name}
                   </option>
                 ))}
               </Select>
-            </FormGroup>
-
-            <FormGroup>
-              <Label>학교</Label>
-              <Input
-                type="text"
-                name="school"
-                value={newStudent.school}
-                onChange={handleInputChange}
-              />
             </FormGroup>
 
             <FormGroup>

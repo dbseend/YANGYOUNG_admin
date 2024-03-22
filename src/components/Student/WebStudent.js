@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import StudentList from "./WebStudentList";
 import { viewStudent } from "../../api/StudentApi";
 import { Title } from "../Attendance/WebAttendance";
-import { GlobalStyle } from "../../Globalstyle";
+import { GlobalStyle } from "../../styles/Globalstyle";
+import { getSearchOptionAPI } from "../../api/UtilAPI";
+import { Button } from "../../styles/CommonStyles";
 
 const WebStudent = () => {
   const navigate = useNavigate();
@@ -20,8 +22,16 @@ const WebStudent = () => {
 
   useEffect(() => {
     viewAllStudent();
+    getSearchOptionAPI().then((response) => {
+      setSectionList(response.sectionList);
+      const sortedByName = response.gradeList
+        .slice()
+        .sort((a, b) => a.localeCompare(b));
+      setGradeList(sortedByName);
+    });
   }, []);
 
+  // 학생 전체 조회
   const viewAllStudent = async () => {
     try {
       const response = await viewStudent();
@@ -31,8 +41,6 @@ const WebStudent = () => {
           index: index + 1,
         })
       );
-      setGradeList(response.gradeList);
-      setSectionList(response.sectionList);
       setStudentList(studentsWithIndex);
       setFilteredData(studentsWithIndex);
     } catch (error) {
@@ -40,6 +48,7 @@ const WebStudent = () => {
     }
   };
 
+  // 학생 검색
   const search = () => {
     const filteredData = studentList.filter((item) => {
       const nameMatch =
@@ -48,7 +57,8 @@ const WebStudent = () => {
           item.name.toLowerCase().includes(searchTerm.toLowerCase()));
       const sectionMatch =
         !selectedSection ||
-        item.sectionName.toLowerCase().includes(selectedSection.toLowerCase());
+        item.sectionNameList.includes(selectedSection);
+        // item.sectionName.toLowerCase().includes(selectedSection.toLowerCase());
       const schoolMatch =
         !selectedSchool ||
         item.school.toLowerCase().includes(selectedSchool.toLowerCase());
@@ -63,10 +73,12 @@ const WebStudent = () => {
     setFilteredData(filteredData);
   };
 
+  // 검색어 입력 시 상태 업데이트
   const getValue = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
   };
 
+  // 드롭다운 선택 시 상태 업데이트
   const handleDropdownChange = (e, type) => {
     const selectedValue = e.target.value;
 
@@ -79,16 +91,19 @@ const WebStudent = () => {
     }
   };
 
+  // 학교 입력 시 상태 업데이트
   const handleSchoolChange = (e) => {
     setSelectedSchool(e.target.value);
   };
 
+  // 엔터키 입력 시 검색
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       search();
     }
   };
 
+  // 초기화 버튼 클릭 시 검색 조건 초기화
   const handleReset = () => {
     setSearchTerm("");
     setSelectedSection("");
@@ -120,9 +135,7 @@ const WebStudent = () => {
               반 선택
             </option>
             {sectionList.map((banOption) => (
-              <option key={banOption} >
-                {banOption.name}
-              </option>
+              <option key={banOption}>{banOption.name}</option>
             ))}
           </OptionSelect>
 
@@ -256,20 +269,20 @@ const SearchButtonDiv = styled.div`
   gap: 26px;
 `;
 
-const Button = styled.button`
-  width: 80px;
-  height: 30px;
-  flex-shrink: 0;
-  border-radius: 6px;
-  background: #000;
-  color: #fff;
-  font-family: Poppins;
-  font-size: 15px;
-  font-style: normal;
-  line-height: normal;
-  cursor: pointer;
-  border: none;
-`;
+// const Button = styled.button`
+//   width: 80px;
+//   height: 30px;
+//   flex-shrink: 0;
+//   border-radius: 6px;
+//   background: #000;
+//   color: #fff;
+//   font-family: Poppins;
+//   font-size: 15px;
+//   font-style: normal;
+//   line-height: normal;
+//   cursor: pointer;
+//   border: none;
+// `;
 
-export { Button, OptionSelect };
+export { OptionSelect };
 export default WebStudent;

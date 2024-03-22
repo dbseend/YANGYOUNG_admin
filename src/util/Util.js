@@ -12,6 +12,19 @@ export const formatDate = (date) => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
 };
 
+export const formattedTaskProgress = (taskProgress) => {
+  switch (taskProgress) {
+    case "미시작":
+      return "NOT_STARTED";
+    case "진행중":
+      return "IN_PROGRESS";
+    case "완료":
+      return "COMPLETED";
+    default:
+      return "NOT_STARTED";
+  }
+}
+
 // 학년 문자열을 서버에서 받을 수 있는 형태로 변환
 export const gradeTypeConvert = (grade) => {
   switch (grade) {

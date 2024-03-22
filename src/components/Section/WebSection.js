@@ -10,7 +10,8 @@ const columns = [
   { key: "index", label: "순번" },
   { key: "name", label: "반 이름" },
   { key: "teacher", label: "담임" },
-  { key: "id", label: "분반코드" },
+  // { key: "id", label: "분반코드" },
+  { key: "check", label: "선택" },
 ];
 
 const Section = () => {
@@ -24,6 +25,7 @@ const Section = () => {
   const handleRowClick = (sectionId) => {
     moveToSectionDetail(sectionId);
   };
+
   const moveToSectionDetail = (sectionId) => {
     navigate(`/section/${sectionId}`);
   };
@@ -31,7 +33,9 @@ const Section = () => {
     async function fetchData() {
       try {
         const response = await viewSection();
-        const { sectionResponseList, size } = response.data;
+        const { sectionResponseList, size } = response;
+        console.log("sectionResponseList: ", sectionResponseList);
+        console.log("size: ", size);
         setSectionList(sectionResponseList);
         setSectionCount(size);
       } catch (error) {
@@ -41,16 +45,38 @@ const Section = () => {
     fetchData();
   }, []);
 
+  // const handleCheckboxChange = (sectionId) => {
+  //   // Toggle the selection state of the lecture
+  //   setSelectedSections((prevSelectedSections) => {
+  //     if (prevSelectedSections.includes(sectionId)) {
+  //       return prevSelectedSections.filter((id) => id !== sectionId);
+  //     } else {
+  //       return [...prevSelectedSections, sectionId];
+  //     }
+  //   });
+  // };
+
+  // 체크박스 리스트 전체 선택 및 해제
+  const handleAllCheckboxChange = () => {
+    if (selectedSections.length === sectionList.length) {
+      setSelectedSections([]);
+    }
+    if (selectedSections.length !== sectionList.length) {
+      setSelectedSections(sectionList.map((student) => student.id));
+    }
+  };
+
+  // 체크박스 선택 시 학생 목록에 추가/제거
   const handleCheckboxChange = (sectionId) => {
-    // Toggle the selection state of the lecture
-    setSelectedSections((prevSelectedSections) => {
-      if (prevSelectedSections.includes(sectionId)) {
-        return prevSelectedSections.filter((id) => id !== sectionId);
+    setSelectedSections((prevSelected) => {
+      if (prevSelected.includes(sectionId)) {
+        return prevSelected.filter((id) => id !== sectionId);
       } else {
-        return [...prevSelectedSections, sectionId];
+        return [...prevSelected, sectionId];
       }
     });
   };
+
   const handleDeleteSelectedSections = async () => {
     console.log("Delete selected sections:", selectedSections);
     try {
@@ -103,7 +129,21 @@ const Section = () => {
             <thead>
               <tr>
                 {columns.map((column) => (
-                  <StyledTh key={column.key}>{column.label}</StyledTh>
+                  <React.Fragment key={column.key}>
+                    {column.key === "check" ? (
+                      <StyledTh>
+                        <input
+                          type="checkbox"
+                          checked={
+                            selectedSections.length === sectionList.length
+                          }
+                          onClick={handleAllCheckboxChange}
+                        />
+                      </StyledTh>
+                    ) : (
+                      <StyledTh>{column.label}</StyledTh>
+                    )}
+                  </React.Fragment>
                 ))}
               </tr>
             </thead>
@@ -112,19 +152,27 @@ const Section = () => {
                 <StyledTr key={index}>
                   {columns.map((column) => (
                     <StyledTd
-                      onClick={() => moveToSectionDetail(section.id)}
                       key={column.key}
+                      onClick={
+                        column.key === "check"
+                          ? null
+                          : () => moveToSectionDetail(section.id)
+                      }
                     >
-                      {column.key === "index" ? index + 1 : section[column.key]}
+                      {column.key === "index" ? index + 1 : ""}
+                      {column.key === "name" ? section.name : ""}
+                      {column.key === "teacher" ? section.teacher : ""}
+                      {column.key === "check" ? (
+                        <input
+                          type="checkbox"
+                          checked={selectedSections.includes(section.id)}
+                          onChange={() => handleCheckboxChange(section.id)}
+                        />
+                      ) : (
+                        ""
+                      )}
                     </StyledTd>
                   ))}
-                  <StyledTd>
-                    <input
-                      type="checkbox"
-                      checked={selectedSections.includes(section.id)}
-                      onChange={() => handleCheckboxChange(section.id)}
-                    />
-                  </StyledTd>
                 </StyledTr>
               ))}
             </tbody>
