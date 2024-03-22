@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { editStudentInfo, getStudentInfo } from "../../api/StudentApi";
+import {
+  ListTable,
+  ListTd,
+  ListTh,
+  ListTr,
+  SubTitle,
+  Title,
+} from "../../styles/CommonStyles";
 import { gradeTypeConvert } from "../../util/Util";
-import { addPersonalTask } from "../../api/TaskApi";
-import AddPersonalTaskModal from "./AddPersonalTaskModal";
 import WebStudentTask from "./WebStudentTask";
 
 const WebStudentDetail = () => {
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
-
   //분반 정보 테이블 컬럼
   const sectionColumns = [
     { key: "name", label: "이름" },
@@ -32,10 +36,6 @@ const WebStudentDetail = () => {
   // 수업 정보
   const [lectureList, setLectureList] = useState([]);
   const [lectureCount, setLectureCount] = useState(0);
-
-  // 과제 정보
-  const [taskInfo, setTaskInfo] = useState([]);
-  const [taskCount, setTaskCount] = useState(0);
 
   // 검색 옵션(학년, 반) 리스트
   const [gradeList, setGradeList] = useState(["중3", "고1", "고2", "고3"]);
@@ -84,7 +84,7 @@ const WebStudentDetail = () => {
 
       // 수업 정보 저장
       setLectureList(data.lectureAllResponse.lectureResponseList);
-      setLectureCount(data.lectureAllResponse.count);
+      setLectureCount(data.lectureAllResponse.lectureCount);
 
       // 과제 정보 저장
       // setTaskInfo(data.studentTaskAllResponse.studentTaskResponseList);
@@ -153,14 +153,6 @@ const WebStudentDetail = () => {
     }
   };
 
-  const openAddModal = () => {
-    setAddModalOpen(true);
-  };
-
-  const closeAddModal = () => {
-    setAddModalOpen(false);
-  };
-
   return (
     <Div>
       <Title>상세 정보</Title>
@@ -172,14 +164,14 @@ const WebStudentDetail = () => {
         {isEditMode && <Button onClick={handleSaveChanges}>저장</Button>}
       </Container>
 
-      <Guide1>학생 인적 사항</Guide1>
-      <Table>
+      <SubTitle>인적 사항</SubTitle>
+      <ListTable>
         <tbody>
-          <tr>
-            <Th>이름</Th>
-            <Td>{studentInfo.name}</Td>
-            <Th>아이디</Th>
-            <Td colSpan={4}>
+          <ListTr>
+            <ListTh>이름</ListTh>
+            <ListTd>{studentInfo.name}</ListTd>
+            <ListTh>아이디</ListTh>
+            <ListTd>
               {isEditMode ? (
                 <input
                   type="text"
@@ -190,11 +182,11 @@ const WebStudentDetail = () => {
               ) : (
                 studentInfo.id
               )}
-            </Td>
-          </tr>
-          <tr>
-            <Th>학교</Th>
-            <Td>
+            </ListTd>
+          </ListTr>
+          <ListTr>
+            <ListTh>학교</ListTh>
+            <ListTd>
               {isEditMode ? (
                 <input
                   type="text"
@@ -205,9 +197,9 @@ const WebStudentDetail = () => {
               ) : (
                 studentInfo.school
               )}
-            </Td>
-            <Th>학년</Th>
-            <Td>
+            </ListTd>
+            <ListTh>학년</ListTh>
+            <ListTd>
               {isEditMode ? (
                 <select
                   value={selectedGrade}
@@ -222,13 +214,13 @@ const WebStudentDetail = () => {
               ) : (
                 studentInfo.grade
               )}
-            </Td>
-          </tr>
-          <tr>
-            <Th>
+            </ListTd>
+          </ListTr>
+          <ListTr>
+            <ListTh>
               학생<br></br>연락처
-            </Th>
-            <Td>
+            </ListTh>
+            <ListTd>
               {isEditMode ? (
                 <input
                   type="text"
@@ -239,11 +231,11 @@ const WebStudentDetail = () => {
               ) : (
                 studentInfo.studentPhoneNumber
               )}
-            </Td>
-            <Th>
+            </ListTd>
+            <ListTh>
               부모님<br></br>연락처
-            </Th>
-            <Td>
+            </ListTh>
+            <ListTd>
               {isEditMode ? (
                 <input
                   type="text"
@@ -254,65 +246,65 @@ const WebStudentDetail = () => {
               ) : (
                 studentInfo.parentPhoneNumber
               )}
-            </Td>
-          </tr>
+            </ListTd>
+          </ListTr>
         </tbody>
-      </Table>
+      </ListTable>
 
       <WebStudentTask />
 
-      <Guide2>분반 정보</Guide2>
+      <SubTitle style={{ marginBottom: -5 }}>분반 정보</SubTitle>
       <p>
         {studentInfo.name} 학생은 총 {sectionCount}개의 분반에 속해있습니다.
       </p>
-      <Table>
+      <ListTable>
         <thead>
           <tr>
             {sectionColumns &&
               sectionColumns.map((column) => (
-                <th key={column.key}>{column.label}</th>
+                <ListTh key={column.key}>{column.label}</ListTh>
               ))}
           </tr>
         </thead>
         <tbody>
           {sectionList &&
             sectionList.map((section) => (
-              <tr key={section.id}>
+              <ListTr key={section.id}>
                 {sectionColumns &&
                   sectionColumns.map((column) => (
-                    <td key={column.key}>
+                    <ListTd key={column.key}>
                       {column.key === "name"
                         ? section.name
                         : column.key === "teacher"
                         ? section.teacher
                         : ""}
-                    </td>
+                    </ListTd>
                   ))}
-              </tr>
+              </ListTr>
             ))}
         </tbody>
-      </Table>
+      </ListTable>
 
-      <Guide2>수강 정보</Guide2>
+      <SubTitle style={{ marginBottom: -5 }}>수강 정보</SubTitle>
       <p>
         {studentInfo.name} 학생은 총 {lectureCount}개의 수업을 수강 중입니다.
       </p>
-      <Table>
+      <ListTable>
         <thead>
-          <tr>
+          <ListTr>
             {lectureColumn &&
               lectureColumn.map((column) => (
-                <th key={column.key}>{column.label}</th>
+                <ListTh key={column.key}>{column.label}</ListTh>
               ))}
-          </tr>
+          </ListTr>
         </thead>
         <tbody>
           {lectureList &&
             lectureList.map((lecture, index) => (
-              <tr key={index}>
+              <ListTr key={index}>
                 {lectureColumn &&
                   lectureColumn.map((column) => (
-                    <td key={column.key}>
+                    <ListTd key={column.key}>
                       {column.key === "index"
                         ? index + 1
                         : column.key === "dayList"
@@ -323,36 +315,12 @@ const WebStudentDetail = () => {
                             5
                           )}-${lecture.endTime.slice(0, 5)}`
                         : lecture[column.key]}
-                    </td>
+                    </ListTd>
                   ))}
-              </tr>
+              </ListTr>
             ))}
         </tbody>
-      </Table>
-
-      {/* <Guide2>개인 과제 정보</Guide2>
-      <p>
-        {studentInfo.name} 학생은 총 {taskCount && taskCount}개의 개인 할 과제가 있습니다.
-      </p>
-      <Button onClick={openAddModal}>등록</Button>
-      {isAddModalOpen && (
-        <AddPersonalTaskModal onClose={closeAddModal} onAdd={addPersonalTask} />
-      )}
-      <Table>
-        <thead>
-          <th>과제명</th>
-          <th>상태</th>
-        </thead>
-        <tbody>
-          {taskInfo &&
-            taskInfo.map((task) => (
-              <tr key={task.id}>
-                <td>{task.taskName}</td>
-                <td>{task.taskProgress}</td>
-              </tr>
-            ))}
-        </tbody>
-      </Table> */}
+      </ListTable>
     </Div>
   );
 };
@@ -373,40 +341,6 @@ const Container = styled.div`
   flex-direction: row;
   gap: 23px;
 `;
-const Title = styled.div`
-  color: #000;
-  font-family: Poppins;
-  font-size: 40px;
-  font-weight: 700;
-  margin-bottom: 10px;
-`;
-
-const Guide1 = styled.h3`
-  margin-top: 20px;
-`;
-
-const Guide2 = styled.h3`
-  margin-top: 40px;
-`;
-
-const Table = styled.table`
-  width: 80%;
-  border-collapse: collapse;
-
-  th {
-    padding: 8px;
-    border: 1px solid #ddd;
-    text-align: center;
-    background-color: #f2f2f2;
-    width: 15%;
-  }
-
-  td {
-    padding: 8px;
-    border: 1px solid #ddd;
-    text-align: center;
-  }
-`;
 
 const Button = styled.button`
   cursor: pointer;
@@ -423,12 +357,4 @@ const Button = styled.button`
   margin-right: 10px;
 `;
 
-const Th = styled.th`
-  width: auto;
-`;
-
-const Td = styled.td`
-  width: 150px;
-  /* width: 2%; */
-`;
 export default WebStudentDetail;

@@ -38,6 +38,7 @@ export const viewPersonalTask = async (studentId, date) => {
   }
 };
 
+// 반별 과제 추가
 export const addSectionTask = async (taskData) => {
   try {
     const response = await axios.post(
@@ -86,6 +87,22 @@ export const deleteTaskAPI = async (taskIdList) => {
     return response.data;
   } catch (error) {
     alert("과제 삭제 중 오류가 발생했습니다.");
+    throw error;
+  }
+};
+
+// 과제 상태 변경
+export const updateTaskProgressAPI = async (taskData) => {
+  console.log("taskData:", taskData);
+  try {
+    const response = await axios.patch(
+      // process.env.REACT_APP_URL + `task/${taskId}`
+      process.env.REACT_APP_DEV_URL + `task/progress`,
+      // `http://localhost:8080/api/v0/task/progress`,
+      taskData
+    );
+    return response.data;
+  } catch (error) {
     throw error;
   }
 };

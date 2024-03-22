@@ -21,7 +21,7 @@ export const RowCenterDiv = styled(RowDiv)`
 `;
 
 export const ListTable = styled.table`
-  width: 80%;
+  width: 90%;
   table-layout: fixed; 
   border-collapse: collapse;
 `;
@@ -59,4 +59,21 @@ export const Button = styled.button`
   line-height: normal;
   cursor: pointer;
   border: none;
+`;
+
+export const Title = styled.div`
+  color: #000;
+  font-family: Poppins;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 10px;
+`;
+
+export const SubTitle = styled.div`
+  color: #000;
+  font-family: Poppins;
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  margin-top: 25px;
 `;

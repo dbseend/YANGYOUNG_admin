@@ -1,19 +1,22 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import {
-  RowDiv,
+  addPersonalTask,
+  deleteTaskAPI,
+  viewPersonalTask,
+  updateTaskProgressAPI,
+} from "../../api/TaskApi";
+import { formattedTaskProgress } from "../../util/Util";
+import {
+  Button,
   ListTable,
+  ListTd,
   ListTh,
   ListTr,
-  ListTd,
-  Button,
+  RowDiv,
+  SubTitle,
 } from "../../styles/CommonStyles";
-import {
-  addPersonalTask,
-  viewPersonalTask,
-  deleteTaskAPI,
-} from "../../api/TaskApi";
 import AddPersonalTaskModal from "./AddPersonalTaskModal";
 
 const WebStudentTask = () => {
@@ -48,14 +51,35 @@ const WebStudentTask = () => {
     const data = await viewPersonalTask(id, date);
     console.log(data);
     setTaskList(data.studentTaskResponseList);
-    setUpdateTaskList(data.studentTaskResponseList);
-    // setSectionTaskList(data.sectionTaskList);
+    // setUpdateTaskList(data.studentTaskResponseList);
   };
+
   // 할 일 삭제
   const deleteTask = async () => {
     const taskIdList = selectedTaskList.map((taskId) => taskId);
     await deleteTaskAPI(taskIdList);
     window.location.reload();
+  };
+
+  // 할 일 상태 업데이트
+  const updateTask = async () => {
+    const updateData = updateTaskList.map((task) => {
+      return {
+        taskId: task.id,
+        studentId: parseInt(id),
+        taskProgress: formattedTaskProgress(task.taskProgress),
+      };
+    });
+
+    try {
+      await updateTaskProgressAPI(updateData);
+
+      alert("과제 상태가 변경되었습니다.");
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      alert("과제 상태 변경 중 오류가 발생했습니다.");
+    }
   };
 
   const handleAllCheckboxChange = () => {
@@ -79,11 +103,9 @@ const WebStudentTask = () => {
   };
 
   const handleTaskProgressChange = (index, value) => {
-    setTaskList((prevStudentInfo) => {
-      const updatedStudentInfo = [...prevStudentInfo];
-      updatedStudentInfo[index].taskProgress = value;
-      return updatedStudentInfo;
-    });
+    const newTaskList = [...taskList];
+    newTaskList[index].taskProgress = value;
+    setUpdateTaskList(newTaskList);
   };
 
   const handleDateChange = (e) => {
@@ -100,29 +122,35 @@ const WebStudentTask = () => {
 
   return (
     <div>
-      <input
-        type="date"
-        id="dateInput"
-        value={date}
-        onChange={handleDateChange}
-      />
+      <SubTitle>할 일</SubTitle>
 
-      {/* 학생 할 일 테이블 */}
-      <h1>학생 할 일</h1>
-
-      <RowDiv>
-        <Button onClick={openAddModal}>등록</Button>
+      <RowDiv style={{ marginBottom: 10 }}>
+        <input
+          style={{ marginRight: 10 }}
+          type="date"
+          id="dateInput"
+          value={date}
+          onChange={handleDateChange}
+        />
+        <Button style={{ marginRight: 10 }} onClick={openAddModal}>
+          등록
+        </Button>
         {isAddModalOpen && (
           <AddPersonalTaskModal
             onClose={closeAddModal}
             onAdd={addPersonalTask}
           />
         )}
-        <Button onClick={deleteTask}>삭제</Button>
+        <UpdateAndDeleteButton>
+          <Button onClick={updateTask} style={{ marginRight: 10 }}>
+            저장
+          </Button>
+          <Button onClick={deleteTask}>삭제</Button>
+        </UpdateAndDeleteButton>
       </RowDiv>
       <ListTable>
         <thead>
-          <tr>
+          <ListTr>
             {taskColumns.map((column) => (
               <ListTh key={column.key}>
                 {column.key === "check" ? (
@@ -136,7 +164,7 @@ const WebStudentTask = () => {
                 )}
               </ListTh>
             ))}
-          </tr>
+          </ListTr>
         </thead>
         <tbody>
           {taskList.map((task, index) => (
@@ -184,6 +212,13 @@ const WebStudentTask = () => {
 const ProgressDiv = styled.div`
   padding-left: 5%;
   padding-right: 5%;
+`;
+
+const UpdateAndDeleteButton = styled.div`
+  padding-right: 10%;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 `;
 
 export default WebStudentTask;
