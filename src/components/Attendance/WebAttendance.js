@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AtTable from "./WebAtTable";
 import { GlobalStyle } from "../../styles/Globalstyle";
-import { getSearchOption } from "../../api/UtilAPI";
+import { getSearchOptionAPI } from "../../api/UtilAPI";
 
 const Attendance = () => {
   const today = new Date();
@@ -13,7 +13,7 @@ const Attendance = () => {
   const [sectionList, setSection] = useState([]);
 
   useEffect(() => {
-    getSearchOption().then ((response) => {
+    getSearchOptionAPI().then ((response) => {
       setSection(response.sectionList);
     });
   }, []);

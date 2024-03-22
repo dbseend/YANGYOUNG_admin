@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { addLecture } from "../../api/LectureApi";
-import { getSearchOption } from "../../api/UtilAPI";
+import { getSearchOptionAPI } from "../../api/UtilAPI";
 
 const AddLectureModal = ({ onClose, onAdd }) => {
   const [newLecture, setNewLecture] = useState({
@@ -31,7 +31,7 @@ const AddLectureModal = ({ onClose, onAdd }) => {
   }, []);
 
   const viewSearchOption = async () => {
-    const response = await getSearchOption();
+    const response = await getSearchOptionAPI();
     setSectionList(response.sectionList);
   };
 

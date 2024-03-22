@@ -2,27 +2,18 @@ import axios from "axios";
 
 // 학생 정보 등록 API 호출
 export const addStudent = async (studentData) => {
-  const data = {
-    id: studentData.id,
-    name: studentData.name,
-    school: studentData.school,
-    grade: studentData.grade,
-    studentPhoneNumber: studentData.studentPhoneNumber,
-    parentPhoneNumber: studentData.parentPhoneNumber,
-
-    sectionId: studentData.sectionId,
-  };
   try {
     const response = await axios.post(
       process.env.REACT_APP_DEV_URL + `student`,
       // process.env.REACT_APP_URL + `student`,
-      data
+      studentData
     );
+
     console.log(response.data);
     return response;
   } catch (error) {
-    alert("학생 인적사항 등록 중 오류가 발생했습니다");
     console.error("Error adding student:", error);
+    throw error;
   }
 };
 
@@ -42,7 +33,6 @@ export const viewStudent = async () => {
 
 // 학생 정보 수정 API 호출
 export const getStudentInfo = async (id) => {
-  console.log(id);
   try {
     const response = await axios.get(
       process.env.REACT_APP_DEV_URL + `student/${id}`

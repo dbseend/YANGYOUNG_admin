@@ -5,7 +5,7 @@ import StudentList from "./WebStudentList";
 import { viewStudent } from "../../api/StudentApi";
 import { Title } from "../Attendance/WebAttendance";
 import { GlobalStyle } from "../../styles/Globalstyle";
-import { getSearchOption } from "../../api/UtilAPI";
+import { getSearchOptionAPI } from "../../api/UtilAPI";
 import { Button } from "../../styles/CommonStyles";
 
 const WebStudent = () => {
@@ -22,7 +22,7 @@ const WebStudent = () => {
 
   useEffect(() => {
     viewAllStudent();
-    getSearchOption().then((response) => {
+    getSearchOptionAPI().then((response) => {
       setSectionList(response.sectionList);
       const sortedByName = response.gradeList
         .slice()
