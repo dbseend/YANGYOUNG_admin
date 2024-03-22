@@ -187,7 +187,7 @@ const AddStudentModal = ({ onClose, onAdd }) => {
             </FormGroup>
 
             <FormGroup>
-              <Label>반</Label>
+              <Label>반(다중 선택 시 ctrl 또는 shift를 사용해주세요)</Label>
               <Select
                 onChange={handleDropdownChange}
                 value={selectedSectionList}

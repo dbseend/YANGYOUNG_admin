@@ -125,7 +125,7 @@ const WebStudentTask = () => {
       <SubTitle>할 일</SubTitle>
 
       <RowDiv style={{ marginBottom: 10 }}>
-        <input
+        <DateInput
           style={{ marginRight: 10 }}
           type="date"
           id="dateInput"
@@ -219,6 +219,10 @@ const UpdateAndDeleteButton = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
+`;
+
+const DateInput = styled.input`
+  width: 10%;
 `;
 
 export default WebStudentTask;

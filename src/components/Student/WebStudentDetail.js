@@ -218,7 +218,7 @@ const WebStudentDetail = () => {
           </ListTr>
           <ListTr>
             <ListTh>
-              학생<br></br>연락처
+              학생 연락처
             </ListTh>
             <ListTd>
               {isEditMode ? (
@@ -233,7 +233,7 @@ const WebStudentDetail = () => {
               )}
             </ListTd>
             <ListTh>
-              부모님<br></br>연락처
+              부모님 연락처
             </ListTh>
             <ListTd>
               {isEditMode ? (
