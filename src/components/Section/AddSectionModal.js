@@ -13,11 +13,17 @@ const AddSectionModal = ({ onClose, onAdd }) => {
       name: e.target.value,
     }));
   };
-  
+
   const handleTeacherChange = (e) => {
     setNewSection((prevSection) => ({
       ...prevSection,
       teacher: e.target.value,
+    }));
+  };
+  const handleHomeRoomChange = (e) => {
+    setNewSection((prevSection) => ({
+      ...prevSection,
+      homeRoom: e.target.value,
     }));
   };
 
@@ -32,6 +38,7 @@ const AddSectionModal = ({ onClose, onAdd }) => {
       const sectionData = {
         name: newSection.name,
         teacher: newSection.teacher,
+        homeRoom: newSection.homeRoom,
       };
 
       console.log("전송 데이터:", sectionData);
@@ -77,6 +84,16 @@ const AddSectionModal = ({ onClose, onAdd }) => {
                 name="teacher"
                 value={newSection.teacher}
                 onChange={handleTeacherChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Label>홈룸</Label>
+              <Input
+                type="text"
+                name="homeRoom"
+                value={newSection.homeRoom}
+                onChange={handleHomeRoomChange}
               />
             </FormGroup>
 
