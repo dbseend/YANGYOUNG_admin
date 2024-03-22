@@ -21,15 +21,6 @@ const AddPersonalTaskModal = ({ onClose, onAdd }) => {
   const handleAddPersonalTask = async (e) => {
     try {
       e.preventDefault();
-      // if (newTask.content.trim() === "") {
-      //   alert("모든 필수 항목을 입력하세요.");
-      //   return;
-      // }
-
-      // const taskData = {
-      //   assignment: newTask.assignment,
-      //   sectionId: id,
-      // };
 
       console.log("전송 데이터:", newTask);
 
