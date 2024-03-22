@@ -9,6 +9,7 @@ const columns = [
   { key: "index", label: "순번" },
   { key: "name", label: "수업명" },
   { key: "dayList", label: "요일" },
+  { key: "dateList", label: "날짜" },
   { key: "time", label: "시간" },
   { key: "homrRoom", label: "홈룸" },
   { key: "lectureRoom", label: "강의실" },
@@ -127,36 +128,6 @@ const Lecture = () => {
 
             <Button onClick={handleDeleteSelectedLectures}>삭제</Button>
           </StyledButtonContainer>
-          {/* <StyledTable>
-            <thead>
-              <tr>
-                {columns &&
-                  columns.map((column) => (
-                    <StyledTh key={column.key}>{column.label}</StyledTh>
-                  ))}
-              </tr>
-            </thead>
-            <tbody>
-              {lectureList &&
-                lectureList.map((lecture, index) => (
-                  <StyledTr key={index}>
-                    {columns &&
-                      columns.map((column) => (
-                        <StyledTd
-                          onClick={() => moveToLectureDetail(lecture.id)}
-                          key={column.key}
-                        >
-                          {column.key === "index"
-                            ? index + 1
-                            : column.key === "dayList"
-                            ? lecture.dayList.join(", ")
-                            : lecture[column.key]}
-                        </StyledTd>
-                      ))}
-                  </StyledTr>
-                ))}
-            </tbody>
-          </StyledTable> */}
 
           <StyledTable>
             <thead>
@@ -196,6 +167,9 @@ const Lecture = () => {
                         >
                           {column.key === "index" ? index + 1 : ""}
                           {column.key === "name" ? lecture.name : ""}
+                          {column.key === "dateList"
+                            ? lecture.dateList.join(", ")
+                            : ""}
                           {column.key === "dayList"
                             ? lecture.dayList.join(", ")
                             : ""}
@@ -219,26 +193,8 @@ const Lecture = () => {
                           ) : (
                             ""
                           )}
-                          {/* {column.key === "index"
-                            ? index + 1
-                            : column.key === "dayList"
-                            ? lecture.dayList.join(", ")
-                            : column.key === "time"
-                            ? `${lecture.startTime.slice(
-                                0,
-                                5
-                              )}-${lecture.endTime.slice(0, 5)}`
-                            : lecture[column.key]} */}
                         </StyledTd>
                       ))}
-                    {/* 
-                    <StyledTd>
-                      <input
-                        type="checkbox"
-                        checked={selectedLectures.includes(lecture.id)}
-                        onChange={() => handleCheckboxChange(lecture.id)}
-                      />
-                    </StyledTd> */}
                   </StyledTr>
                 ))}
             </tbody>
