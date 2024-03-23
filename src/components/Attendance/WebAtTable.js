@@ -242,7 +242,7 @@ const Label = styled.label`
 `;
 
 const Button = styled.button`
-  margin-right: 20px;
+  margin-left: 20px;
   background-color: black;
   color: white;
   border: none;

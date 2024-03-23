@@ -226,6 +226,7 @@ const WebSectionDetail = () => {
         {sectionInfo.name} 분반에는 총 {studentCount}명의 학생이 배정되어
         있습니다.
       </p>
+      <Button>등록</Button>
       <ListTable>
         <thead>
           <ListTr>

@@ -24,6 +24,7 @@ export const ListTable = styled.table`
   width: 90%;
   table-layout: fixed; 
   border-collapse: collapse;
+  margin-top: 10px;
 `;
 
 export const ListTh = styled.th`
@@ -86,5 +87,5 @@ export const UpdateAndDeleteButton = styled.div`
 `;
 
 export const DateInput = styled.input`
-  width: 10%;
+  width: 250px;
 `;
