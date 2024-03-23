@@ -12,6 +12,7 @@ import {
   RowDiv,
 } from "../../styles/CommonStyles";
 import WebSectionTask from "./WebSectionTask";
+import WebSectionStudent from "../Section/WebSectionStudent";
 
 const lectures = [
   { key: "name", label: "강의명" },
@@ -39,11 +40,11 @@ const WebSectionDetail = () => {
     homeRoom: "",
   });
 
+  const [sectionInfo, setSectionInfo] = useState([]);
   const [studentList, setStudentList] = useState([]);
   const [studentCount, setStudentCount] = useState(0);
   const [lectureCount, setLectureCount] = useState(0);
   const [lectureList, setLectureList] = useState([]);
-  const [sectionInfo, setSectionInfo] = useState([]);
 
   // 분반 정보 불러오기
   useEffect(() => {
@@ -112,6 +113,9 @@ const WebSectionDetail = () => {
     }
   };
 
+  const addStudentToSection = () => {
+
+  };
   return (
     <Div>
       <Title>상세 정보</Title>
@@ -217,40 +221,9 @@ const WebSectionDetail = () => {
             ))}
         </tbody>
       </ListTable>
-
+      
       <WebSectionTask />
-
-      {/*학생 정보 */}
-      <SubTitle>학생</SubTitle>
-      <p>
-        {sectionInfo.name} 분반에는 총 {studentCount}명의 학생이 배정되어
-        있습니다.
-      </p>
-      <Button>등록</Button>
-      <ListTable>
-        <thead>
-          <ListTr>
-            {students &&
-              students.map((student) => (
-                <ListTh key={student.key}>{student.label}</ListTh>
-              ))}
-          </ListTr>
-        </thead>
-        <tbody>
-          {studentList &&
-            studentList.map((student, index) => (
-              <ListTr key={index}>
-                {students.map((col) => (
-                  <ListTd key={col.key}>
-                    <Pointer onClick={() => moveToStudentDetail(student.id)}>
-                      {student[col.key]}
-                    </Pointer>
-                  </ListTd>
-                ))}
-              </ListTr>
-            ))}
-        </tbody>
-      </ListTable>
+      <WebSectionStudent />
     </Div>
   );
 };
