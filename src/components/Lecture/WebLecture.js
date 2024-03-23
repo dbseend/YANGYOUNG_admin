@@ -11,7 +11,6 @@ const columns = [
   { key: "dayList", label: "요일" },
   { key: "dateList", label: "날짜" },
   { key: "time", label: "시간" },
-  { key: "homrRoom", label: "홈룸" },
   { key: "lectureRoom", label: "강의실" },
   { key: "teacher", label: "선생님" },
   { key: "check", label: "선택" },

@@ -14,15 +14,11 @@ export const viewSection = async () => {
 };
 
 export const addSection = async (sectionData) => {
-  const data = {
-    name: sectionData.name,
-    teacher: sectionData.teacher,
-  };
   try {
     const response = await axios.post(
       process.env.REACT_APP_URL + `section`,
       // process.env.REACT_APP_DEV_URL + `section`,
-      data
+      sectionData
     );
     return response;
   } catch (error) {
