@@ -8,8 +8,7 @@ import { Button, StyledButtonContainer } from "../Student/WebStudentList";
 const columns = [
   { key: "index", label: "순번" },
   { key: "name", label: "수업명" },
-  { key: "dayList", label: "요일" },
-  { key: "dateList", label: "날짜" },
+  { key: "dayList/dateList", label: "요일/날짜" },
   { key: "time", label: "시간" },
   { key: "lectureRoom", label: "강의실" },
   { key: "teacher", label: "선생님" },
@@ -44,17 +43,6 @@ const Lecture = () => {
   const moveToLectureDetail = (lectureId) => {
     navigate(`/lecture/${lectureId}`);
   };
-
-  // const handleCheckboxChange = (lectureId) => {
-  //   // Toggle the selection state of the lecture
-  //   setSelectedLectures((prevSelectedLectures) => {
-  //     if (prevSelectedLectures.includes(lectureId)) {
-  //       return prevSelectedLectures.filter((id) => id !== lectureId);
-  //     } else {
-  //       return [...prevSelectedLectures, lectureId];
-  //     }
-  //   });
-  // };
 
   // 체크박스 리스트 전체 선택 및 해제
   const handleAllCheckboxChange = () => {
@@ -165,12 +153,14 @@ const Lecture = () => {
                         >
                           {column.key === "index" ? index + 1 : ""}
                           {column.key === "name" ? lecture.name : ""}
-                          {column.key === "dateList"
-                            ? lecture.dateList.join(", ")
+                          {column.key === "dayList/dateList"
+                            ? lecture.dayList.length > 0
+                              ? lecture.dayList.join(", ")
+                              : lecture.dateList.length > 0
+                              ? lecture.dateList.join(", ")
+                              : ""
                             : ""}
-                          {column.key === "dayList"
-                            ? lecture.dayList.join(", ")
-                            : ""}
+
                           {column.key === "time"
                             ? `${lecture.startTime.slice(
                                 0,
@@ -215,18 +205,20 @@ const Div = styled.div`
   flex-direction: column;
   overflow: auto;
   margin-top: 60px;
-  margin-left: 5%;
-  margin-right: 5%;
+  align-items: center;
+  /* background-color: aliceblue; */
 `;
 
 const TableContainer = styled.div`
-  margin: 20px;
+  width: 90%;
+  /* margin: 20px; */
   margin-bottom: 200px;
 `;
 const StyledTable = styled.table`
   border-collapse: collapse;
   margin-top: 20px;
-  width: 80%;
+  width: 90%;
+  /* width: 80%; */
 `;
 
 const StyledTh = styled.th`
