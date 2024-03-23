@@ -2,6 +2,7 @@ import axios from "axios";
 
 // 반별 과제 조회
 export const viewSectionTask = async (sectionId, date) => {
+  console.log(date);
   try {
     const response = await axios.get(
       process.env.REACT_APP_URL + `task/section/${sectionId}`,
