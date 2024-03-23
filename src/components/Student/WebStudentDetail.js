@@ -25,7 +25,7 @@ const WebStudentDetail = () => {
     { key: "name", label: "수업명" },
     { key: "dayList", label: "요일" },
     { key: "time", label: "시간" },
-    { key: "room", label: "강의실" },
+    { key: "lectureRoom", label: "강의실" },
     { key: "teacher", label: "선생님" },
   ];
 

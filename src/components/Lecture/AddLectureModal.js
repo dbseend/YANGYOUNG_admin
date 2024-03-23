@@ -177,6 +177,13 @@ const AddLectureModal = ({ onClose, onAdd }) => {
     }));
   };
 
+  // 함수: 시간을 'hh:mm' 형식으로 포맷하는 함수
+  const formatTime = (time) => {
+    const hour = time.hour.toString().padStart(2, "0");
+    const minute = time.minute.toString().padStart(2, "0");
+    return `${hour}:${minute}`;
+  };
+
   <DatePicker
     type="date"
     value={newLecture.date}
@@ -468,12 +475,5 @@ const DayButton = styled.div`
   cursor: pointer;
   background: ${({ selected }) => (selected ? "#eee" : "white")};
 `;
-
-// 함수: 시간을 'hh:mm' 형식으로 포맷하는 함수
-const formatTime = (time) => {
-  const hour = time.hour.toString().padStart(2, "0");
-  const minute = time.minute.toString().padStart(2, "0");
-  return `${hour}:${minute}`;
-};
 
 export default AddLectureModal;

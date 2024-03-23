@@ -2,10 +2,11 @@ import axios from "axios";
 
 // 반별 과제 조회
 export const viewSectionTask = async (sectionId, date) => {
+  console.log(date);
   try {
     const response = await axios.get(
-      // process.env.REACT_APP_URL + `task/section/${sectionId}`
-      process.env.REACT_APP_DEV_URL + `task/section/${sectionId}`,
+      process.env.REACT_APP_URL + `task/section/${sectionId}`,
+      // process.env.REACT_APP_DEV_URL + `task/section/${sectionId}`,
       {
         params: {
           date: date,
@@ -23,8 +24,8 @@ export const viewSectionTask = async (sectionId, date) => {
 export const viewPersonalTask = async (studentId, date) => {
   try {
     const response = await axios.get(
-      // process.env.REACT_APP_URL + `task/student/${studentId}`
-      process.env.REACT_APP_DEV_URL + `task/student/${studentId}`,
+      process.env.REACT_APP_URL + `task/student/${studentId}`,
+      // process.env.REACT_APP_DEV_URL + `task/student/${studentId}`,
       // `http://localhost:8080/api/v0/task/student/${studentId}`,
       {
         params: {
@@ -42,8 +43,8 @@ export const viewPersonalTask = async (studentId, date) => {
 export const addSectionTask = async (taskData) => {
   try {
     const response = await axios.post(
-      // process.env.REACT_APP_URL + `task/section`,
-      process.env.REACT_APP_DEV_URL + `task/section`,
+      process.env.REACT_APP_URL + `task/section`,
+      // process.env.REACT_APP_DEV_URL + `task/section`,
       taskData
     );
     return response.data;
@@ -58,8 +59,8 @@ export const addPersonalTask = async (taskData) => {
 
   try {
     const response = await axios.post(
-      // process.env.REACT_APP_URL + `task/student`,
-      process.env.REACT_APP_DEV_URL + `task/student`,
+      process.env.REACT_APP_URL + `task/student`,
+      // process.env.REACT_APP_DEV_URL + `task/student`,
       // `http://localhost:8080/api/v0/task/student`,
       taskData
     );
@@ -74,8 +75,8 @@ export const deleteTaskAPI = async (taskIdList) => {
   console.log("taskIdList:", taskIdList);
   try {
     const response = await axios.delete(
-      // process.env.REACT_APP_URL + `task`
-      process.env.REACT_APP_DEV_URL + `task`,
+      process.env.REACT_APP_URL + `task`,
+      // process.env.REACT_APP_DEV_URL + `task`,
       // `http://localhost:8080/api/v0/task`,
       {
         params: {
@@ -96,8 +97,8 @@ export const updateTaskProgressAPI = async (taskData) => {
   console.log("taskData:", taskData);
   try {
     const response = await axios.patch(
-      // process.env.REACT_APP_URL + `task/${taskId}`
-      process.env.REACT_APP_DEV_URL + `task/progress`,
+      process.env.REACT_APP_URL + `task/progress`,
+      // process.env.REACT_APP_DEV_URL + `task/progress`,
       // `http://localhost:8080/api/v0/task/progress`,
       taskData
     );

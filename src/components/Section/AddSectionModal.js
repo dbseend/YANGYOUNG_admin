@@ -5,6 +5,7 @@ const AddSectionModal = ({ onClose, onAdd }) => {
   const [newSection, setNewSection] = useState({
     name: "",
     teacher: "",
+    homeRoom: "",
   });
 
   const handleNameChange = (e) => {
@@ -20,6 +21,7 @@ const AddSectionModal = ({ onClose, onAdd }) => {
       teacher: e.target.value,
     }));
   };
+
   const handleHomeRoomChange = (e) => {
     setNewSection((prevSection) => ({
       ...prevSection,
@@ -35,15 +37,15 @@ const AddSectionModal = ({ onClose, onAdd }) => {
         return;
       }
 
-      const sectionData = {
-        name: newSection.name,
-        teacher: newSection.teacher,
-        homeRoom: newSection.homeRoom,
-      };
+      // const sectionData = {
+      //   name: newSection.name,
+      //   teacher: newSection.teacher,
+      //   homeRoom: newSection.homeRoom,
+      // };
 
-      console.log("전송 데이터:", sectionData);
+      console.log("전송 데이터:", newSection);
 
-      const response = await addSection(sectionData);
+      const response = await addSection(newSection);
 
       // 서버에서 데이터 추가 완료 후에 처리
       alert("분반 정보가 추가 되었습니다");

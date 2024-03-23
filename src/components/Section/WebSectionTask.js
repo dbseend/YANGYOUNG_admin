@@ -6,6 +6,7 @@ import {
   deleteTaskAPI,
   viewPersonalTask,
   updateTaskProgressAPI,
+  viewSectionTask,
 } from "../../api/TaskApi";
 import { formattedTaskProgress } from "../../util/Util";
 import {
@@ -31,7 +32,7 @@ const WebSectionTask = () => {
 
   const taskColumns = [
     { key: "content", label: "과제명" },
-    { key: "taskDate", label: "날짜" },
+    { key: "date", label: "날짜" },
     { key: "type", label: "종류" },
     { key: "check", label: "선택" },
   ];
@@ -48,9 +49,9 @@ const WebSectionTask = () => {
 
   // 학생, 분발 할 일 조회
   const getTaskList = async () => {
-    const data = await viewPersonalTask(id, date);
-    console.log(data);
-    setTaskList(data.studentTaskResponseList);
+    console.log(id, date);
+    const data = await viewSectionTask(id, date);
+    setTaskList(data.sectionTaskResponseList);
     // setUpdateTaskList(data.studentTaskResponseList);
   };
 
@@ -60,6 +61,7 @@ const WebSectionTask = () => {
     await deleteTaskAPI(taskIdList);
     window.location.reload();
   };
+
 
   const handleAllCheckboxChange = () => {
     console.log(selectedTaskList.length);
@@ -142,7 +144,7 @@ const WebSectionTask = () => {
               {taskColumns.map((column) => (
                 <ListTd key={column.key}>
                   {column.key === "content" && task.content}
-                  {column.key === "taskDate" && task.taskDate}
+                  {column.key === "date" && task.date}
                   {column.key === "type" && task.taskType}
                   {column.key === "check" && (
                     <input
