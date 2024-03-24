@@ -54,9 +54,9 @@ export const updateSectionAPI = async (updateData) => {
   console.log(updateData);
   try {
     const response = await axios.patch(
-      process.env.REACT_APP_URL + `section`,
+      process.env.REACT_APP_URL + `section/student`,
       // process.env.REACT_APP_DEV_URL + `section`,
-      // 'http://localhost:8080/api/v0/section',
+      // 'http://localhost:8080/api/v0/section/student',
       updateData
     );
     return response;
