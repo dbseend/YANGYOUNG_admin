@@ -6,6 +6,7 @@ const AddSectionModal = ({ onClose, onAdd }) => {
     name: "",
     teacher: "",
     homeRoom: "",
+    studentIdList:[]
   });
 
   const handleNameChange = (e) => {

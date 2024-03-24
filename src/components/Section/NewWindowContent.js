@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import StudentList from "./WebStudentList";
-import { viewStudent } from "../../api/StudentApi";
-import { Title } from "../Attendance/WebAttendance";
-import { GlobalStyle } from "../../styles/Globalstyle";
 import { getSearchOptionAPI } from "../../api/UtilAPI";
-import { Button } from "../../styles/CommonStyles";
-import { useRecoilState } from "recoil";
-import { studentAtom } from "../../recoil/atom";
+import { viewStudent } from "../../api/StudentApi";
+import {
+  Button,
+  ListTable,
+  ListTd,
+  ListTh,
+  ListTr,
+  RowDiv,
+} from "../../styles/CommonStyles";
+import {updateSectionAPI} from "../../api/SectionAPI";
 
-const WebStudent = () => {
-  const navigate = useNavigate();
-  const [sectionId, setSectionId] = useState(0);
+const NewWindowContent = () => {
+  const { id } = useParams();
   const [studentList, setStudentList] = useState([]);
+  const [selectedStudents, setSelectedStudents] = useState([]);
+  const [sectionId, setSectionId] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
   const [selectedGrade, setSelectedGrade] = useState(0);
@@ -21,10 +25,16 @@ const WebStudent = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [sectionList, setSectionList] = useState([]);
   const [gradeList, setGradeList] = useState([]);
-  const [allStudent, setAllStudent] = useRecoilState(studentAtom);
-
+  const students = [
+    { key: "name", label: "이름" },
+    { key: "school", label: "학교" },
+    { key: "grade", label: "학년" },
+    { key: "check", label: "선택" },
+  ];
   useEffect(() => {
-    viewAllStudent();
+    // viewAllStudent();
+    console.log(id);
+    
     getSearchOptionAPI().then((response) => {
       setSectionList(response.sectionList);
       const sortedByName = response.gradeList
@@ -33,27 +43,51 @@ const WebStudent = () => {
       setGradeList(sortedByName);
     });
   }, []);
-
-  // 학생 전체 조회
-  const viewAllStudent = async () => {
-    try {
+  useEffect(() => {
+    const getStudentList = async () => {
       const response = await viewStudent();
-      handleStudentData(response.studentResponseList);
-    } catch (error) {
-      console.log("학생 데이터를 가져오는 중 오류 발생:", error);
+      console.log(response.studentResponseList);
+      setStudentList(response.studentResponseList); // 학생 목록
+    };
+    getStudentList();
+  }, []);
+
+  //업데이트 - 확인 필요
+  const updateStudents = async () => {
+    console.log (id);
+    console.log (selectedStudents);
+    const updatedData = {
+        sectionId: id,
+        studentIdList: selectedStudents
+    };
+    console.log (updatedData);
+    const response = await updateSectionAPI(updatedData);
+    alert ("학생 추가 할당 성공");
+    console.log (response);
+  }
+
+  //   체크박스 리스트 전체 선택 및 해제
+  const handleAllCheckboxChange = () => {
+    if (selectedStudents.length === studentList.length) {
+      setSelectedStudents([]);
+    }
+    if (selectedStudents.length !== studentList.length) {
+      setSelectedStudents(studentList.map((student) => student.id));
     }
   };
 
-  // 학생 데이터 처리 및 상태 업데이트
-  const handleStudentData = (students) => {
-    const studentsWithIndex = students.map((student, index) => ({
-      ...student,
-      index: index + 1,
-    }));
-    setStudentList(studentsWithIndex); // 학생 목록 업데이트
-    setFilteredData(studentsWithIndex); // 필터링된 데이터 업데이트
+  // 체크박스 선택 시 학생 목록에 추가/제거
+  const handleCheckboxChange = (studentId) => {
+    setSelectedStudents((prevSelected) => {
+      if (prevSelected.includes(studentId)) {
+        return prevSelected.filter((id) => id !== studentId);
+      } else {
+        return [...prevSelected, studentId];
+      }
+    });
   };
 
+  
   // 학생 검색
   const search = () => {
     const filteredData = studentList.filter((item) => {
@@ -90,7 +124,6 @@ const WebStudent = () => {
     if (type === "section") {
       setSelectedSection(selectedValue);
       const sectionId = sectionList.indexOf(selectedValue) + 1;
-      setSectionId(sectionId);
     } else if (type === "grade") {
       setSelectedGrade(selectedValue);
     }
@@ -116,11 +149,10 @@ const WebStudent = () => {
     setSelectedGrade("");
     setFilteredData(studentList);
   };
-
   return (
-    <Div>
-      <GlobalStyle />
-      <Title>학생 검색</Title>
+    <div>
+      <h2>학생 선택</h2>
+      <RowDiv style={{ marginBottom: 10 }}></RowDiv>
       <SearchDiv>
         <OptionSelectDiv>
           <Label className="first-child">학생 이름</Label>
@@ -176,31 +208,54 @@ const WebStudent = () => {
           </Button>
         </SearchButtonDiv>
       </SearchDiv>
-
-      <Title>학생 목록</Title>
-      <TableContainer>
-        {filteredData && <StudentList filteredData={filteredData} />}
-      </TableContainer>
-    </Div>
+      <Button onClick={updateStudents}>학생 배정</Button>
+      {filteredData && (
+        <ListTable>
+          <thead>
+            <ListTr>
+              {students &&
+                students.map((student) => (
+                  <ListTh key={student.key}>
+                    {student.key === "check" ? (
+                      <input
+                        type="checkbox"
+                        checked={
+                          selectedStudents.length === filteredData.length
+                        }
+                        onClick={handleAllCheckboxChange}
+                      />
+                    ) : (
+                      student.label
+                    )}
+                  </ListTh>
+                ))}
+            </ListTr>
+          </thead>
+          <tbody>
+            {filteredData &&
+              filteredData.map((student, index) => (
+                <ListTr key={index}>
+                  {students.map((col) => (
+                    <ListTd key={col.key}>
+                      {col.key === "check" ? (
+                        <input
+                          type="checkbox"
+                          checked={selectedStudents.includes(student.id)}
+                          onChange={() => handleCheckboxChange(student.id)}
+                        />
+                      ) : (
+                        <div>{student[col.key]}</div>
+                      )}
+                    </ListTd>
+                  ))}
+                </ListTr>
+              ))}
+          </tbody>
+        </ListTable>
+      )}
+    </div>
   );
 };
-
-const Div = styled.div`
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-  margin-top: 100px;
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-bottom: 200px;
-  align-items: flex-start;
-`;
-
-const TableContainer = styled.div`
-  width: 85%;
-  margin-bottom: 200px;
-`;
 
 const SearchDiv = styled.div`
   display: flex;
@@ -274,5 +329,4 @@ const SearchButtonDiv = styled.div`
   gap: 26px;
 `;
 
-export { OptionSelect };
-export default WebStudent;
+export default NewWindowContent;

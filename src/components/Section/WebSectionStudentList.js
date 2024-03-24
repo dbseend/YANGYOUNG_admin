@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useInRouterContext } from "react-router-dom";
 import styled from "styled-components";
 import { getOneSection } from "../../api/SectionAPI";
 import {
@@ -10,23 +10,40 @@ import {
   ListTr,
   RowDiv,
   SubTitle,
-  UpdateAndDeleteButton,
 } from "../../styles/CommonStyles";
-// import AddPersonalTaskModal from "./AddPersonalTaskModal";
 
-const WebSectionStudent = () => {
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
+const WebSectionStudentList = () => {
   const { id } = useParams();
   const [sectionInfo, setSectionInfo] = useState([]);
   const [studentList, setStudentList] = useState([]);
   const [studentCount, setStudentCount] = useState(0);
   const [selectedStudents, setSelectedStudents] = useState([]);
+
   const students = [
     { key: "name", label: "이름" },
     { key: "school", label: "학교" },
     { key: "grade", label: "학년" },
     { key: "check", label: "선택" },
   ];
+
+  // 선택된 학생 목록 업데이트 함수
+  const updateSelectedStudents = (newSelectedStudents) => {
+    setSelectedStudents(newSelectedStudents);
+  };
+
+  const openNewWindow = () => {
+    // 새 창의 너비와 높이 설정
+    const screenWidth = window.screen.availWidth;
+    const screenHeight = window.screen.availHeight;
+    const w = screenWidth / 2;
+    const h = screenHeight;
+      // id 값을 가져와서 경로를 생성
+  const newPath = `/section/${id}/newWindow`;
+  
+  // 새 창 열기
+  window.open(newPath, '_blank', `width=${w}, height=${h}`);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -64,14 +81,6 @@ const WebSectionStudent = () => {
     });
   };
 
-  const openAddModal = () => {
-    setAddModalOpen(true);
-  };
-
-  const closeAddModal = () => {
-    setAddModalOpen(false);
-  };
-
   return (
     <div>
       <SubTitle>학생</SubTitle>
@@ -80,15 +89,12 @@ const WebSectionStudent = () => {
         있습니다.
       </p>
       <RowDiv style={{ marginBottom: 10 }}>
-        <Button style={{ marginRight: 10 }} onClick={openAddModal}>
+        <Button
+          style={{ marginRight: 10 }}
+          onClick={openNewWindow}
+        >
           등록
         </Button>
-        {/* <Button onClick={updateTask} style={{ marginRight: 10 }}>
-            저장
-          </Button> */}
-        <UpdateAndDeleteButton>
-          {/* <Button onClick={deleteTask}>삭제</Button> */}
-        </UpdateAndDeleteButton>
       </RowDiv>
 
       <ListTable>
@@ -135,4 +141,4 @@ const WebSectionStudent = () => {
   );
 };
 
-export default WebSectionStudent;
+export default WebSectionStudentList;

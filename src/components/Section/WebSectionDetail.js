@@ -12,8 +12,7 @@ import {
   RowDiv,
 } from "../../styles/CommonStyles";
 import WebSectionTask from "./WebSectionTask";
-import WebSectionStudent from "../Section/WebSectionStudent";
-
+import WebSectionStudentList from "../Section/WebSectionStudentList";
 const lectures = [
   { key: "name", label: "강의명" },
   { key: "dayList", label: "요일" },
@@ -119,7 +118,6 @@ const WebSectionDetail = () => {
   return (
     <Div>
       <Title>상세 정보</Title>
-
       {/* 분반 정보 */}
       <SubTitle>분반 정보</SubTitle>
       {isEdit ? (
@@ -223,7 +221,7 @@ const WebSectionDetail = () => {
       </ListTable>
       
       <WebSectionTask />
-      <WebSectionStudent />
+      <WebSectionStudentList />
     </Div>
   );
 };
