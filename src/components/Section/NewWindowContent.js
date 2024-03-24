@@ -11,7 +11,7 @@ import {
   ListTr,
   RowDiv,
 } from "../../styles/CommonStyles";
-import {updateSectionAPI} from "../../api/SectionAPI";
+import {updateSectionMemberAPI} from "../../api/SectionAPI";
 
 const NewWindowContent = () => {
   const { id } = useParams();
@@ -61,7 +61,7 @@ const NewWindowContent = () => {
         studentIdList: selectedStudents
     };
     console.log (updatedData);
-    const response = await updateSectionAPI(updatedData);
+    const response = await updateSectionMemberAPI(updatedData);
     alert ("학생 추가 할당 성공");
     console.log (response);
   }

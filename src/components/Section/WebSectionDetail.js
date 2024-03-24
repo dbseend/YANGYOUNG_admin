@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getOneSection, updateSectionAPI } from "../../api/SectionAPI";
+import { getOneSection, updateSectionInfoAPI } from "../../api/SectionAPI";
 import {
   ListTable,
   ListTd,
@@ -73,7 +73,6 @@ const WebSectionDetail = () => {
   }, [id]);
 
   const updateSection = async () => {
-
     const data = {
       sectionId: parseInt(id),
       name: updateData.name,
@@ -82,7 +81,7 @@ const WebSectionDetail = () => {
     };
 
     try {
-      const response = await updateSectionAPI(data);
+      const response = await updateSectionInfoAPI(data);
       console.log(response);
       alert("수정되었습니다.");
       window.location.reload();
@@ -101,6 +100,7 @@ const WebSectionDetail = () => {
   };
 
   const handleChangeInput = (e, type) => {
+    console.log(e.target.value, type);
     if (type === "name") {
       setUpdateData({ ...updateData, name: e.target.value });
     }
@@ -112,9 +112,7 @@ const WebSectionDetail = () => {
     }
   };
 
-  const addStudentToSection = () => {
-
-  };
+  const addStudentToSection = () => {};
   return (
     <Div>
       <Title>상세 정보</Title>
@@ -147,7 +145,7 @@ const WebSectionDetail = () => {
             <ListTd>
               {isEdit ? (
                 <input
-                  value={sectionInfo.name}
+                  value={updateData.name}
                   onChange={(e) => handleChangeInput(e, "name")}
                 />
               ) : (
@@ -158,7 +156,7 @@ const WebSectionDetail = () => {
             <ListTd>
               {isEdit ? (
                 <input
-                  value={sectionInfo.teacher}
+                  value={updateData.teacher}
                   onChange={(e) => handleChangeInput(e, "teacher")}
                 />
               ) : (
@@ -169,15 +167,13 @@ const WebSectionDetail = () => {
             <ListTd>
               {isEdit ? (
                 <input
-                  value={sectionInfo.homeRoom}
+                  value={updateData.homeRoom}
                   onChange={(e) => handleChangeInput(e, "homeRoom")}
                 />
               ) : (
                 sectionInfo.homeRoom
               )}
             </ListTd>
-            {/* <ListTh>id</ListTh>
-      <ListTd>{sectionInfo.id}</ListTd> */}
           </ListTr>
         </tbody>
       </ListTable>
@@ -219,7 +215,7 @@ const WebSectionDetail = () => {
             ))}
         </tbody>
       </ListTable>
-      
+
       <WebSectionTask />
       <WebSectionStudentList />
     </Div>

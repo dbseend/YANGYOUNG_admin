@@ -48,6 +48,12 @@ const Attendance = () => {
     setSectionId(sectionList[selectedValue].id);
   };
 
+  const handleChangeSection = (e) => {
+    console.log(e.value);
+    setSelectedSection(e.label);
+    setSectionId(e.value);
+  }
+
   return (
     <>
       <GlobalStyle />
@@ -58,7 +64,7 @@ const Attendance = () => {
           <Guide>1. 날짜를 선택해주세요.</Guide>
           <DatePicker type="date" value={date} onChange={changeDate} />
           <Guide>2. 반을 선택해주세요.</Guide>
-          <StyledSelect placeholder="반 검색" options={options} />
+          <StyledSelect placeholder="반 검색" options={options} onChange={(e)=>handleChangeSection(e)} />
         </AttendanceContent>
 
         <StyledTableContainer>

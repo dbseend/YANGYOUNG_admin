@@ -22,7 +22,8 @@ const AtTable = (props) => {
   ];
 
   useEffect(() => {
-    console.log("props time: ", date);
+    console.log("sectionId:", sectionId);
+    console.log("date:", date);
     fetchData();
   }, [sectionId, date]);
 
