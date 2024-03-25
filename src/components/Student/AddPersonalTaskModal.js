@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { addPersonalTask } from "../../api/TaskApi";
+import { addPersonalTask } from "../../api/TaskAPI";
 import { useParams } from "react-router-dom";
 
 const AddPersonalTaskModal = ({ onClose, onAdd }) => {

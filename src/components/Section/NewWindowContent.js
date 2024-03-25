@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { getSearchOptionAPI } from "../../api/UtilAPI";
-import { viewStudent } from "../../api/StudentApi";
+import { viewStudent } from "../../api/StudentAPI";
 import {
   Button,
   ListTable,
