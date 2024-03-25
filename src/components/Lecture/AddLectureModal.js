@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { addLectureAPI } from "../../api/LectureApi";
+import { addLectureAPI } from "../../api/LectureAPI";
 import { getSearchOptionAPI } from "../../api/UtilAPI";
 
 const AddLectureModal = ({ onClose, onAdd }) => {

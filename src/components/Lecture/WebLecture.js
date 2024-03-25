@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
-import { viewLecture, deleteLecture } from "../../api/LectureApi";
+import { viewLecture, deleteLecture } from "../../api/LectureAPI";
 import AddLectureModal from "./AddLectureModal";
 import { Button, StyledButtonContainer } from "../Student/WebStudentList";
 

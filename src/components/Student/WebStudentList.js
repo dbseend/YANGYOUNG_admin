@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { deleteStudent } from "../../api/StudentApi";
+import { deleteStudent } from "../../api/StudentAPI";
 import AddStudentModal from "./AddStudentModal";
 
 const StudentList = ({ filteredData }) => {
