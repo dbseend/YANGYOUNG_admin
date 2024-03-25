@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Title } from "../../styles/CommonStyles";
 import { useNavigate } from "react-router-dom";
 import StudentList from "./WebStudentList";
 import { getAllStudentAPI } from "../../api/StudentAPI";
-import { Title } from "../Attendance/WebAttendance";
 import { GlobalStyle } from "../../styles/Globalstyle";
 import { getSearchOptionAPI } from "../../api/UtilAPI";
 import { Button } from "../../styles/CommonStyles";

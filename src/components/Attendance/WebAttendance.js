@@ -1,74 +1,69 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import AtTable from "./WebAtTable";
-import { GlobalStyle } from "../../styles/Globalstyle";
-import { getSearchOptionAPI } from "../../api/UtilAPI";
 import Select from "react-select";
+import styled from "styled-components";
+import { Title } from "../../styles/CommonStyles";
+import { GlobalStyle } from "../../styles/Globalstyle";
+import AtTable from "./WebAtTable";
+import { getSearchOptionAPI } from "../../api/UtilAPI";
 
 const Attendance = () => {
-  const today = new Date();
-  const formattedDate = today.toLocaleDateString("en-CA");
-  const [date, setDate] = useState(formattedDate);
-  const [selectedSection, setSelectedSection] = useState(""); // 초기값을 빈 문자열로 설정
-  const [sectionId, setSectionId] = useState(0);
-  const [sectionList, setSection] = useState([]);
-  const [options, setOptions] = useState([]);
+  const today = new Date().toLocaleDateString("en-CA");
 
+  const [date, setDate] = useState(today);
+  const [selectedSectionId, setSelectedSectionId] = useState(0);
+  const [sectionList, setSectionList] = useState([]);
+
+  // 화면 렌더링 시 검색 옵션 받아오기 - 반정보
   useEffect(() => {
     getSearchOptionAPI().then((response) => {
-      setSection(response.sectionList);
-      const formattedOptions = response.sectionList.map((item) => ({
-        value: item.id,
-        label: item.name,
-      }));
-      setOptions(formattedOptions);
+      console.log(response);
+      setSectionList(response.sectionList);
+      setSelectedSectionId(response.sectionList[0].id);
     });
   }, []);
 
-  useEffect(() => {
-    // sectionList가 업데이트될 때 첫 번째 항목을 선택
-    if (sectionList.length > 0) {
-      setSelectedSection(sectionList[0]);
-      console.log(sectionList[0]);
-      setSectionId(sectionList[0].id); // 첫 번째 항목 선택에 따른 sectionId 설정
+  // 반, 날짜 변경 핸들러
+  const handleInputChange = (e, type) => {
+    console.log(e);
+    console.log(type);
+    if (type === "section") {
+      setSelectedSectionId(e.key);
     }
-  }, [sectionList]);
-
-  const changeDate = (e) => {
-    setDate(e.target.value);
-  };
-
-  const handleDropdownChange = (e) => {
-    if (!date) {
-      alert("날짜를 먼저 선택하세요.");
-      return;
+    if (type === "date") {
+      setDate(e.target.value);
     }
-    const selectedValue = e.target.value;
-    setSelectedSection(selectedValue);
-    setSectionId(sectionList[selectedValue].id);
   };
-
-  const handleChangeSection = (e) => {
-    console.log(e.value);
-    setSelectedSection(e.label);
-    setSectionId(e.value);
-  }
 
   return (
     <>
       <GlobalStyle />
 
+      {/* 출결관리 검색 옵션 */}
       <AttendanceContainer>
         <AttendanceContent>
           <Title>출결관리</Title>
           <Guide>1. 날짜를 선택해주세요.</Guide>
-          <DatePicker type="date" value={date} onChange={changeDate} />
+          <DatePicker
+            type="date"
+            value={date}
+            onChange={(e) => handleInputChange(e, "date")}
+          />
           <Guide>2. 반을 선택해주세요.</Guide>
-          <StyledSelect placeholder="반 검색" options={options} onChange={(e)=>handleChangeSection(e)} />
+          <StyledSelect
+            placeholder="반 검색"
+            options={sectionList.map((section) => ({
+              key: section.id,
+              label: section.name,
+            }))}
+            onChange={(e) => handleInputChange(e, "section")}
+          />
         </AttendanceContent>
 
+        {/* 반 선택 시 해당 반의 출결 정보 테이블 출력 */}
         <StyledTableContainer>
-          {selectedSection && <AtTable date={date} sectionId={sectionId} />}
+          {selectedSectionId && (
+            <AtTable date={date} sectionId={selectedSectionId} />
+          )}
         </StyledTableContainer>
       </AttendanceContainer>
     </>
@@ -79,9 +74,7 @@ const AttendanceContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  /* align-items: flex-start; */
   margin-top: 80px;
-  /* margin-left: 5%; */
   gap: 5%;
 `;
 
@@ -97,15 +90,6 @@ const StyledTableContainer = styled.div`
   margin-bottom: 90px;
 `;
 
-const Title = styled.div`
-  color: #000;
-  font-family: Poppins;
-  font-size: 30px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-`;
-
 const Guide = styled.div`
   color: #000;
   font-family: Poppins;
@@ -116,6 +100,7 @@ const Guide = styled.div`
   margin-bottom: 10px;
   margin-top: 30px;
 `;
+
 const DatePicker = styled.input`
   padding: 8px;
   font-size: 16px;
@@ -130,5 +115,5 @@ const StyledSelect = styled(Select)`
   text-align: left;
   cursor: pointer;
 `;
-export { Title };
+
 export default Attendance;
