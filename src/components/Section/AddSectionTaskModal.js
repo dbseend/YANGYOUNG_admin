@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { addSectionTask } from "../../api/TaskApi";
+import { addSectionTask } from "../../api/TaskAPI";
 import { useParams } from "react-router-dom";
 
 const AddSectionTaskModal = ({ onClose, onAdd }) => {

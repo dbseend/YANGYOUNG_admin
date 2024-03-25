@@ -6,7 +6,7 @@ import {
   deleteTaskAPI,
   viewPersonalTask,
   updateTaskProgressAPI,
-} from "../../api/TaskApi";
+} from "../../api/TaskAPI";
 import { formattedTaskProgress } from "../../util/Util";
 import {
   Button,

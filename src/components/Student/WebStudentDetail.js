@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { editStudentInfo, getStudentInfo } from "../../api/StudentApi";
+import { editStudentInfo, getStudentInfo } from "../../api/StudentAPI";
 import {
   ListTable,
   ListTd,

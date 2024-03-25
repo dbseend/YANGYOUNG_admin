@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import StudentList from "./WebStudentList";
-import { viewStudent } from "../../api/StudentApi";
+import { viewStudent } from "../../api/StudentAPI";
 import { Title } from "../Attendance/WebAttendance";
 import { GlobalStyle } from "../../styles/Globalstyle";
 import { getSearchOptionAPI } from "../../api/UtilAPI";
