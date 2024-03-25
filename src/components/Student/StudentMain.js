@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Title } from "../../styles/CommonStyles";
-import { useNavigate } from "react-router-dom";
-import StudentList from "./WebStudentList";
 import { getAllStudentAPI } from "../../api/StudentAPI";
-import { GlobalStyle } from "../../styles/Globalstyle";
 import { getSearchOptionAPI } from "../../api/UtilAPI";
-import { Button } from "../../styles/CommonStyles";
-import { useRecoilState } from "recoil";
-import { studentAtom } from "../../recoil/atom";
+import { Button, Title } from "../../styles/CommonStyles";
+import { GlobalStyle } from "../../styles/Globalstyle";
+import StudentList from "./StudentList";
 
 const WebStudent = () => {
-  const navigate = useNavigate();
   const [sectionId, setSectionId] = useState(0);
   const [studentList, setStudentList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,7 +16,6 @@ const WebStudent = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [sectionList, setSectionList] = useState([]);
   const [gradeList, setGradeList] = useState([]);
-  const [allStudent, setAllStudent] = useRecoilState(studentAtom);
 
   useEffect(() => {
     viewAllStudent();

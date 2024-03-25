@@ -1,12 +1,12 @@
 import React from "react";
-import WebAttendance from "../components/Attendance/WebAttendance";
-import WebNavbar from "../components/WebNavbar";
+import AttendanceMain from "../components/Attendance/AttendanceMain";
+import Navbar from "../components/Navbar";
 
 const Attendance = () => {
   return (
     <div>
-      <WebNavbar />
-      <WebAttendance />
+      <Navbar />
+      <AttendanceMain />
     </div>
   );
 };

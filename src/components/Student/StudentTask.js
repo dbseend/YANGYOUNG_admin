@@ -19,7 +19,7 @@ import {
   UpdateAndDeleteButton,
   DateInput,
 } from "../../styles/CommonStyles";
-import AddPersonalTaskModal from "./AddPersonalTaskModal";
+import StudentTaskAddModal from "./StudentTaskAddModal";
 
 const WebStudentTask = () => {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
@@ -138,7 +138,7 @@ const WebStudentTask = () => {
           등록
         </Button>
         {isAddModalOpen && (
-          <AddPersonalTaskModal
+          <StudentTaskAddModal
             onClose={closeAddModal}
             onAdd={addPersonalTaskAPI}
           />

@@ -11,7 +11,7 @@ import {
   Title,
 } from "../../styles/CommonStyles";
 import { gradeTypeConvert } from "../../util/Util";
-import WebStudentTask from "./WebStudentTask";
+import StudentTask from "./StudentTask";
 
 const WebStudentDetail = () => {
   //분반 정보 테이블 컬럼
@@ -217,9 +217,7 @@ const WebStudentDetail = () => {
             </ListTd>
           </ListTr>
           <ListTr>
-            <ListTh>
-              학생 연락처
-            </ListTh>
+            <ListTh>학생 연락처</ListTh>
             <ListTd>
               {isEditMode ? (
                 <input
@@ -232,9 +230,7 @@ const WebStudentDetail = () => {
                 studentInfo.studentPhoneNumber
               )}
             </ListTd>
-            <ListTh>
-              부모님 연락처
-            </ListTh>
+            <ListTh>부모님 연락처</ListTh>
             <ListTd>
               {isEditMode ? (
                 <input
@@ -251,7 +247,7 @@ const WebStudentDetail = () => {
         </tbody>
       </ListTable>
 
-      <WebStudentTask />
+      <StudentTask />
 
       <SubTitle style={{ marginBottom: -5 }}>분반 정보</SubTitle>
       <p>

@@ -1,12 +1,12 @@
 import React from "react";
-import WebNavbar from "../components/WebNavbar";
-import WebStudent from "../components/Student/WebStudent";
+import Navbar from "../components/Navbar";
+import StudentMain from "../components/Student/StudentMain";
 
 const Student = () => {
   return (
     <div>
-      <WebNavbar />
-      <WebStudent />
+      <Navbar />
+      <StudentMain />
     </div>
   );
 };

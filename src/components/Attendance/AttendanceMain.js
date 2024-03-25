@@ -3,7 +3,7 @@ import Select from "react-select";
 import styled from "styled-components";
 import { Title } from "../../styles/CommonStyles";
 import { GlobalStyle } from "../../styles/Globalstyle";
-import AtTable from "./WebAtTable";
+import AttendanceList from "./AttendanceList";
 import { getSearchOptionAPI } from "../../api/UtilAPI";
 
 const Attendance = () => {
@@ -62,7 +62,7 @@ const Attendance = () => {
         {/* 반 선택 시 해당 반의 출결 정보 테이블 출력 */}
         <StyledTableContainer>
           {selectedSectionId && (
-            <AtTable date={date} sectionId={selectedSectionId} />
+            <AttendanceList date={date} sectionId={selectedSectionId} />
           )}
         </StyledTableContainer>
       </AttendanceContainer>

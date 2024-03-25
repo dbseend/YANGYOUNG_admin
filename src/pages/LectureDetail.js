@@ -1,11 +1,11 @@
 import React from "react";
 import WebLectureDetail from "../components/Lecture/WebLectureDetail";
-import WebNavbar from "../components/WebNavbar";
+import Navbar from "../components/Navbar";
 
 const LectureDetail = () => {
   return (
     <div>
-      <WebNavbar />
+      <Navbar />
       <WebLectureDetail />
     </div>
   );

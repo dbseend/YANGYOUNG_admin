@@ -1,11 +1,11 @@
 import React from "react";
 import WebSectionDetail from "../components/Section/WebSectionDetail";
-import WebNavbar from "../components/WebNavbar";
+import Navbar from "../components/Navbar";
 
 const SectionDetail = () => {
   return (
     <div>
-      <WebNavbar />
+      <Navbar />
       <WebSectionDetail />
     </div>
   );

@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { deleteStudentAPI } from "../../api/StudentAPI";
-import AddStudentModal from "./AddStudentModal";
+import AddStudentModal from "./StudentAddModal";
 
 const StudentList = ({ filteredData }) => {
   const navigate = useNavigate();
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
 
-  const columns = [
+  const studentColumns = [
     { key: "index", label: "순번" },
     { key: "name", label: "이름" },
     { key: "school", label: "학교" },
@@ -53,11 +53,8 @@ const StudentList = ({ filteredData }) => {
       for (const studentId of selectedStudents) {
         await deleteStudentAPI(studentId);
       }
-      // 성공적으로 삭제되면 선택된 학생들 초기화
       setSelectedStudents([]);
       alert("선택한 학생이 삭제되었습니다.");
-      // 삭제 후 학생 목록 갱신
-      // await viewAllStudent();
       window.location.reload(true); // Reload the page
     } catch (error) {
       console.error("학생 삭제 중 오류 발생:", error);
@@ -67,6 +64,7 @@ const StudentList = ({ filteredData }) => {
   const moveToStudentDetail = (studentId) => {
     navigate(`/student/${studentId}`);
   };
+
   const openAddModal = () => {
     setAddModalOpen(true);
   };
@@ -74,6 +72,7 @@ const StudentList = ({ filteredData }) => {
   const closeAddModal = () => {
     setAddModalOpen(false);
   };
+
   const handleAddStudent = (response) => {
     console.log("새 학생 정보: ", response);
   };
@@ -84,14 +83,17 @@ const StudentList = ({ filteredData }) => {
         <Button onClick={openAddModal}>등록</Button>
         <Button onClick={handleDelete}>삭제</Button>
 
+        {/* 학생 추가 모달 */}
         {isAddModalOpen && (
           <AddStudentModal onClose={closeAddModal} onAdd={handleAddStudent} />
         )}
       </StyledButtonContainer>
+
+      {/* 학생 목록 테이블 */}
       <StyledTable>
         <thead>
           <tr>
-            {columns.map((column) => (
+            {studentColumns.map((column) => (
               <React.Fragment key={column.key}>
                 {column.key === "check" ? (
                   <StyledTh>
@@ -112,7 +114,7 @@ const StudentList = ({ filteredData }) => {
         <tbody>
           {filteredData.map((student, index) => (
             <StyledTr key={index}>
-              {columns.map((column) => (
+              {studentColumns.map((column) => (
                 <StyledTd
                   key={column.key}
                   onClick={
@@ -209,5 +211,6 @@ const Button = styled.button`
   cursor: pointer;
   border: none;
 `;
+
 export { Button, StyledButtonContainer };
 export default StudentList;

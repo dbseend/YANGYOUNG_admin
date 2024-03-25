@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { getAllSectionAPI, deleteSectionAPI } from "../../api/SectionAPI";
 import AddSectionModal from "./AddSectionModal";
-import { Button, StyledButtonContainer } from "../Student/WebStudentList";
+import { Button, StyledButtonContainer } from "../Student/StudentList";
 
 const columns = [
   { key: "index", label: "순번" },
