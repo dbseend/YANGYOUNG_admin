@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// 검색 옵션 API 호출
+// 검색 옵션 API
 export const getSearchOptionAPI = async () => {
   try {
     const response = await axios.get(

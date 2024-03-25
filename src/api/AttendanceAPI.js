@@ -1,8 +1,7 @@
 import axios from "axios";
 
-export const getSectionAttendanceInfo = async (id, date) => {
-  console.log("id: ", id);
-  console.log("date: ", date);
+// 반 출석 정보 조회 API
+export const getAttendanceBySectionAPI = async (id, date) => {
   try {
     const response = await axios.get(
       // `http://localhost:8080/api/v0/attendance/section/${id}`,
@@ -22,10 +21,8 @@ export const getSectionAttendanceInfo = async (id, date) => {
   }
 };
 
-export const postAttendanceBySection = async (data) => {
-
-  console.log("data in api: ", data);
-
+// 학생 출석 정보 수정 API
+export const postAttendanceBySectionAPI = async (data) => {
   try {
     const response = await axios.patch(
       `${process.env.REACT_APP_URL}attendance`,

@@ -1,6 +1,7 @@
 import axios from "axios";
 
-export const viewSection = async () => {
+// 전체 반 조회 API
+export const getAllSectionAPI = async () => {
   try {
     const response = await axios.get(
       process.env.REACT_APP_URL + `section`
@@ -13,7 +14,8 @@ export const viewSection = async () => {
   }
 };
 
-export const addSection = async (sectionData) => {
+// 반 추가 API
+export const addSectionAPI = async (sectionData) => {
   try {
     const response = await axios.post(
       process.env.REACT_APP_URL + `section`,
@@ -26,7 +28,8 @@ export const addSection = async (sectionData) => {
   }
 };
 
-export const getOneSection = async (sectionId) => {
+// 반 상세 조회 API
+export const getOneSectionAPI = async (sectionId) => {
   try {
     const response = await axios.get(
       process.env.REACT_APP_URL + `section/${sectionId}`
@@ -38,7 +41,8 @@ export const getOneSection = async (sectionId) => {
   }
 };
 
-export const deleteSection = async (sectionId) => {
+// 반 삭제 API
+export const deleteSectionAPI = async (sectionId) => {
   try {
     const response = await axios.delete(
       process.env.REACT_APP_URL + `section/${sectionId}`
@@ -50,6 +54,7 @@ export const deleteSection = async (sectionId) => {
   }
 };
 
+// 반 학생 수정 API
 export const updateSectionMemberAPI = async (updateData) => {
   console.log(updateData);
   try {
@@ -65,6 +70,7 @@ export const updateSectionMemberAPI = async (updateData) => {
   }
 };
 
+// 반 정보 수정 API
 export const updateSectionInfoAPI = async (updateData) => {
   console.log(updateData);
   try {

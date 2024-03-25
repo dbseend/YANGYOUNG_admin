@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
-  getSectionAttendanceInfo,
-  postAttendanceBySection,
+  getAttendanceBySectionAPI,
+  postAttendanceBySectionAPI,
 } from "../../api/AttendanceAPI";
 
 const AtTable = (props) => {
@@ -29,7 +29,7 @@ const AtTable = (props) => {
 
   const fetchData = async () => {
     try {
-      const data = await getSectionAttendanceInfo(
+      const data = await getAttendanceBySectionAPI(
         sectionId,
         formattedDateString
       );
@@ -82,7 +82,7 @@ const AtTable = (props) => {
 
     console.log(data);
 
-    postAttendanceBySection(data);
+    postAttendanceBySectionAPI(data);
   };
 
   return (

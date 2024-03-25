@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import StudentList from "./WebStudentList";
-import { viewStudent } from "../../api/StudentAPI";
+import { getAllStudentAPI } from "../../api/StudentAPI";
 import { Title } from "../Attendance/WebAttendance";
 import { GlobalStyle } from "../../styles/Globalstyle";
 import { getSearchOptionAPI } from "../../api/UtilAPI";
@@ -37,7 +37,7 @@ const WebStudent = () => {
   // 학생 전체 조회
   const viewAllStudent = async () => {
     try {
-      const response = await viewStudent();
+      const response = await getAllStudentAPI();
       handleStudentData(response.studentResponseList);
     } catch (error) {
       console.log("학생 데이터를 가져오는 중 오류 발생:", error);

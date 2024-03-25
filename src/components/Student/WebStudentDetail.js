@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { editStudentInfo, getStudentInfo } from "../../api/StudentAPI";
+import { updateStudentInfoAPI, getOneStudentAPI } from "../../api/StudentAPI";
 import {
   ListTable,
   ListTd,
@@ -62,7 +62,7 @@ const WebStudentDetail = () => {
 
   // 학생 정보를 가져오는 함수
   const fetchStudentDetail = async () => {
-    getStudentInfo(id).then((data) => {
+    getOneStudentAPI(id).then((data) => {
       console.log("학생 상세 정보: ", data);
 
       // 학생 정보 저장
@@ -119,7 +119,7 @@ const WebStudentDetail = () => {
 
     try {
       console.log("수정된 학생 정보: ", data);
-      await editStudentInfo(data);
+      await updateStudentInfoAPI(data);
       setIsEditMode(false);
       window.location.reload();
     } catch (error) {
