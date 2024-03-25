@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getOneLecture } from "../../api/LectureAPI";
+import { getLectureAPI } from "../../api/LectureAPI";
 import {
   ListTable,
   ListTd,
@@ -28,7 +28,7 @@ const WebLectureDetail = () => {
   useEffect(() => {
     const fetchLectureDetail = async () => {
       try {
-        const response = await getOneLecture(id);
+        const response = await getLectureAPI(id);
         console.log(response);
         setLectureOneInfo(response.data);
       } catch (error) {

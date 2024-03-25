@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { addStudent } from "../../api/StudentAPI";
+import { addStudentAPI } from "../../api/StudentAPI";
 import { getSearchOptionAPI } from "../../api/UtilAPI";
 
 const AddStudentModal = ({ onClose, onAdd }) => {
@@ -69,7 +69,7 @@ const AddStudentModal = ({ onClose, onAdd }) => {
           parseInt(section, 10)
         ),
       };
-      const response = await addStudent(studentData);
+      const response = await addStudentAPI(studentData);
 
       // 학생 추가 성공 시
       alert("학생 인적사항이 등록되었습니다");

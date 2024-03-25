@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useInRouterContext } from "react-router-dom";
 import styled from "styled-components";
-import { getOneSection } from "../../api/SectionAPI";
+import { getOneSectionAPI } from "../../api/SectionAPI";
 import {
   Button,
   ListTable,
@@ -47,7 +47,7 @@ const WebSectionStudentList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getOneSection(id);
+        const response = await getOneSectionAPI(id);
         console.log(response);
         setStudentList(response.studentAllResponse.studentResponseList); // 학생 목록
         setStudentCount(response.studentAllResponse.size); // 학생 수

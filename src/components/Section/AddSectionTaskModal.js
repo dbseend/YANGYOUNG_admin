@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { addSectionTask } from "../../api/TaskAPI";
+import { addSectionTaskAPI } from "../../api/TaskAPI";
 import { useParams } from "react-router-dom";
 
 const AddSectionTaskModal = ({ onClose, onAdd }) => {
@@ -28,7 +28,7 @@ const AddSectionTaskModal = ({ onClose, onAdd }) => {
 
       console.log("전송 데이터:", newTask);
 
-      const response = await addSectionTask(newTask);
+      const response = await addSectionTaskAPI(newTask);
 
       // 서버에서 데이터 추가 완료 후에 처리
       alert("분반 할일이 추가 되었습니다");

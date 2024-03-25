@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
-import { viewLecture, deleteLecture } from "../../api/LectureAPI";
+import { getAllLectureAPI, deleteLectureAPI } from "../../api/LectureAPI";
 import AddLectureModal from "./AddLectureModal";
 import { Button, StyledButtonContainer } from "../Student/WebStudentList";
 
@@ -24,7 +24,7 @@ const Lecture = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await viewLecture();
+        const response = await getAllLectureAPI();
         const { lectureResponseList, lectureCount } = response;
         setLectureList(lectureResponseList);
         setLectureCount(lectureCount);
@@ -72,7 +72,7 @@ const Lecture = () => {
       selectedLectures.map(async (lectureId) => {
         console.log("Delete lectureId: ", lectureId);
         console.log(typeof lectureId);
-        await deleteLecture(lectureId);
+        await deleteLectureAPI(lectureId);
       });
 
       setSelectedLectures([]);

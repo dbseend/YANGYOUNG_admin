@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// 반별 과제 조회
-export const viewSectionTask = async (sectionId, date) => {
+// 반별 과제 조회 API
+export const viewSectionTaskAPI = async (sectionId, date) => {
   console.log(date);
   try {
     const response = await axios.get(
@@ -21,7 +21,7 @@ export const viewSectionTask = async (sectionId, date) => {
 };
 
 // 학생별 과제 조회
-export const viewPersonalTask = async (studentId, date) => {
+export const viewPersonalTaskAPI = async (studentId, date) => {
   try {
     const response = await axios.get(
       process.env.REACT_APP_URL + `task/student/${studentId}`,
@@ -40,7 +40,7 @@ export const viewPersonalTask = async (studentId, date) => {
 };
 
 // 반별 과제 추가
-export const addSectionTask = async (taskData) => {
+export const addSectionTaskAPI = async (taskData) => {
   try {
     const response = await axios.post(
       process.env.REACT_APP_URL + `task/section`,
@@ -54,7 +54,7 @@ export const addSectionTask = async (taskData) => {
 };
 
 // 학생별 과제 추가
-export const addPersonalTask = async (taskData) => {
+export const addPersonalTaskAPI = async (taskData) => {
   console.log("taskData:", taskData);
 
   try {

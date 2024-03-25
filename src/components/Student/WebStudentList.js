@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { deleteStudent } from "../../api/StudentAPI";
+import { deleteStudentAPI } from "../../api/StudentAPI";
 import AddStudentModal from "./AddStudentModal";
 
 const StudentList = ({ filteredData }) => {
@@ -51,7 +51,7 @@ const StudentList = ({ filteredData }) => {
   const handleDelete = async () => {
     try {
       for (const studentId of selectedStudents) {
-        await deleteStudent(studentId);
+        await deleteStudentAPI(studentId);
       }
       // 성공적으로 삭제되면 선택된 학생들 초기화
       setSelectedStudents([]);

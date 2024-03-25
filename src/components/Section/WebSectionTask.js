@@ -2,15 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import {
-  addPersonalTask,
+  addPersonalTaskAPI,
   deleteTaskAPI,
-  viewPersonalTask,
-  updateTaskProgressAPI,
-  viewSectionTask,
+  viewSectionTaskAPI
 } from "../../api/TaskAPI";
-import { formattedTaskProgress } from "../../util/Util";
 import {
   Button,
+  DateInput,
   ListTable,
   ListTd,
   ListTh,
@@ -18,7 +16,6 @@ import {
   RowDiv,
   SubTitle,
   UpdateAndDeleteButton,
-  DateInput,
 } from "../../styles/CommonStyles";
 import AddSectionTaskModal from "./AddSectionTaskModal";
 
@@ -50,7 +47,7 @@ const WebSectionTask = () => {
   // 학생, 분발 할 일 조회
   const getTaskList = async () => {
     console.log(id, date);
-    const data = await viewSectionTask(id, date);
+    const data = await viewSectionTaskAPI(id, date);
     setTaskList(data.sectionTaskResponseList);
     // setUpdateTaskList(data.studentTaskResponseList);
   };
@@ -113,7 +110,7 @@ const WebSectionTask = () => {
         {isAddModalOpen && (
           <AddSectionTaskModal
             onClose={closeAddModal}
-            onAdd={addPersonalTask}
+            onAdd={addPersonalTaskAPI}
           />
         )}
         <UpdateAndDeleteButton>

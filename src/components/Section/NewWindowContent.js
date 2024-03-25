@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { getSearchOptionAPI } from "../../api/UtilAPI";
-import { viewStudent } from "../../api/StudentAPI";
+import { getAllStudentAPI } from "../../api/StudentAPI";
 import {
   Button,
   ListTable,
@@ -45,7 +45,7 @@ const NewWindowContent = () => {
   }, []);
   useEffect(() => {
     const getStudentList = async () => {
-      const response = await viewStudent();
+      const response = await getAllStudentAPI();
       console.log(response.studentResponseList);
       setStudentList(response.studentResponseList); // 학생 목록
     };

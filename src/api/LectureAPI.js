@@ -1,6 +1,7 @@
 import axios from "axios";
 
-export const viewLecture = async () => {
+// 전체 강의 조회 API
+export const getAllLectureAPI = async () => {
   try {
     const response = await axios.get(
       process.env.REACT_APP_URL + `lecture`
@@ -14,6 +15,7 @@ export const viewLecture = async () => {
   }
 };
 
+// 강의 추가 API
 export const addLectureAPI = async (lectureData) => {
   console.log(lectureData);
   try {
@@ -28,7 +30,8 @@ export const addLectureAPI = async (lectureData) => {
   }
 };
 
-export const getOneLecture = async (lectureId) => {
+// 강의 상세 조회 API
+export const getLectureAPI = async (lectureId) => {
   try {
     const response = await axios.get(
       process.env.REACT_APP_URL + `lecture/${lectureId}`
@@ -42,7 +45,8 @@ export const getOneLecture = async (lectureId) => {
   }
 };
 
-export const deleteLecture = async (lectureId) => {
+// 강의 삭제 API
+export const deleteLectureAPI = async (lectureId) => {
   try {
     const response = await axios.delete(
       process.env.REACT_APP_URL + `lecture/${lectureId}`

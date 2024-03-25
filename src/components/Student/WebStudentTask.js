@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import {
-  addPersonalTask,
+  addPersonalTaskAPI,
   deleteTaskAPI,
-  viewPersonalTask,
+  viewPersonalTaskAPI,
   updateTaskProgressAPI,
 } from "../../api/TaskAPI";
 import { formattedTaskProgress } from "../../util/Util";
@@ -50,7 +50,7 @@ const WebStudentTask = () => {
 
   // 학생, 분발 할 일 조회
   const getTaskList = async () => {
-    const data = await viewPersonalTask(id, date);
+    const data = await viewPersonalTaskAPI(id, date);
     console.log(data);
     setTaskList(data.studentTaskResponseList);
     // setUpdateTaskList(data.studentTaskResponseList);
@@ -140,7 +140,7 @@ const WebStudentTask = () => {
         {isAddModalOpen && (
           <AddPersonalTaskModal
             onClose={closeAddModal}
-            onAdd={addPersonalTask}
+            onAdd={addPersonalTaskAPI}
           />
         )}
         <UpdateAndDeleteButton>

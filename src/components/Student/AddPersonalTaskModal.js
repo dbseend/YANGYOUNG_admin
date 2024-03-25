@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { addPersonalTask } from "../../api/TaskAPI";
+import { addPersonalTaskAPI } from "../../api/TaskAPI";
 import { useParams } from "react-router-dom";
 
 const AddPersonalTaskModal = ({ onClose, onAdd }) => {
@@ -24,7 +24,7 @@ const AddPersonalTaskModal = ({ onClose, onAdd }) => {
 
       console.log("전송 데이터:", newTask);
 
-      const response = await addPersonalTask(newTask);
+      const response = await addPersonalTaskAPI(newTask);
 
       // 서버에서 데이터 추가 완료 후에 처리
       alert("학생 할일이 추가 되었습니다");

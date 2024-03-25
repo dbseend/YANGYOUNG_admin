@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
-import { viewSection, deleteSection } from "../../api/SectionAPI";
+import { getAllSectionAPI, deleteSectionAPI } from "../../api/SectionAPI";
 import AddSectionModal from "./AddSectionModal";
 import { Button, StyledButtonContainer } from "../Student/WebStudentList";
 
@@ -32,7 +32,7 @@ const Section = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await viewSection();
+        const response = await getAllSectionAPI();
         const { sectionResponseList, size } = response;
         console.log("sectionResponseList: ", sectionResponseList);
         console.log("size: ", size);
@@ -84,7 +84,7 @@ const Section = () => {
       selectedSections.map(async (sectionId) => {
         console.log("Delete sectionId: ", sectionId);
         console.log(typeof sectionId);
-        await deleteSection(sectionId);
+        await deleteSectionAPI(sectionId);
       });
 
       setSelectedSections([]);
