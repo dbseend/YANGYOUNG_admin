@@ -23,7 +23,7 @@ export const formattedTaskProgress = (taskProgress) => {
     default:
       return "NOT_STARTED";
   }
-}
+};
 
 // 학년 문자열을 서버에서 받을 수 있는 형태로 변환
 export const gradeTypeConvert = (grade) => {
@@ -39,4 +39,15 @@ export const gradeTypeConvert = (grade) => {
     default:
       return "M3";
   }
-}
+};
+
+// 리스트 이름 오름차순 정렬
+export const sortListByNameAscending = (list, field) => {
+  try {
+    console.log("참");
+    return list.sort((a, b) => a.field.localeCompare(b.name));
+  } catch {
+    console.log("거짓");
+    return list;
+  }
+};

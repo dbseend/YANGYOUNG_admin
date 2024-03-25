@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import { getAllLectureAPI, deleteLectureAPI } from "../../api/LectureAPI";
 import AddLectureModal from "./AddLectureModal";
-import { Button, StyledButtonContainer } from "../Student/WebStudentList";
+import { Button, StyledButtonContainer } from "../Student/StudentList";
 
 const columns = [
   { key: "index", label: "순번" },

@@ -51,10 +51,12 @@ const Main = () => {
 const Container = styled.div`
   margin-top: 7.5%;
 `;
+
 const Head = styled.div`
   justify-content: center;
   margin-bottom: 40px;
 `;
+
 const Title = styled.div`
   color: #000;
   font-family: Poppins;
@@ -73,6 +75,7 @@ const SubT = styled.div`
   font-weight: 400;
   line-height: normal;
 `;
+
 const Button = styled.button`
   width: 287px;
   height: 51.933px;
@@ -86,4 +89,5 @@ const Button = styled.button`
   font-weight: 500;
   line-height: normal;
 `;
+
 export default Main;
