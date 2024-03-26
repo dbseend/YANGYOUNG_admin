@@ -64,7 +64,6 @@ const AtTable = (props) => {
 
   // 출결 정보 저장
   const postAttendance = async () => {
-    alert(studentList.length);
     const requestData = {
       sectionId: sectionId,
       attendanceUpdateRequestList: studentList
