@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getSearchOptionAPI } from "../../api/UtilAPI";
+import { updateSectionMemberAPI } from "../../api/SectionAPI";
 import { getAllStudentAPI } from "../../api/StudentAPI";
+import { getSearchOptionAPI } from "../../api/UtilAPI";
 import {
   Button,
   ListTable,
@@ -11,7 +12,6 @@ import {
   ListTr,
   RowDiv,
 } from "../../styles/CommonStyles";
-import {updateSectionMemberAPI} from "../../api/SectionAPI";
 
 const NewWindowContent = () => {
   const { id } = useParams();
@@ -26,15 +26,13 @@ const NewWindowContent = () => {
   const [sectionList, setSectionList] = useState([]);
   const [gradeList, setGradeList] = useState([]);
   const students = [
+    { key: "check", label: "선택" },
     { key: "name", label: "이름" },
     { key: "school", label: "학교" },
     { key: "grade", label: "학년" },
-    { key: "check", label: "선택" },
   ];
+
   useEffect(() => {
-    // viewAllStudent();
-    console.log(id);
-    
     getSearchOptionAPI().then((response) => {
       setSectionList(response.sectionList);
       const sortedByName = response.gradeList
@@ -43,11 +41,13 @@ const NewWindowContent = () => {
       setGradeList(sortedByName);
     });
   }, []);
+
   useEffect(() => {
     const getStudentList = async () => {
       const response = await getAllStudentAPI();
       console.log(response.studentResponseList);
       setStudentList(response.studentResponseList); // 학생 목록
+      setFilteredData(response.studentResponseList); // 검색 결과
     };
     getStudentList();
   }, []);
@@ -66,13 +66,13 @@ const NewWindowContent = () => {
     console.log (response);
   }
 
-  //   체크박스 리스트 전체 선택 및 해제
+  // 체크박스 리스트 전체 선택 및 해제
   const handleAllCheckboxChange = () => {
-    if (selectedStudents.length === studentList.length) {
+    if (selectedStudents.length === filteredData.length) {
       setSelectedStudents([]);
     }
-    if (selectedStudents.length !== studentList.length) {
-      setSelectedStudents(studentList.map((student) => student.id));
+    if (selectedStudents.length !== filteredData.length) {
+      setSelectedStudents([...selectedStudents, ...filteredData.map((student) => student.id)]);
     }
   };
 
@@ -87,7 +87,6 @@ const NewWindowContent = () => {
     });
   };
 
-  
   // 학생 검색
   const search = () => {
     const filteredData = studentList.filter((item) => {
