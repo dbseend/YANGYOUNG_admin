@@ -87,9 +87,9 @@ const WebLectureDetail = () => {
             <ListTh>분반명</ListTh>
           </ListTr>
           {lectureOneInfo &&
-          lectureOneInfo.sectionName &&
-          lectureOneInfo.sectionName.length > 0 ? (
-            lectureOneInfo.sectionName.map((section, index) => (
+          lectureOneInfo.sectionNameList &&
+          lectureOneInfo.sectionNameList.length > 0 ? (
+            lectureOneInfo.sectionNameList.map((section, index) => (
               <ListTr key={index}>
                 <ListTd>{section}</ListTd>
               </ListTr>
