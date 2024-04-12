@@ -24,6 +24,7 @@ const WebStudentDetail = () => {
   const lectureColumn = [
     { key: "name", label: "수업명" },
     { key: "dayList", label: "요일" },
+    { key: "dateList", label: "날짜" },
     { key: "time", label: "시간" },
     { key: "lectureRoom", label: "강의실" },
     { key: "teacher", label: "선생님" },
@@ -85,10 +86,6 @@ const WebStudentDetail = () => {
       // 수업 정보 저장
       setLectureList(data.lectureAllResponse.lectureResponseList);
       setLectureCount(data.lectureAllResponse.lectureCount);
-
-      // 과제 정보 저장
-      // setTaskInfo(data.studentTaskAllResponse.studentTaskResponseList);
-      // setTaskCount(data.studentTaskAllResponse.studentTaskSize);
     });
   };
 
@@ -171,18 +168,7 @@ const WebStudentDetail = () => {
             <ListTh>이름</ListTh>
             <ListTd>{studentInfo.name}</ListTd>
             <ListTh>아이디</ListTh>
-            <ListTd>
-              {isEditMode ? (
-                <input
-                  type="text"
-                  name="id"
-                  value={selectedId}
-                  onChange={(e) => handleInputChange(e, "id")}
-                />
-              ) : (
-                studentInfo.id
-              )}
-            </ListTd>
+            <ListTd>{studentInfo.id}</ListTd>
           </ListTr>
           <ListTr>
             <ListTh>학교</ListTh>
@@ -305,6 +291,8 @@ const WebStudentDetail = () => {
                         ? index + 1
                         : column.key === "dayList"
                         ? lecture.dayList.join(", ")
+                        : column.key === "dateList"
+                        ? lecture.dateList.join(", ")
                         : column.key === "time"
                         ? `${lecture.startTime.slice(
                             0,
