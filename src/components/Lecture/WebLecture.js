@@ -242,4 +242,6 @@ const StyledTr = styled.tr`
     background-color: #f0f0f0;
   }
 `;
+
+export {TableContainer, StyledTable, StyledTh, StyledTd, StyledTr};
 export default Lecture;

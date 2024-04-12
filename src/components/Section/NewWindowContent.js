@@ -6,12 +6,9 @@ import { getAllStudentAPI } from "../../api/StudentAPI";
 import { getSearchOptionAPI } from "../../api/UtilAPI";
 import {
   Button,
-  ListTable,
-  ListTd,
-  ListTh,
-  ListTr,
   RowDiv,
 } from "../../styles/CommonStyles";
+import {StyledTh, StyledTd, StyledTr} from "../Lecture/WebLecture";
 
 const NewWindowContent = () => {
   const { id } = useParams();
@@ -217,12 +214,12 @@ const NewWindowContent = () => {
       </SearchDiv>
       <Button onClick={updateStudents}>학생 배정</Button>
       {filteredData && (
-        <ListTable>
+        <StyledTable>
           <thead>
-            <ListTr>
+            <StyledTr>
               {students &&
                 students.map((student) => (
-                  <ListTh key={student.key}>
+                  <StyledTh key={student.key}>
                     {student.key === "check" ? (
                       <input
                         type="checkbox"
@@ -234,16 +231,16 @@ const NewWindowContent = () => {
                     ) : (
                       student.label
                     )}
-                  </ListTh>
+                  </StyledTh>
                 ))}
-            </ListTr>
+            </StyledTr>
           </thead>
           <tbody>
             {filteredData &&
               filteredData.map((student, index) => (
-                <ListTr key={index}>
+                <StyledTr key={index}>
                   {students.map((col) => (
-                    <ListTd key={col.key}>
+                    <StyledTd key={col.key}>
                       {col.key === "check" ? (
                         <input
                           type="checkbox"
@@ -253,12 +250,12 @@ const NewWindowContent = () => {
                       ) : (
                         <div>{student[col.key]}</div>
                       )}
-                    </ListTd>
+                    </StyledTd>
                   ))}
-                </ListTr>
+                </StyledTr>
               ))}
           </tbody>
-        </ListTable>
+        </StyledTable>
       )}
     </div>
   );
@@ -336,4 +333,10 @@ const SearchButtonDiv = styled.div`
   gap: 26px;
 `;
 
+const StyledTable = styled.table`
+border-collapse: collapse;
+margin-top: 20px;
+width: 100%;
+/* width: 80%; */
+`;
 export default NewWindowContent;

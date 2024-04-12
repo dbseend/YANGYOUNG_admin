@@ -36,7 +36,7 @@ export const ListTh = styled.th`
 `;
 
 export const ListTr = styled.tr`
-  width: 100%;
+  /* width: 100%; */
   /* &:nth-child(even) {
     background-color: #f2f2f2;
   } */
