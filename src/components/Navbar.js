@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -34,56 +34,45 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const isactive = (path) => location.pathname === path;
-
-  const moveTo = (path) => {
-    navigate(path);
-  };
-
   const onRefreshClick = () => {
-    window.location.reload(true);  // Reload the page
+    window.location.reload(true);
   };
 
   return (
     <NavbarContainer $scrolled={isScrolled}>
       <Logo onClick={onRefreshClick}>양영학원 고등부</Logo>
       <MenuList>
-        <NavLink
-          href="#"
-          onClick={() => moveTo("/attendance")}
-          isactive={isactive("/attendance").toString()}
-        >
-          출결관리
-        </NavLink>
-
-        <NavLink
-          href="#"
-          onClick={() => moveTo("/student")}
-          isactive={isactive("/student").toString()}
-        >
-          학생관리
-        </NavLink>
-
-        <NavLink
-          href="#"
-          onClick={() => moveTo("/lecture")}
-          isactive={isactive("/lecture").toString()}
-        >
-          수업관리
-        </NavLink>
-
-        <NavLink
-          href="#"
-          onClick={() => moveTo("/section")}
-          isactive={isactive("/section").toString()}
-        >
-          분반관리
-        </NavLink>
+        <MenuItem id={'attendance'} value={'출결관리'} />
+        <MenuItem id={'student'} value={'학생관리'} />
+        <MenuItem id={'lecture'} value={'수업관리'} />
+        <MenuItem id={'section'} value={'분반관리'} />
         <LogoutButton onClick={onLogOutClick}>로그아웃</LogoutButton>
       </MenuList>
     </NavbarContainer>
   );
 };
+
+const MenuItem = ({ id, value }) => {
+  const activeStyle = {
+    fontWeight: "bold",
+  };
+
+  const defaultStyle = {
+    textDecoration: "none",
+    fontSize: 13,
+    color: 'black',
+    transition: "color 0.3s ease",
+    minWidth: 70,
+  };
+
+  return (
+    <NavLink
+      to={`/${id}`}
+      style={({ isActive }) => (isActive ? {...defaultStyle, ...activeStyle} : defaultStyle)}
+    >{value}</NavLink>
+  );
+};
+
 const NavbarContainer = styled.div`
   position: fixed;
   top: 0;
@@ -118,19 +107,6 @@ const MenuList = styled.ul`
   gap: 1%;
   flex-grow: 1;
   margin-right: 5%;
-`;
-
-const NavLink = styled.a`
-  text-decoration: none;
-  color: black;
-  font-size: 13px;
-  font-weight: ${(props) => (props.isactive === "true" ? "bold" : "normal")};
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #3498db;
-  }
-  min-width: 70px;
 `;
 
 const LogoutButton = styled.button`
