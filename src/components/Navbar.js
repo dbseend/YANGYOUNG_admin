@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -39,6 +39,7 @@ const Navbar = () => {
   };
 
   return (
+    <div>
     <NavbarContainer $scrolled={isScrolled}>
       <Logo onClick={onRefreshClick}>양영학원 고등부</Logo>
       <MenuList>
@@ -49,6 +50,8 @@ const Navbar = () => {
         <LogoutButton onClick={onLogOutClick}>로그아웃</LogoutButton>
       </MenuList>
     </NavbarContainer>
+    <Outlet />
+    </div>
   );
 };
 
