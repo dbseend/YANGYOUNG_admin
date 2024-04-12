@@ -78,9 +78,7 @@ const AtTable = (props) => {
 
     try {
       await postAttendanceBySectionAPI(requestData);
-      alert("출결 정보가 수정되었습니다");
     } catch (error) {
-      alert("출결 정보가 수정 중 오류 발생했습니다");
     }
   };
 
