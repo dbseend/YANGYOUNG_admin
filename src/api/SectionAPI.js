@@ -85,3 +85,19 @@ export const updateSectionInfoAPI = async (updateData) => {
     console.error(error);
   }
 };
+
+export const deleteSectionStudentAPI = async (data) => {
+  console.log(data);
+  try {
+    const response = await axios.delete(
+      process.env.REACT_APP_URL + `section/student`,
+      {
+        params: data
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("API 에러:", error);
+    throw error;
+  }
+}

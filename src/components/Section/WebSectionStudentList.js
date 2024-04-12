@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useInRouterContext } from "react-router-dom";
 import styled from "styled-components";
-import { getOneSectionAPI } from "../../api/SectionAPI";
+import { getOneSectionAPI, deleteSectionStudentAPI } from "../../api/SectionAPI";
 import {
   Button,
   ListTable,
@@ -88,6 +88,20 @@ const WebSectionStudentList = () => {
     });
   };
 
+  const deleteSectionStudent = () => {
+    console.log (sectionInfo.id, selectedStudents);
+    const data = {
+      sectionId: sectionInfo.id,
+      studentIdList: selectedStudents
+    };
+    console.log (data);
+    deleteSectionStudentAPI(data);
+  };
+
+  // useEffect(() => {
+  //   console.log(selectedStudents);
+  // }, [selectedStudents]);
+  
   return (
     <div>
       <SubTitle>학생</SubTitle>
@@ -97,6 +111,9 @@ const WebSectionStudentList = () => {
       </p>
       <RowDiv style={{ marginBottom: 10 }}>
         <Button style={{ marginRight: 10 }} onClick={openNewWindow}>
+          등록
+        </Button>
+        <Button style={{ marginRight: 10 }} onClick={deleteSectionStudent}>
           등록
         </Button>
       </RowDiv>
