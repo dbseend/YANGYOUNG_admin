@@ -15,30 +15,29 @@ const Attendance = () => {
 
   // 화면 렌더링 시 검색 옵션 받아오기 - 반정보
   useEffect(() => {
-    getSearchOptionAPI().then((response) => {
-      console.log(response);
-      setSectionList(response.sectionList);
-      setSelectedSectionId(response.sectionList[0].id);
-    });
+    getSearchOptionAPI()
+      .then((response) => {
+        console.log(response);
+        setSectionList(response.sectionList);
+        setSelectedSectionId(response.sectionList[0]?.id);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch section list:", error);
+      });
   }, []);
 
-  // 반, 날짜 변경 핸들러
-  const handleInputChange = (e, type) => {
-    console.log(e);
-    console.log(type);
-    if (type === "section") {
-      setSelectedSectionId(e.key);
-    }
-    if (type === "date") {
-      setDate(e.target.value);
-    }
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+  };
+
+  const handleSectionChange = (selectedOption) => {
+    setSelectedSectionId(selectedOption.value);
   };
 
   return (
     <>
       <GlobalStyle />
 
-      {/* 출결관리 검색 옵션 */}
       <AttendanceContainer>
         <AttendanceContent>
           <Title>출결관리</Title>
@@ -46,20 +45,20 @@ const Attendance = () => {
           <DatePicker
             type="date"
             value={date}
-            onChange={(e) => handleInputChange(e, "date")}
+            onChange={handleDateChange}
           />
           <Guide>2. 반을 선택해주세요.</Guide>
           <StyledSelect
             placeholder="반 검색"
             options={sectionList.map((section) => ({
-              key: section.id,
+              value: section.id,
               label: section.name,
+              key: section.id
             }))}
-            onChange={(e) => handleInputChange(e, "section")}
+            onChange={handleSectionChange}
           />
         </AttendanceContent>
 
-        {/* 반 선택 시 해당 반의 출결 정보 테이블 출력 */}
         <StyledTableContainer>
           {selectedSectionId && (
             <AttendanceList date={date} sectionId={selectedSectionId} />

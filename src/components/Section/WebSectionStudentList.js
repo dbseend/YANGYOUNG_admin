@@ -37,11 +37,18 @@ const WebSectionStudentList = () => {
     const screenHeight = window.screen.availHeight;
     const w = screenWidth / 2;
     const h = screenHeight;
-      // id 값을 가져와서 경로를 생성
-  const newPath = `/section/${id}/newWindow`;
-  
-  // 새 창 열기
-  window.open(newPath, '_blank', `width=${w}, height=${h}`);
+    // id 값을 가져와서 경로를 생성
+    const newPath = `/section/${id}/newWindow`;
+
+    // 새 창 열기
+    const newWindow = window.open(newPath, "_blank", `width=${w}, height=${h}`);
+
+    window.addEventListener('message', (event) => {
+      if (event.origin !== window.location.origin) return; // 보안을 위해 오리진을 확인합니다.
+      if (event.data === 'refresh') {
+        window.location.reload(); // 새로고침합니다.
+      }
+    });
   };
 
   useEffect(() => {
@@ -89,10 +96,7 @@ const WebSectionStudentList = () => {
         있습니다.
       </p>
       <RowDiv style={{ marginBottom: 10 }}>
-        <Button
-          style={{ marginRight: 10 }}
-          onClick={openNewWindow}
-        >
+        <Button style={{ marginRight: 10 }} onClick={openNewWindow}>
           등록
         </Button>
       </RowDiv>

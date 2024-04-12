@@ -64,6 +64,14 @@ const NewWindowContent = () => {
     const response = await updateSectionMemberAPI(updatedData);
     alert ("학생 추가 할당 성공");
     console.log (response);
+    
+    if(window.confirm ("종료하시겠습니까?")){
+      alert("종료되었습니다.")
+      window.close();
+      window.opener.postMessage('refresh', window.location.origin);
+    } else {
+      alert("취소되었습니다.")
+    }
   }
 
   // 체크박스 리스트 전체 선택 및 해제
