@@ -237,7 +237,6 @@ const StyledTd = styled.td`
 
 const StyledTr = styled.tr`
   cursor: pointer;
-
   &:hover {
     background-color: #f0f0f0;
   }

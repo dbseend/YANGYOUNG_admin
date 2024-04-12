@@ -64,7 +64,7 @@ export const updateSectionMemberAPI = async (updateData) => {
       // 'http://localhost:8080/api/v0/section/student',
       updateData
     );
-    return response;
+    return response.data;
   } catch (error) {
     console.error(error);
   }
@@ -80,7 +80,7 @@ export const updateSectionInfoAPI = async (updateData) => {
       // 'http://localhost:8080/api/v0/section/student',
       updateData
     );
-    return response;
+    return response.data;
   } catch (error) {
     console.error(error);
   }

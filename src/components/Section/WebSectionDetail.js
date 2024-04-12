@@ -21,12 +21,6 @@ const lectures = [
   { key: "lectureRoom", label: "강의실" },
 ];
 
-const students = [
-  { key: "name", label: "이름" },
-  { key: "school", label: "학교" },
-  { key: "grade", label: "학년" },
-];
-
 const WebSectionDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -53,15 +47,15 @@ const WebSectionDetail = () => {
         console.log(response);
         setStudentList(response.studentAllResponse.studentResponseList); // 학생 목록
         setStudentCount(response.studentAllResponse.size); // 학생 수
-        setLectureCount(response.lectureAllResponse.count); // 수업 개수
+        setLectureCount(response.lectureAllResponse.lectureCount); // 수업 개수
         setLectureList(response.lectureAllResponse.lectureResponseList); // 수업 목록
         setSectionInfo(response.sectionResponse); // 반 목록
 
         setUpdateData({
-          sectionId: id,
+          id: id,
           name: response.sectionResponse.name,
           teacher: response.sectionResponse.teacher,
-          homeRoom: response.sectionResponse.homrRoom,
+          homeRoom: response.sectionResponse.homeRoom,
         });
       } catch (error) {
         console.error("Error fetching student data:", error);
