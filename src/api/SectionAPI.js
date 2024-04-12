@@ -86,18 +86,15 @@ export const updateSectionInfoAPI = async (updateData) => {
   }
 };
 
-export const deleteSectionStudentAPI = async (data) => {
-  console.log(data);
+export const deleteSectionStudentAPI = async (sectionId, studentIdList) => {
   try {
-    const response = await axios.delete(
-      process.env.REACT_APP_URL + `section/student`,
-      {
-        params: data
-      }
-    );
+    const url = process.env.REACT_APP_URL + `section/student?sectionId=${sectionId}&studentIdList=${studentIdList}`
+    const response = await axios.delete(url);
+    alert ("선택한 학생을 분반에서 삭제했습니다.");
     return response.data;
   } catch (error) {
-    console.log("API 에러:", error);
+    alert ("분반 학생 삭제 중 오류가 발생했습니다.");
+    console.error("API 에러:", error);
     throw error;
   }
 }

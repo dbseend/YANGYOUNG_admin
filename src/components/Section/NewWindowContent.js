@@ -63,11 +63,9 @@ const NewWindowContent = () => {
     console.log (response);
     
     if(window.confirm ("종료하시겠습니까?")){
-      alert("종료되었습니다.")
       window.close();
       window.opener.postMessage('refresh', window.location.origin);
     } else {
-      alert("취소되었습니다.")
     }
   }
 

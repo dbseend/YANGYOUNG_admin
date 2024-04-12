@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useInRouterContext } from "react-router-dom";
 import styled from "styled-components";
-import { getOneSectionAPI, deleteSectionStudentAPI } from "../../api/SectionAPI";
+import {
+  getOneSectionAPI,
+  deleteSectionStudentAPI,
+} from "../../api/SectionAPI";
 import {
   Button,
   ListTable,
@@ -43,9 +46,9 @@ const WebSectionStudentList = () => {
     // 새 창 열기
     const newWindow = window.open(newPath, "_blank", `width=${w}, height=${h}`);
 
-    window.addEventListener('message', (event) => {
+    window.addEventListener("message", (event) => {
       if (event.origin !== window.location.origin) return; // 보안을 위해 오리진을 확인합니다.
-      if (event.data === 'refresh') {
+      if (event.data === "refresh") {
         window.location.reload(); // 새로고침합니다.
       }
     });
@@ -88,20 +91,17 @@ const WebSectionStudentList = () => {
     });
   };
 
-  const deleteSectionStudent = () => {
-    console.log (sectionInfo.id, selectedStudents);
-    const data = {
-      sectionId: sectionInfo.id,
-      studentIdList: selectedStudents
-    };
-    console.log (data);
-    deleteSectionStudentAPI(data);
+  const deleteSectionStudent = async () => {
+    console.log(sectionInfo.id, selectedStudents);
+
+    try {
+      await deleteSectionStudentAPI(sectionInfo.id, selectedStudents);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
-  // useEffect(() => {
-  //   console.log(selectedStudents);
-  // }, [selectedStudents]);
-  
   return (
     <div>
       <SubTitle>학생</SubTitle>
@@ -114,7 +114,7 @@ const WebSectionStudentList = () => {
           등록
         </Button>
         <Button style={{ marginRight: 10 }} onClick={deleteSectionStudent}>
-          등록
+          삭제
         </Button>
       </RowDiv>
 
