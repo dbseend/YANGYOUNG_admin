@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
-import { getAllLectureAPI, deleteLectureAPI } from "../../api/LectureAPI";
-import AddLectureModal from "./AddLectureModal";
+import { deleteLectureAPI, getAllLectureAPI } from "../../api/LectureAPI";
 import { Button, StyledButtonContainer } from "../Student/StudentList";
+import AddLectureModal from "./AddLectureModal";
+import LectureList from "./LectureList.js";
 
 const columns = [
   { key: "index", label: "순번" },
@@ -37,9 +38,6 @@ const Lecture = () => {
 
   const navigate = useNavigate();
 
-  const handleRowClick = (lectureId) => {
-    moveToLectureDetail(lectureId);
-  };
   const moveToLectureDetail = (lectureId) => {
     navigate(`/lecture/${lectureId}`);
   };
@@ -115,12 +113,26 @@ const Lecture = () => {
             <Button onClick={handleDeleteSelectedLectures}>삭제</Button>
           </StyledButtonContainer>
 
-          <StyledTable>
+          <LectureList />
+
+          {/* <StyledTable>
             <thead>
               <tr>
                 {columns.map((column) => (
                   <React.Fragment key={column.key}>
                     {column.key === "check" ? (
+                      <StyledTh>
+                        <input
+                          type="checkbox"
+                          checked={
+                            selectedLectures.length === lectureList.length
+                          }
+                          onClick={handleAllCheckboxChange}
+                        />
+                      </StyledTh>
+                    ) : (
+                      <StyledTh>{column.label}</StyledTh>
+                    )} {column.key === "check" ? (
                       <StyledTh>
                         <input
                           type="checkbox"
@@ -186,7 +198,7 @@ const Lecture = () => {
                   </StyledTr>
                 ))}
             </tbody>
-          </StyledTable>
+          </StyledTable> */}
         </TableContainer>
       </Div>
     </>
@@ -242,5 +254,5 @@ const StyledTr = styled.tr`
   }
 `;
 
-export {TableContainer, StyledTable, StyledTh, StyledTd, StyledTr};
+export { StyledTable, StyledTd, StyledTh, StyledTr, TableContainer };
 export default Lecture;
