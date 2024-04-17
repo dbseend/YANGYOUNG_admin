@@ -5,9 +5,10 @@ import { useParams } from "react-router-dom";
 
 const AddSectionTaskModal = ({ onClose, onAdd }) => {
   const { id } = useParams();
+  const today = new Date().toLocaleDateString("en-CA");
   const [newTask, setNewTask] = useState({
     content: "",
-    taskDate: "",
+    taskDate: today,
     sectionId: id,
   });
 

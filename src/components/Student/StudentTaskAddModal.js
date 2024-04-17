@@ -5,10 +5,11 @@ import { useParams } from "react-router-dom";
 
 const AddPersonalTaskModal = ({ onClose, onAdd }) => {
   const { id } = useParams();
+  const today = new Date().toLocaleDateString("en-CA");
   const [newTask, setNewTask] = useState({
     studentId: id,
     content: "",
-    taskDate: "",
+    taskDate: today,
   });
 
   const handleAssignmentChange = (e) => {
