@@ -1,12 +1,13 @@
 import update from "immutability-helper";
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useContext } from "react";
+import { Table, Td, Th, Tr } from "../../styles/CommonStyles.js";
 import { LectureItem } from "./LectureItem.js";
-import { getAllLectureAPI } from "../../api/LectureAPI.js";
-import { Table, Th, Td, Tr } from "../../styles/CommonStyles.js";
+import { DataContext } from "./WebLecture.js";
 
 const LectureList = () => {
-  const [lectureList, setLectureList] = useState([]);
-  const [selectedLectureList, setSelectedLectureList] = useState([]);
+  const { lectureList, setLectureList, selectedLectureList, setSelectedLectureList } = useContext(DataContext);
+  // const [lectureList, setLectureList] = useState([]);
+  // const [selectedLectureList, setSelectedLectureList] = useState([]);
 
   const lectureColumns = [
     { key: "index", label: "순번" },
@@ -18,18 +19,18 @@ const LectureList = () => {
     { key: "check", label: "선택" },
   ];
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await getAllLectureAPI();
-        const { lectureResponseList } = response;
-        setLectureList(lectureResponseList);
-      } catch (error) {
-        console.error("Error fetching lecture data:", error);
-      }
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response = await getAllLectureAPI();
+  //       const { lectureResponseList } = response;
+  //       setLectureList(lectureResponseList);
+  //     } catch (error) {
+  //       console.error("Error fetching lecture data:", error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
 
   const moveCard = useCallback((dragIndex, hoverIndex) => {
     setLectureList((prevCards) =>
@@ -80,8 +81,6 @@ const LectureList = () => {
                 lectureData={lecture}
                 moveCard={moveCard}
                 columns={lectureColumns}
-                selectedLectureList={selectedLectureList}
-                setSelectedLectureList={setSelectedLectureList}
               />
             ))
           ) : (

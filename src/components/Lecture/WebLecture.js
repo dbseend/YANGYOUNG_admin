@@ -1,26 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { createContext, useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { deleteLectureAPI, getAllLectureAPI } from "../../api/LectureAPI";
 import { Button, StyledButtonContainer } from "../Student/StudentList";
 import AddLectureModal from "./AddLectureModal";
 import LectureList from "./LectureList.js";
 
-const columns = [
-  { key: "index", label: "순번" },
-  { key: "name", label: "수업명" },
-  { key: "dayList/dateList", label: "요일/날짜" },
-  { key: "time", label: "시간" },
-  { key: "lectureRoom", label: "강의실" },
-  { key: "teacher", label: "선생님" },
-  { key: "check", label: "선택" },
-];
+export const DataContext = createContext();
 
 const Lecture = () => {
-  const [lectureList, setLectureList] = useState([]);
   const [lectureCount, setLectureCount] = useState(0);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
-  const [selectedLectures, setSelectedLectures] = useState([]);
+  const [lectureList, setLectureList] = useState([]);
+  const [selectedLectureList, setSelectedLectureList] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -36,50 +27,23 @@ const Lecture = () => {
     fetchData();
   }, []);
 
-  const navigate = useNavigate();
-
-  const moveToLectureDetail = (lectureId) => {
-    navigate(`/lecture/${lectureId}`);
-  };
-
-  // 체크박스 리스트 전체 선택 및 해제
-  const handleAllCheckboxChange = () => {
-    if (selectedLectures.length === lectureList.length) {
-      setSelectedLectures([]);
-    }
-    if (selectedLectures.length !== lectureList.length) {
-      setSelectedLectures(lectureList.map((student) => student.id));
-    }
-  };
-
-  // 체크박스 선택 시 학생 목록에 추가/제거
-  const handleCheckboxChange = (lectureId) => {
-    setSelectedLectures((prevSelected) => {
-      if (prevSelected.includes(lectureId)) {
-        return prevSelected.filter((id) => id !== lectureId);
-      } else {
-        return [...prevSelected, lectureId];
-      }
-    });
-  };
-
   const handleDeleteSelectedLectures = async () => {
-    console.log("Delete selected lectures:", selectedLectures);
+    console.log("Delete selected lectures:", selectedLectureList);
     try {
       // Promise.all로 여러개의 section을 삭제
-      selectedLectures.map(async (lectureId) => {
+      selectedLectureList.map(async (lectureId) => {
         console.log("Delete lectureId: ", lectureId);
         console.log(typeof lectureId);
         await deleteLectureAPI(lectureId);
       });
 
-      setSelectedLectures([]);
+      setSelectedLectureList([]);
       alert("선택한 수업이 삭제되었습니다.");
       window.location.reload(true);
     } catch (error) {
       console.error("수업 삭제 중 오류 발생", error);
     }
-    console.log("Delete selected lectures:", selectedLectures);
+    console.log("Delete selected lectures:", selectedLectureList);
   };
 
   const openAddModal = () => {
@@ -109,96 +73,13 @@ const Lecture = () => {
                 onAdd={handleAddLecture}
               />
             )}
-
             <Button onClick={handleDeleteSelectedLectures}>삭제</Button>
+            <Button>순서 저장</Button>
           </StyledButtonContainer>
 
-          <LectureList />
-
-          {/* <StyledTable>
-            <thead>
-              <tr>
-                {columns.map((column) => (
-                  <React.Fragment key={column.key}>
-                    {column.key === "check" ? (
-                      <StyledTh>
-                        <input
-                          type="checkbox"
-                          checked={
-                            selectedLectures.length === lectureList.length
-                          }
-                          onClick={handleAllCheckboxChange}
-                        />
-                      </StyledTh>
-                    ) : (
-                      <StyledTh>{column.label}</StyledTh>
-                    )} {column.key === "check" ? (
-                      <StyledTh>
-                        <input
-                          type="checkbox"
-                          checked={
-                            selectedLectures.length === lectureList.length
-                          }
-                          onClick={handleAllCheckboxChange}
-                        />
-                      </StyledTh>
-                    ) : (
-                      <StyledTh>{column.label}</StyledTh>
-                    )}
-                  </React.Fragment>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {lectureList &&
-                lectureList.map((lecture, index) => (
-                  <StyledTr key={index}>
-                    {columns &&
-                      columns.map((column) => (
-                        <StyledTd
-                          key={column.key}
-                          onClick={
-                            column.key === "check"
-                              ? null
-                              : () => moveToLectureDetail(lecture.id)
-                          }
-                        >
-                          {column.key === "index" ? index + 1 : ""}
-                          {column.key === "name" ? lecture.name : ""}
-                          {column.key === "dayList/dateList"
-                            ? lecture.dayList.length > 0
-                              ? lecture.dayList.join(", ")
-                              : lecture.dateList.length > 0
-                              ? lecture.dateList.join(", ")
-                              : ""
-                            : ""}
-
-                          {column.key === "time"
-                            ? `${lecture.startTime.slice(
-                                0,
-                                5
-                              )}-${lecture.endTime.slice(0, 5)}`
-                            : ""}
-                          {column.key === "homrRoom" ? lecture.homeRoom : ""}
-                          {column.key === "lectureRoom"
-                            ? lecture.lectureRoom
-                            : ""}
-                          {column.key === "teacher" ? lecture.teacher : ""}
-                          {column.key === "check" ? (
-                            <input
-                              type="checkbox"
-                              checked={selectedLectures.includes(lecture.id)}
-                              onChange={() => handleCheckboxChange(lecture.id)}
-                            />
-                          ) : (
-                            ""
-                          )}
-                        </StyledTd>
-                      ))}
-                  </StyledTr>
-                ))}
-            </tbody>
-          </StyledTable> */}
+          <DataContext.Provider value={{ lectureList, setLectureList, selectedLectureList, setSelectedLectureList }}>
+            <LectureList />
+          </DataContext.Provider>
         </TableContainer>
       </Div>
     </>

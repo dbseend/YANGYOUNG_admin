@@ -36,7 +36,8 @@ export const getOneStudentAPI = async (id) => {
   try {
     const response = await axios.get(
       // process.env.REACT_APP_DEV_URL + `student/${id}`
-      process.env.REACT_APP_URL + `student/${id}`
+      // process.env.REACT_APP_URL + `student/${id}`
+      `http://localhost:8080/api/v0/student/${id}`
     );
     return response.data;
   } catch (error) {

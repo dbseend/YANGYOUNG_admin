@@ -1,19 +1,20 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDrag, useDrop } from "react-dnd";
 import { ItemTypes } from "../../components/ItemTypes.js";
 import { Tr, Td } from "../../styles/CommonStyles.js";
+import { DataContext } from "./WebLecture.js";
+
 
 export const LectureItem = ({
   index,
   lectureData,
   moveCard,
   columns,
-  selectedLectureList,
-  setSelectedLectureList,
 }) => {
   const ref = useRef(null);
   const navigate = useNavigate();
+  const { selectedLectureList, setSelectedLectureList } = useContext(DataContext);
 
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.LECTURE,
@@ -68,6 +69,7 @@ export const LectureItem = ({
 
   // 체크박스 선택 시 학생 목록에 추가/제거
   const handleCheckboxChange = (lectureId) => {
+    console.log(lectureId);
     setSelectedLectureList((prevSelected) => {
       if (prevSelected.includes(lectureId)) {
         return prevSelected.filter((id) => id !== lectureId);

@@ -59,7 +59,8 @@ export const addPersonalTaskAPI = async (taskData) => {
 
   try {
     const response = await axios.post(
-      process.env.REACT_APP_URL + `task/student`,
+      'http://localhost:8080/api/v0/task/student',
+      // process.env.REACT_APP_URL + `task/student`,
       // process.env.REACT_APP_DEV_URL + `task/student`,
       // `http://localhost:8080/api/v0/task/student`,
       taskData
