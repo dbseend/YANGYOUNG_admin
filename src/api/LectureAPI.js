@@ -35,9 +35,9 @@ export const addLectureAPI = async (lectureData) => {
 export const getLectureAPI = async (lectureId) => {
   try {
     const response = await axios.get(
-      // process.env.REACT_APP_URL + `lecture/${lectureId}`
+      process.env.REACT_APP_URL + `lecture/${lectureId}`
       // process.env.REACT_APP_DEV_URL + `lecture/${lectureId}`
-      `http://localhost:8080/api/v0/lecture/${lectureId}`
+      // `http://localhost:8080/api/v0/lecture/${lectureId}`
     );
     console.log(response);
     return response;
@@ -51,9 +51,9 @@ export const getLectureAPI = async (lectureId) => {
 export const updateLectureAPI = async (updateLectureData) => {
   try {
     const response = await axios.patch(
-      // process.env.REACT_APP_URL + `lecture/${updateLectureData.id}`,
+      process.env.REACT_APP_URL + `lecture/${updateLectureData.id}`,
       // process.env.REACT_APP_DEV_URL + `lecture/${updateLectureData.id}`,
-      `http://localhost:8080/api/v0/lecture`,
+      // `http://localhost:8080/api/v0/lecture`,
       updateLectureData
     );
     return response;
@@ -66,9 +66,9 @@ export const updateLectureAPI = async (updateLectureData) => {
 export const updateLectureOrderAPI = async (lectureSeqUpdateRequest) => {
   try {
     const response = await axios.patch(
-      // process.env.REACT_APP_URL + `lecture/${updateLectureData.id}`,
+      process.env.REACT_APP_URL + `lecture/seq`,
       // process.env.REACT_APP_DEV_URL + `lecture/${updateLectureData.id}`,
-      `http://localhost:8080/api/v0/lecture/seq`,
+      // `http://localhost:8080/api/v0/lecture/seq`,
       lectureSeqUpdateRequest
     );
     return response;
@@ -81,9 +81,9 @@ export const updateLectureOrderAPI = async (lectureSeqUpdateRequest) => {
 export const deleteLectureAPI = async (lectureId) => {
   try {
     const response = await axios.delete(
-      // process.env.REACT_APP_URL + `lecture/${lectureId}`
+      process.env.REACT_APP_URL + `lecture/${lectureId}`
       // process.env.REACT_APP_DEV_URL + `lecture/${lectureId}`
-      `http://localhost:8080/api/v0/lecture/${lectureId}`
+      // `http://localhost:8080/api/v0/lecture/${lectureId}`
     );
     return response;
   } catch (error) {
