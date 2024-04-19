@@ -1,13 +1,11 @@
 import update from "immutability-helper";
-import { useCallback, useState, useContext } from "react";
+import { useCallback, useContext } from "react";
 import { Table, Td, Th, Tr } from "../../styles/CommonStyles.js";
 import { LectureItem } from "./LectureItem.js";
 import { DataContext } from "./WebLecture.js";
 
 const LectureList = () => {
   const { lectureList, setLectureList, selectedLectureList, setSelectedLectureList } = useContext(DataContext);
-  // const [lectureList, setLectureList] = useState([]);
-  // const [selectedLectureList, setSelectedLectureList] = useState([]);
 
   const lectureColumns = [
     { key: "index", label: "순번" },
@@ -19,28 +17,34 @@ const LectureList = () => {
     { key: "check", label: "선택" },
   ];
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       const response = await getAllLectureAPI();
-  //       const { lectureResponseList } = response;
-  //       setLectureList(lectureResponseList);
-  //     } catch (error) {
-  //       console.error("Error fetching lecture data:", error);
-  //     }
-  //   }
-  //   fetchData();
+  // const moveCard = useCallback((dragIndex, hoverIndex) => {
+  //   setLectureList((prevCards) =>
+  //     update(prevCards, {
+  //       $splice: [
+  //         [dragIndex, 1],
+  //         [hoverIndex, 0, prevCards[dragIndex]],
+  //       ],
+  //     })
+  //   );
   // }, []);
 
   const moveCard = useCallback((dragIndex, hoverIndex) => {
-    setLectureList((prevCards) =>
-      update(prevCards, {
+    setLectureList((prevCards) => {
+      const draggedCard = prevCards[dragIndex];
+      const targetCard = prevCards[hoverIndex];
+
+      // Swap the lectureSeq values
+      const tempSeq = draggedCard.lectureSeq;
+      draggedCard.lectureSeq = targetCard.lectureSeq;
+      targetCard.lectureSeq = tempSeq;
+
+      return update(prevCards, {
         $splice: [
           [dragIndex, 1],
-          [hoverIndex, 0, prevCards[dragIndex]],
+          [hoverIndex, 0, draggedCard],
         ],
-      })
-    );
+      });
+    });
   }, []);
 
   // 체크박스 선택 시 학생 목록에 추가/제거

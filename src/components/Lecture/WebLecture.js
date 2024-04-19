@@ -1,6 +1,10 @@
 import React, { createContext, useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import { deleteLectureAPI, getAllLectureAPI } from "../../api/LectureAPI";
+import {
+  deleteLectureAPI,
+  getAllLectureAPI,
+  updateLectureOrderAPI,
+} from "../../api/LectureAPI";
 import { Button, StyledButtonContainer } from "../Student/StudentList";
 import AddLectureModal from "./AddLectureModal";
 import LectureList from "./LectureList.js";
@@ -27,6 +31,25 @@ const Lecture = () => {
     fetchData();
   }, []);
 
+  // 수업 순서 변경 저장
+  const handleSaveLectureOrder = async () => {
+    console.log("Save lecture order:", lectureList);
+    const lectureSeqList = lectureList.map((lecture) => ({
+      id: lecture.id,
+      lectureSeq: lecture.lectureSeq,
+    }));
+    const lectureSeqUpdateRequest = { lectureSeqList };
+    console.log("lectureSeqUpdateRequest: ", lectureSeqUpdateRequest);
+    try {
+      await updateLectureOrderAPI(lectureSeqUpdateRequest);
+      alert("수업 순서가 저장되었습니다.");
+      // window.location.reload(true);
+    } catch (error) {
+      console.error("수업 순서 저장 중 오류 발생", error);
+    }
+  };
+
+  // 선택한 수업 삭제
   const handleDeleteSelectedLectures = async () => {
     console.log("Delete selected lectures:", selectedLectureList);
     try {
@@ -74,10 +97,17 @@ const Lecture = () => {
               />
             )}
             <Button onClick={handleDeleteSelectedLectures}>삭제</Button>
-            <Button>순서 저장</Button>
+            <Button onClick={handleSaveLectureOrder}>순서 저장</Button>
           </StyledButtonContainer>
 
-          <DataContext.Provider value={{ lectureList, setLectureList, selectedLectureList, setSelectedLectureList }}>
+          <DataContext.Provider
+            value={{
+              lectureList,
+              setLectureList,
+              selectedLectureList,
+              setSelectedLectureList,
+            }}
+          >
             <LectureList />
           </DataContext.Provider>
         </TableContainer>

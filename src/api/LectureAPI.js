@@ -62,6 +62,21 @@ export const updateLectureAPI = async (updateLectureData) => {
   }
 };
 
+// 강의 순서 수정 API
+export const updateLectureOrderAPI = async (lectureSeqUpdateRequest) => {
+  try {
+    const response = await axios.patch(
+      // process.env.REACT_APP_URL + `lecture/${updateLectureData.id}`,
+      // process.env.REACT_APP_DEV_URL + `lecture/${updateLectureData.id}`,
+      `http://localhost:8080/api/v0/lecture/seq`,
+      lectureSeqUpdateRequest
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // 강의 삭제 API
 export const deleteLectureAPI = async (lectureId) => {
   try {

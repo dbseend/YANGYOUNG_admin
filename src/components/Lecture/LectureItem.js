@@ -61,7 +61,9 @@ export const LectureItem = ({
         return;
       }
 
+      // lectureData.lectureSeq = hoverIndex;
       moveCard(dragIndex, hoverIndex);
+      console.log("moveCard: ", dragIndex, hoverIndex);
 
       item.index = hoverIndex;
     },
