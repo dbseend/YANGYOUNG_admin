@@ -34,6 +34,7 @@ export const getOneSectionAPI = async (sectionId) => {
     const response = await axios.get(
       process.env.REACT_APP_URL + `section/${sectionId}`
       // process.env.REACT_APP_DEV_URL + `section/${sectionId}`
+      // `http://localhost:8080/api/v0/section/${sectionId}`
     );
     return response.data;
   } catch (error) {

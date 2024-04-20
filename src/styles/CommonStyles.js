@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const ColumnDiv = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ export const RowCenterDiv = styled(RowDiv)`
 
 export const ListTable = styled.table`
   width: 90%;
-  table-layout: fixed; 
+  table-layout: fixed;
   border-collapse: collapse;
   margin-top: 10px;
 `;
@@ -88,4 +88,58 @@ export const UpdateAndDeleteButton = styled.div`
 
 export const DateInput = styled.input`
   width: 250px;
+`;
+
+export const StyledTable = styled.table`
+  border-collapse: collapse;
+  margin-top: 20px;
+  table-layout: fixed;
+  width: 100%;
+`;
+
+export const StyledTh = styled.th`
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  background-color: #dfdfdf;
+`;
+
+export const StyledTd = styled.td`
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  align-items: center;
+`;
+
+export const StyledTr = styled.tr`
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+export const Table = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+`;
+
+export const Th = styled.th`
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  background-color: #dfdfdf;
+`;
+
+export const Td = styled.td`
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+`;
+
+export const Tr = styled.tr`
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
 `;
